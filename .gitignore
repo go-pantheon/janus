@@ -32,3 +32,13 @@ Thumbs.db
 .vscode/
 .idea/
 *.swp
+
+# private config
+app/*/configs
+
+# submodules
+/api/
+
+# generated files
+bin/
+*.log

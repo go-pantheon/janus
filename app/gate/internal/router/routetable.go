@@ -5,15 +5,19 @@ import (
 	"time"
 
 	"github.com/pkg/errors"
+	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/data"
+	"github.com/vulcan-frame/vulcan-pkg-app/profile"
+	"github.com/vulcan-frame/vulcan-pkg-app/router/routetable"
+	"github.com/vulcan-frame/vulcan-pkg-app/router/routetable/redis"
 )
 
 type RouteTable struct {
 	routetable.RouteTable
 }
 
-func NewRouteTable() *RouteTable {
+func NewRouteTable(d *data.Data) *RouteTable {
 	return &RouteTable{
-		RouteTable: NewRouteTable("gate"),
+		RouteTable: routetable.NewRouteTable("gate", redis.NewRouteTable(d.Rdb)),
 	}
 }
 
@@ -21,7 +25,7 @@ func AddRouteTable(ctx context.Context, rt *RouteTable, color string, oid int64)
 	ctx, cancel := context.WithTimeout(ctx, 2*time.Second)
 	defer cancel()
 
-	oldAddr, err := rt.GetSet(ctx, color, oid, addr)
+	oldAddr, err := rt.GetSet(ctx, color, oid, profile.GRPCEndpoint())
 	if err != nil {
 		return errors.WithMessagef(err, "add route table failed. color=%s oid=%d", color, oid)
 	}
@@ -35,7 +39,7 @@ func DelRouteTable(ctx context.Context, rt *RouteTable, color string, uid int64)
 	ctx, cancel := context.WithTimeout(ctx, 2*time.Second)
 	defer cancel()
 
-	err := rt.DelIfSame(ctx, color, uid, addr)
+	err := rt.DelIfSame(ctx, color, uid, profile.GRPCEndpoint())
 	if err != nil && !errors.Is(err, context.Canceled) {
 		log.Errorf("[gate.RouteTable] del route table failed. color=%s oid=%d %+v", color, uid, err)
 	}

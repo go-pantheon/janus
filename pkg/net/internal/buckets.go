@@ -3,6 +3,8 @@ package internal
 import (
 	"maps"
 	"sync"
+
+	"github.com/vulcan-frame/vulcan-gate/pkg/net/conf"
 )
 
 var (

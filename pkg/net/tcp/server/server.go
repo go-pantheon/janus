@@ -7,7 +7,11 @@ import (
 
 	"github.com/pkg/errors"
 	vnet "github.com/vulcan-frame/vulcan-gate/pkg/net"
+	"github.com/vulcan-frame/vulcan-gate/pkg/net/conf"
 	vctx "github.com/vulcan-frame/vulcan-gate/pkg/net/context"
+	"github.com/vulcan-frame/vulcan-gate/pkg/net/internal"
+	"github.com/vulcan-frame/vulcan-pkg-tool/ip"
+	"github.com/vulcan-frame/vulcan-pkg-tool/sync"
 	"go.uber.org/atomic"
 )
 
@@ -70,6 +74,7 @@ func AfterDisconnectFunc(f WrapFunc) Option {
 type Server struct {
 	sync.Stoppable
 
+	conf    *conf.Config
 	logger  log.Logger
 	referer string
 
@@ -86,7 +91,11 @@ type Server struct {
 }
 
 func NewServer(handler vnet.Service, opts ...Option) (*Server, error) {
+	conf.Init()
+
 	s := &Server{
+		Stoppable: sync.NewStopper(conf.Conf.Server.StopTimeout),
+		conf:      conf.Conf,
 		logger:    log.DefaultLogger,
 		readFilter: middleware.Chain(
 			recovery.Recovery(),

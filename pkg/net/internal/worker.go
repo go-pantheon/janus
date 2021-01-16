@@ -10,13 +10,26 @@ import (
 
 	"github.com/pkg/errors"
 	vnet "github.com/vulcan-frame/vulcan-gate/pkg/net"
+	"github.com/vulcan-frame/vulcan-gate/pkg/net/conf"
+	vctx "github.com/vulcan-frame/vulcan-gate/pkg/net/context"
 	"github.com/vulcan-frame/vulcan-gate/pkg/net/internal/bufreader"
+	"github.com/vulcan-frame/vulcan-gate/pkg/net/tunnel"
+	"github.com/vulcan-frame/vulcan-pkg-tool/sync"
 	"go.uber.org/atomic"
 )
 
+var _ tunnel.Holder = (*Worker)(nil)
+var _ sync.Stoppable = (*Worker)(nil)
+
 type Worker struct {
+	*tunnelHolder
+	sync.Stoppable
+	sync.CountdownStopper
+
+	conf             *conf.Worker
 	reader           *bufreader.Reader
 	service          vnet.Service
+	createTunnelFunc CreateTunnelFunc
 	referer          string
 
 	readFilter  middleware.Middleware
@@ -32,8 +45,13 @@ type Worker struct {
 	replyChan          chan []byte
 }
 
-func NewWorker(wid uint64, conn *net.TCPConn, readFilter, writeFilter middleware.Middleware, handler vnet.Service) *Worker {
+func NewWorker(wid uint64, conn *net.TCPConn, logger log.Logger, conf *conf.Worker, referer string,
+	readFilter, writeFilter middleware.Middleware, handler vnet.Service) *Worker {
 	w := &Worker{
+		tunnelHolder:       newTunnelHolder(),
+		Stoppable:          sync.NewStopper(conf.StopTimeout),
+		CountdownStopper:   sync.NewCountdownStopper(),
+		conf:               conf,
 		service:            handler,
 		referer:            referer,
 		readFilter:         readFilter,
@@ -44,6 +62,14 @@ func NewWorker(wid uint64, conn *net.TCPConn, readFilter, writeFilter middleware
 		session:            vnet.DefaultSession(),
 		replyChanStarted:   atomic.NewBool(false),
 		replyChanCompleted: make(chan struct{}),
+	}
+
+	w.createTunnelFunc = func(ctx context.Context, tp int32, oid int64) (tunnel.Tunnel, error) {
+		t, err := w.service.CreateTunnel(ctx, w.session, tp, oid, w)
+		if err != nil {
+			return nil, err
+		}
+		return t, nil
 	}
 
 	w.replyChan = make(chan []byte, conf.ReplyChanSize)
@@ -72,57 +98,73 @@ func (w *Worker) Start(ctx context.Context) (err error) {
 }
 
 func (w *Worker) Run(ctx context.Context) error {
-	go func() error {
+	ctx = vctx.SetUID(ctx, w.UID())
+	ctx = vctx.SetSID(ctx, w.SID())
+	ctx = vctx.SetColor(ctx, w.Color())
+	ctx = vctx.SetStatus(ctx, w.Status())
+	ctx = vctx.SetGateReferer(ctx, w.referer, w.WID())
+	ctx = vctx.SetClientIP(ctx, w.session.ClientIP())
+
+	eg, ctx := errgroup.WithContext(ctx)
+	eg.Go(func() error {
 		select {
 		case <-w.StopTriggered():
 			return sync.GroupStopping
 		case <-ctx.Done():
 			return ctx.Err()
 		}
-	}()
-	go func() error {
+	})
+	eg.Go(func() error {
 		// sc loop
 		err := sync.RunSafe(func() error {
 			return w.writePackLoop(ctx)
 		})
 		return err
-	}()
-	go func() error {
+	})
+	eg.Go(func() error {
 		// cs loop
 		err := sync.RunSafe(func() error {
 			return w.readPackLoop(ctx)
 		})
 		return err
-	}()
-	go func() error {
+	})
+	eg.Go(func() error {
 		err := w.tickStopSign(ctx)
 		return err
-	}()
+	})
+
+	if err := eg.Wait(); err != nil {
+		return errors.WithMessagef(err, "uid=%d color=%s", w.UID(), w.Color())
+	}
 	return nil
 }
 
 func (w *Worker) Stop(ctx context.Context) {
-	if w.IsStarted() {
-		ctx, cancel := context.WithTimeout(ctx, 2*time.Second)
-		defer cancel()
-		if err := w.service.OnDisconnect(ctx, w.session); err != nil {
-			log.Errorf("[xnet.Worker] onDisconnect failed. wid=%d uid=%d color=%s %+v", w.WID(), w.UID(), w.Color(), err)
+	w.DoStop(func() {
+		if w.IsStarted() {
+			ctx, cancel := context.WithTimeout(ctx, 2*time.Second)
+			defer cancel()
+			if err := w.service.OnDisconnect(ctx, w.session); err != nil {
+				log.Errorf("[xnet.Worker] onDisconnect failed. wid=%d uid=%d color=%s %+v", w.WID(), w.UID(), w.Color(), err)
+			}
 		}
-	}
 
-	close(w.replyChan)
-	if w.replyChanStarted.Load() {
-		<-w.replyChanCompleted
-	}
+		close(w.replyChan)
+		if w.replyChanStarted.Load() {
+			<-w.replyChanCompleted
+		}
 
-	if err := w.reader.Close(); err != nil {
-		log.Errorf("[xnet.Worker] reader close failed. wid=%d uid=%d color=%s %+v", w.WID(), w.UID(), w.Color(), err)
-	}
+		if err := w.reader.Close(); err != nil {
+			log.Errorf("[xnet.Worker] reader close failed. wid=%d uid=%d color=%s %+v", w.WID(), w.UID(), w.Color(), err)
+		}
 
-	if err0 := w.conn.Close(); err0 != nil {
-		log.Errorf("[xnet.Worker] conn close failed. wid=%d uid=%d color=%s %+v", w.WID(), w.UID(), w.Color(), err0)
-		vctx.SetDeadlineWithContext(ctx, w.conn, fmt.Sprintf("wid=%d", w.WID()))
-	}
+		w.tunnelHolder.stop()
+
+		if err0 := w.conn.Close(); err0 != nil {
+			log.Errorf("[xnet.Worker] conn close failed. wid=%d uid=%d color=%s %+v", w.WID(), w.UID(), w.Color(), err0)
+			vctx.SetDeadlineWithContext(ctx, w.conn, fmt.Sprintf("wid=%d", w.WID()))
+		}
+	})
 }
 
 // handshake must only be used in auth
@@ -144,11 +186,26 @@ func (w *Worker) handshake(ctx context.Context) error {
 		return err
 	}
 
+	ss.SetClientIP(vctx.RemoteAddr(w.conn))
 	w.session = ss
 	return nil
 }
 
+func (w *Worker) Tunnel(ctx context.Context, mod int32, oid int64) (t tunnel.Tunnel, err error) {
+	tp, err := w.service.TunnelType(mod)
+	if err != nil {
+		return
+	}
+	if t = w.tunnel(tp, oid); t != nil {
+		return
+	}
+	return w.createTunnel(ctx, tp, oid, w.createTunnelFunc)
+}
+
 func (w *Worker) Push(ctx context.Context, out []byte) error {
+	if w.IsStopping() {
+		return errors.New("worker is stopping")
+	}
 	if len(out) <= 0 {
 		return errors.New("push msg len <= 0")
 	}
@@ -163,6 +220,13 @@ func (w *Worker) tickStopSign(ctx context.Context) (err error) {
 		select {
 		case <-ctx.Done():
 			return ctx.Err()
+		case <-ticker.C:
+			if t := w.CountdownStopper.ExpiryTime(); !t.IsZero() && time.Now().After(t) {
+				w.TriggerStop()
+				return errors.Wrapf(sync.ErrCountdownTimerExpired, "wid=%d", w.WID())
+			}
+			// TODO: check black list
+		}
 	}
 }
 
@@ -295,6 +359,11 @@ func (w *Worker) handle(ctx context.Context, req interface{}) (interface{}, erro
 
 func (w *Worker) IsStarted() bool {
 	return w.started.Load()
+}
+
+// SetStopCountDownTime Pass in the current time to set the worker shutdown countdown when the main tunnel is disconnected
+func (w *Worker) SetStopCountDownTime(now time.Time) {
+	w.CountdownStopper.SetExpiryTime(now.Add(w.conf.WaitMainTunnelTimeout))
 }
 
 func (w *Worker) Conn() *net.TCPConn {

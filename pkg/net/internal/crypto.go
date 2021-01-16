@@ -2,6 +2,8 @@ package internal
 
 import (
 	"github.com/pkg/errors"
+	"github.com/vulcan-frame/vulcan-gate/pkg/net"
+	"github.com/vulcan-frame/vulcan-pkg-tool/security/aes"
 )
 
 func encrypt(ss net.Session, data []byte) ([]byte, error) {
