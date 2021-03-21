@@ -11,6 +11,8 @@ var ProviderSet = wire.NewSet(NewTCPServer, NewGRPCServer, NewHTTPServer, NewReg
 func NewRegistrar(conf *conf.Registry) (registry.Registrar, error) {
 	client, err := etcdclient.New(etcdclient.Config{
 		Endpoints: conf.Etcd.Endpoints,
+		Username:  conf.Etcd.Username,
+		Password:  conf.Etcd.Password,
 	})
 	if err != nil {
 		return nil, errors.Wrapf(err, "create etcd client failed")

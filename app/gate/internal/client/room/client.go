@@ -1,13 +1,13 @@
-package player
+package room
 
 import (
-	intrav1 "github.com/vulcan-frame/vulcan-gate/gen/api/server/player/intra/v1"
+	intrav1 "github.com/vulcan-frame/vulcan-gate/gen/api/server/room/intra/v1"
 	"github.com/vulcan-frame/vulcan-pkg-app/router/balancer"
 	"github.com/vulcan-frame/vulcan-pkg-app/router/conn"
 )
 
 const (
-	serviceName = "vulcan.player.service"
+	serviceName = "vulcan.room.service"
 )
 
 type Conn struct {

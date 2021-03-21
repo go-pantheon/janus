@@ -15,7 +15,6 @@ type Data struct {
 
 func NewData(c *conf.Data) (d *Data, cleanup func(), err error) {
 	var rdb redis.Cmdable
-
 	rdb, cleanup, err = cache.NewRedis(&redis.Options{
 		Addr:         c.Redis.Addr,
 		Password:     c.Redis.Password,

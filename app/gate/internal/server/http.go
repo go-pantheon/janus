@@ -11,6 +11,10 @@ func NewHTTPServer(c *conf.Server, logger log.Logger, ps pushv1.PushServiceServe
 		http.Middleware(
 			middleware.Chain(
 				recovery.Recovery(),
+				metadata.Server(),
+				tracing.Server(),
+				metrics.Server(),
+				logging.Server(logger),
 			)),
 	}
 	if c.Http.Network != "" {
@@ -18,6 +22,9 @@ func NewHTTPServer(c *conf.Server, logger log.Logger, ps pushv1.PushServiceServe
 	}
 	if c.Http.Addr != "" {
 		opts = append(opts, http.Address(c.Http.Addr))
+	}
+	if c.Http.Timeout != nil {
+		opts = append(opts, http.Timeout(c.Http.Timeout.AsDuration()))
 	}
 
 	svr := http.NewServer(opts...)

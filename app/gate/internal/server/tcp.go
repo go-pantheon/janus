@@ -20,6 +20,9 @@ func NewTCPServer(c *conf.Server, logger log.Logger, rt *router.RouteTable, svc 
 		tcp.ReadFilter(
 			middleware.Chain(
 				recovery.Recovery(),
+				metadata.Server(),
+				tracing.Server(),
+				metrics.Server(),
 				logging.Request(net.NetKindTCP),
 			),
 		),

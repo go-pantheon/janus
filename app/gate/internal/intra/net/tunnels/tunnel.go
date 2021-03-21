@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/pkg/errors"
+	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/pkg/pool"
 	clipkt "github.com/vulcan-frame/vulcan-gate/gen/api/client/packet"
 	"github.com/vulcan-frame/vulcan-gate/pkg/net"
 	"github.com/vulcan-frame/vulcan-gate/pkg/net/tunnel"
@@ -151,6 +152,9 @@ func (t *Tunnel) scLoop(ctx context.Context) error {
 }
 
 func (t *Tunnel) push(ctx context.Context, sc tunnel.ForwardMessage) error {
+	p := pool.GetPacket()
+	defer pool.PutPacket(p)
+
 	p.Mod = sc.GetMod()
 	p.Seq = sc.GetSeq()
 	p.Obj = sc.GetObj()

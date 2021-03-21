@@ -5,6 +5,7 @@ import (
 	"crypto/cipher"
 
 	"github.com/pkg/errors"
+	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/pkg/pool"
 	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/pkg/security"
 	climsg "github.com/vulcan-frame/vulcan-gate/gen/api/client/message"
 	clipkt "github.com/vulcan-frame/vulcan-gate/gen/api/client/packet"
@@ -65,11 +66,15 @@ func (s *Service) Auth(ctx context.Context, in []byte) (out []byte, session net.
 		return nil, nil, err
 	}
 
+	sc.StartIndex = int32(session.IncreaseCSIndex())
 	sc.Key = key
 
 	if data, err = proto.Marshal(sc); err != nil {
 		return nil, nil, errors.Wrap(err, "SCHandshake encode failed")
 	}
+
+	oup := pool.GetPacket()
+	defer pool.PutPacket(oup)
 
 	oup.Index = int32(session.IncreaseSCIndex())
 	oup.Mod = inp.Mod

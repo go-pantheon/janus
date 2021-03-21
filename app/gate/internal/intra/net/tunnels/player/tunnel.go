@@ -60,6 +60,7 @@ func (t *Tunnel) TransformMessage(p *clipkt.Packet) (to tunnel.ForwardMessage) {
 // CSHandle send the message to the service
 // the parameter [msg] is pooled, so it will be put back to the pool on the end of the function
 func (t *Tunnel) CSHandle(msg tunnel.ForwardMessage) error {
+	defer putMessage(msg.(*intrav1.Message))
 	if err := t.stream.Send(msg.(*intrav1.Message)); err != nil {
 		return errors.Wrapf(err, "stream send failed")
 	}

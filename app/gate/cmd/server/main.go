@@ -6,8 +6,13 @@ import (
 
 	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/conf"
 	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/pkg/security"
+	"github.com/vulcan-frame/vulcan-gate/pkg/net/health"
 	tcp "github.com/vulcan-frame/vulcan-gate/pkg/net/tcp/server"
+	vlog "github.com/vulcan-frame/vulcan-pkg-app/log"
+	"github.com/vulcan-frame/vulcan-pkg-app/metrics"
 	"github.com/vulcan-frame/vulcan-pkg-app/profile"
+	"github.com/vulcan-frame/vulcan-pkg-app/trace"
+	"github.com/vulcan-frame/vulcan-pkg-tool/time"
 )
 
 var (
@@ -36,6 +41,10 @@ func newApp(logger log.Logger, ts *tcp.Server, hs *http.Server, gs *grpc.Server,
 	profile.Init(label.Profile, label.Color, label.Zone, label.Version, label.Node, url)
 
 	return kratos.New(
+		kratos.Name(label.Service),
+		kratos.Version(label.Version),
+		kratos.Metadata(md),
+		kratos.Logger(logger),
 		kratos.Server(health, ts, hs, gs),
 		kratos.Registrar(rr),
 	)
@@ -64,6 +73,8 @@ func main() {
 		panic(err)
 	}
 
+	time.Init(bc.Label.Language)
+
 	var rc conf.Registry
 	if err := c.Scan(&rc); err != nil {
 		panic(err)
@@ -77,7 +88,14 @@ func main() {
 		panic(err)
 	}
 
-	app, cleanup, err := initApp(bc.Server, bc.Label, &rc, bc.Data, logger)
+	if err := trace.Init(bc.Trace.Endpoint, bc.Label.Service, bc.Label.Profile, bc.Label.Color); err != nil {
+		panic(err)
+	}
+
+	logger := vlog.Init(bc.Log.Type, bc.Log.Level, bc.Label.Profile, bc.Label.Color, bc.Label.Service, bc.Label.Version, bc.Label.Node)
+	metrics.Init(bc.Label.Service)
+
+	app, cleanup, err := initApp(bc.Server, bc.Label, &rc, bc.Data, logger, health.NewServer(bc.Server.Health))
 	if err != nil {
 		panic(err)
 	}

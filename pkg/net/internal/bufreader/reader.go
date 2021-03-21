@@ -57,7 +57,7 @@ func (r *Reader) ReadByte() (n byte, err error) {
 		r.r, r.w = 0, 0
 	}
 
-	// enough to Read
+	// enough room to Read
 	if err = r.readAtLeast(1); err != nil {
 		return
 	}

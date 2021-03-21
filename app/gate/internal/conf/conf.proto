@@ -59,10 +59,9 @@ message Data {
 	message Redis {
 		string addr = 1;
 		string password = 2;
-		bool cluster = 3;
-		google.protobuf.Duration dial_timeout = 4;
-		google.protobuf.Duration read_timeout = 5;
-		google.protobuf.Duration write_timeout = 6;
+		google.protobuf.Duration dial_timeout = 3;
+		google.protobuf.Duration read_timeout = 4;
+		google.protobuf.Duration write_timeout = 5;
 	}
 	Redis redis = 1;
 }
@@ -73,6 +72,8 @@ message Registry {
 
 message Etcd {
 	repeated string endpoints = 1;
+	string username = 2;
+	string password = 3;
 }
 
 message Secret {

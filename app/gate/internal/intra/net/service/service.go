@@ -6,8 +6,11 @@ import (
 	"github.com/google/wire"
 	"github.com/pkg/errors"
 	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/client/player"
+	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/client/room"
 	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/conf"
+	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/pkg/pool"
 	playerv1 "github.com/vulcan-frame/vulcan-gate/gen/api/server/player/intra/v1"
+	roomv1 "github.com/vulcan-frame/vulcan-gate/gen/api/server/room/intra/v1"
 	xnet "github.com/vulcan-frame/vulcan-gate/pkg/net"
 	rctx "github.com/vulcan-frame/vulcan-gate/pkg/net/context"
 	"github.com/vulcan-frame/vulcan-gate/pkg/net/tunnel"
@@ -25,16 +28,22 @@ type Service struct {
 
 	playerClient playerv1.TunnelServiceClient
 	playerRT     *player.RouteTable
+
+	roomClient roomv1.TunnelServiceClient
+	roomRT     *room.RouteTable
 }
 
 func NewTCPService(logger log.Logger, label *conf.Label,
 	playerRT *player.RouteTable, playerClient playerv1.TunnelServiceClient,
+	roomRT *room.RouteTable, roomClient roomv1.TunnelServiceClient,
 ) *Service {
 	return &Service{
 		logger:       logger,
 		encrypted:    label.Encrypted,
 		playerClient: playerClient,
 		playerRT:     playerRT,
+		roomClient:   roomClient,
+		roomRT:       roomRT,
 	}
 }
 
@@ -46,6 +55,9 @@ func (s *Service) Handle(ctx context.Context, ss xnet.Session, th tunnel.Holder,
 }
 
 func (s *Service) handle(ctx context.Context, ss xnet.Session, th tunnel.Holder, in []byte) (err error) {
+	p := pool.GetPacket()
+	defer pool.PutPacket(p)
+
 	if err = proto.Unmarshal(in, p); err != nil {
 		err = errors.Wrapf(err, "packet unmarshal failed")
 		return

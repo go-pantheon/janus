@@ -36,6 +36,10 @@ func logRequest(ctx context.Context, netKind net.NetKind, req interface{}) {
 			return
 		}
 
+		if p.Mod == int32(climod.ModuleID_System) && p.Seq == int32(cliseq.SystemSeq_Heartbeat) {
+			return
+		}
+
 		var (
 			uid   string
 			sid   string
@@ -43,6 +47,7 @@ func logRequest(ctx context.Context, netKind net.NetKind, req interface{}) {
 			mod   string
 			seq   string
 			index string
+			size  string
 		)
 
 		if md, ok := metadata.FromServerContext(ctx); ok {
@@ -53,16 +58,20 @@ func logRequest(ctx context.Context, netKind net.NetKind, req interface{}) {
 		mod = strconv.FormatInt(int64(p.Mod), 10)
 		seq = strconv.FormatInt(int64(p.Seq), 10)
 		index = strconv.FormatInt(int64(p.Index), 10)
+		size = strconv.FormatInt(int64(len(p.Data)), 10)
 
 		kv := make([]interface{}, 0, 8*2)
 		kv = append(kv, "kind", "req",
 			"net", netKind,
+			"trace", tracing.TraceID(),
+			"span", tracing.SpanID(),
 			"uid", uid,
 			"sid", sid,
 			"obj", obj,
 			"mod", mod,
 			"seq", seq,
 			"index", index,
+			"size", size,
 		)
 
 		log.Debugw(kv...)
