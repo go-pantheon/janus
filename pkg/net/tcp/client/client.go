@@ -8,11 +8,13 @@ import (
 	"net"
 	"time"
 
+	"github.com/go-kratos/kratos/v2/log"
+	"github.com/go-pantheon/vulcan-util/sync"
 	"github.com/pkg/errors"
 	vnet "github.com/vulcan-frame/vulcan-gate/pkg/net"
 	vctx "github.com/vulcan-frame/vulcan-gate/pkg/net/context"
 	"github.com/vulcan-frame/vulcan-gate/pkg/net/internal/bufreader"
-	"github.com/vulcan-frame/vulcan-pkg-tool/sync"
+	"golang.org/x/sync/errgroup"
 )
 
 var ErrTimeout = errors.New("i/o timeout")

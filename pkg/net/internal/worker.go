@@ -8,14 +8,17 @@ import (
 	"net"
 	"time"
 
+	"github.com/go-kratos/kratos/v2/log"
+	"github.com/go-kratos/kratos/v2/middleware"
+	"github.com/go-pantheon/vulcan-util/sync"
 	"github.com/pkg/errors"
 	vnet "github.com/vulcan-frame/vulcan-gate/pkg/net"
 	"github.com/vulcan-frame/vulcan-gate/pkg/net/conf"
 	vctx "github.com/vulcan-frame/vulcan-gate/pkg/net/context"
 	"github.com/vulcan-frame/vulcan-gate/pkg/net/internal/bufreader"
 	"github.com/vulcan-frame/vulcan-gate/pkg/net/tunnel"
-	"github.com/vulcan-frame/vulcan-pkg-tool/sync"
 	"go.uber.org/atomic"
+	"golang.org/x/sync/errgroup"
 )
 
 var _ tunnel.Holder = (*Worker)(nil)

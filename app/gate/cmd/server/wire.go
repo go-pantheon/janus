@@ -6,6 +6,8 @@
 package main
 
 import (
+	"github.com/go-kratos/kratos/v2"
+	"github.com/go-kratos/kratos/v2/log"
 	"github.com/google/wire"
 	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/client"
 	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/conf"

@@ -4,9 +4,11 @@ import (
 	"context"
 	"strconv"
 
+	"github.com/go-kratos/kratos/v2/middleware"
+	"github.com/go-kratos/kratos/v2/transport"
+	"github.com/go-pantheon/vulcan-kit/profile"
 	clipkt "github.com/vulcan-frame/vulcan-gate/gen/api/client/packet"
 	"github.com/vulcan-frame/vulcan-gate/pkg/net"
-	"github.com/vulcan-frame/vulcan-pkg-app/profile"
 	"google.golang.org/grpc/metadata"
 )
 

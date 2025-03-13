@@ -1,9 +1,9 @@
 package room
 
 import (
+	"github.com/go-pantheon/vulcan-kit/router/routetable"
+	"github.com/go-pantheon/vulcan-kit/router/routetable/redis"
 	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/data"
-	"github.com/vulcan-frame/vulcan-pkg-app/router/routetable"
-	"github.com/vulcan-frame/vulcan-pkg-app/router/routetable/redis"
 )
 
 type RouteTable struct {
@@ -12,6 +12,6 @@ type RouteTable struct {
 
 func NewRouteTable(d *data.Data) *RouteTable {
 	return &RouteTable{
-		RouteTable: routetable.NewRouteTable("room", redis.NewRouteTable(d.Rdb)),
+		RouteTable: routetable.NewRouteTable("room", redis.NewRedisRouteTable(d.Rdb)),
 	}
 }

@@ -1,0 +1,117 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "message/system.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "SystemTCPService"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/system/heartbeat": {
+      "post": {
+        "operationId": "SystemTCPService_HeartBeat",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/messageSCHeartBeat"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/messageCSHeartBeat"
+            }
+          }
+        ],
+        "tags": [
+          "SystemTCPService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "messageCSHeartBeat": {
+      "type": "object",
+      "properties": {
+        "clientTime": {
+          "type": "string",
+          "format": "int64",
+          "title": "Client timestamp, accurate to seconds. Valid if the difference with server time is less than 10s"
+        }
+      },
+      "title": "Heartbeat request"
+    },
+    "messageSCHeartBeat": {
+      "type": "object",
+      "properties": {
+        "serverTime": {
+          "type": "string",
+          "format": "int64",
+          "title": "Server timestamp, accurate to seconds"
+        },
+        "code": {
+          "$ref": "#/definitions/messageSCHeartBeatCode"
+        }
+      },
+      "title": "Heartbeat response"
+    },
+    "messageSCHeartBeatCode": {
+      "type": "string",
+      "enum": [
+        "ErrServer",
+        "Success",
+        "ErrTime"
+      ],
+      "default": "ErrServer",
+      "title": "- ErrServer: Please try again later\n - Success: Success\n - ErrTime: Timestamp error"
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}

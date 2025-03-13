@@ -1,12 +1,15 @@
 package client
 
 import (
+	"github.com/go-kratos/kratos/contrib/registry/etcd/v2"
+	"github.com/go-kratos/kratos/v2/registry"
 	"github.com/google/wire"
 	"github.com/pkg/errors"
 	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/client/player"
 	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/client/room"
 	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/conf"
 	gate "github.com/vulcan-frame/vulcan-gate/app/gate/internal/router"
+	etcdclient "go.etcd.io/etcd/client/v3"
 )
 
 var ProviderSet = wire.NewSet(

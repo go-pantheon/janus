@@ -4,6 +4,9 @@ import (
 	"context"
 	"crypto/cipher"
 
+	"github.com/go-kratos/kratos/v2/log"
+	"github.com/go-pantheon/vulcan-util/security/rsa"
+	"github.com/go-pantheon/vulcan-util/time"
 	"github.com/pkg/errors"
 	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/pkg/pool"
 	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/pkg/security"
@@ -12,8 +15,6 @@ import (
 	cliseq "github.com/vulcan-frame/vulcan-gate/gen/api/client/sequence"
 	intrav1 "github.com/vulcan-frame/vulcan-gate/gen/api/server/gate/intra/v1"
 	"github.com/vulcan-frame/vulcan-gate/pkg/net"
-	"github.com/vulcan-frame/vulcan-pkg-tool/security/rsa"
-	"github.com/vulcan-frame/vulcan-pkg-tool/time"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -45,7 +46,7 @@ func (s *Service) Auth(ctx context.Context, in []byte) (out []byte, session net.
 		sc  = &climsg.SCHandshake{}
 
 		data []byte
-		key  []byte
+		pub  []byte
 	)
 
 	if err = proto.Unmarshal(in, inp); err != nil {
@@ -62,12 +63,12 @@ func (s *Service) Auth(ctx context.Context, in []byte) (out []byte, session net.
 
 	log.Debugf("[net.Service] handshake received. len=%d token=%s", len(inp.Data), cs.Token)
 
-	if key, session, err = s.auth(cs.Token, cs.ServerId); err != nil {
+	if pub, session, err = s.auth(cs.Token, cs.ServerId); err != nil {
 		return nil, nil, err
 	}
 
 	sc.StartIndex = int32(session.IncreaseCSIndex())
-	sc.Key = key
+	sc.Pub = pub
 
 	if data, err = proto.Marshal(sc); err != nil {
 		return nil, nil, errors.Wrap(err, "SCHandshake encode failed")

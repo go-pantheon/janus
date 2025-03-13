@@ -4,11 +4,12 @@ import (
 	"context"
 	"time"
 
+	"github.com/go-kratos/kratos/v2/log"
+	"github.com/go-pantheon/vulcan-kit/profile"
+	"github.com/go-pantheon/vulcan-kit/router/routetable"
+	"github.com/go-pantheon/vulcan-kit/router/routetable/redis"
 	"github.com/pkg/errors"
 	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/data"
-	"github.com/vulcan-frame/vulcan-pkg-app/profile"
-	"github.com/vulcan-frame/vulcan-pkg-app/router/routetable"
-	"github.com/vulcan-frame/vulcan-pkg-app/router/routetable/redis"
 )
 
 type RouteTable struct {
@@ -17,7 +18,7 @@ type RouteTable struct {
 
 func NewRouteTable(d *data.Data) *RouteTable {
 	return &RouteTable{
-		RouteTable: routetable.NewRouteTable("gate", redis.NewRouteTable(d.Rdb)),
+		RouteTable: routetable.NewRouteTable("gate", redis.NewRedisRouteTable(d.Rdb)),
 	}
 }
 

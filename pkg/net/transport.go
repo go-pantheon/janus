@@ -1,6 +1,7 @@
 package net
 
 import (
+	"github.com/go-kratos/kratos/v2/transport"
 	"google.golang.org/grpc/metadata"
 )
 

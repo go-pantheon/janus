@@ -3,6 +3,8 @@ package service
 import (
 	"context"
 
+	"github.com/go-kratos/kratos/v2/log"
+	"github.com/go-pantheon/vulcan-util/compress"
 	"github.com/google/wire"
 	"github.com/pkg/errors"
 	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/client/player"
@@ -14,7 +16,6 @@ import (
 	xnet "github.com/vulcan-frame/vulcan-gate/pkg/net"
 	rctx "github.com/vulcan-frame/vulcan-gate/pkg/net/context"
 	"github.com/vulcan-frame/vulcan-gate/pkg/net/tunnel"
-	"github.com/vulcan-frame/vulcan-pkg-tool/compress"
 	"google.golang.org/protobuf/proto"
 )
 

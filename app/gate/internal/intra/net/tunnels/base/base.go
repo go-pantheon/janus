@@ -3,6 +3,7 @@ package base
 import (
 	"fmt"
 
+	"github.com/go-kratos/kratos/v2/log"
 	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/intra/net/tunnels"
 	"github.com/vulcan-frame/vulcan-gate/pkg/net"
 )

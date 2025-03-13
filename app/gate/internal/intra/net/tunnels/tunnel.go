@@ -5,14 +5,16 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/go-kratos/kratos/v2/log"
+	verrors "github.com/go-pantheon/vulcan-kit/errors"
+	"github.com/go-pantheon/vulcan-util/compress"
+	"github.com/go-pantheon/vulcan-util/sync"
 	"github.com/pkg/errors"
 	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/pkg/pool"
 	clipkt "github.com/vulcan-frame/vulcan-gate/gen/api/client/packet"
 	"github.com/vulcan-frame/vulcan-gate/pkg/net"
 	"github.com/vulcan-frame/vulcan-gate/pkg/net/tunnel"
-	verrors "github.com/vulcan-frame/vulcan-pkg-app/errors"
-	"github.com/vulcan-frame/vulcan-pkg-tool/compress"
-	"github.com/vulcan-frame/vulcan-pkg-tool/sync"
+	"golang.org/x/sync/errgroup"
 	"google.golang.org/protobuf/proto"
 )
 

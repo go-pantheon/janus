@@ -6,10 +6,10 @@ import (
 	"crypto/x509"
 	"encoding/base64"
 
+	"github.com/go-pantheon/vulcan-util/rand"
+	"github.com/go-pantheon/vulcan-util/security/aes"
+	rrsa "github.com/go-pantheon/vulcan-util/security/rsa"
 	"github.com/pkg/errors"
-	"github.com/vulcan-frame/vulcan-pkg-tool/rand"
-	"github.com/vulcan-frame/vulcan-pkg-tool/security/aes"
-	vrsa "github.com/vulcan-frame/vulcan-pkg-tool/security/rsa"
 )
 
 var (
@@ -59,7 +59,7 @@ func InitApiCrypto() (cipher.Block, []byte, error) {
 }
 
 func DecryptCSHandshake(secret []byte) ([]byte, error) {
-	return vrsa.Decrypt(handshakePriKey, secret)
+	return rrsa.Decrypt(handshakePriKey, secret)
 }
 
 func DecryptToken(secret string) ([]byte, error) {

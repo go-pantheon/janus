@@ -1,0 +1,127 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "message/storage.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "StorageTCPService"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/storage/use/pack": {
+      "post": {
+        "summary": "Use pack",
+        "operationId": "StorageTCPService_UsePack",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/messageSCUsePack"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/messageCSUsePack"
+            }
+          }
+        ],
+        "tags": [
+          "StorageTCPService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "messageCSUsePack": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64",
+          "title": "Pack ID"
+        }
+      },
+      "title": "Request: Use pack"
+    },
+    "messageSCUsePack": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "$ref": "#/definitions/messageSCUsePackCode"
+        },
+        "id": {
+          "type": "string",
+          "format": "int64",
+          "title": "Item ID"
+        },
+        "changedItems": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "format": "uint64"
+          },
+          "title": "Items with changed amounts. item DataID -\u003e current amount. value is 0 means the item has been deleted"
+        }
+      },
+      "title": "Response: Use pack"
+    },
+    "messageSCUsePackCode": {
+      "type": "string",
+      "enum": [
+        "ErrServer",
+        "Success",
+        "ErrItemNotExist",
+        "ErrItemLimit"
+      ],
+      "default": "ErrServer",
+      "title": "- ErrServer: Please try again later\n - Success: Success\n - ErrItemNotExist: Item does not exist\n - ErrItemLimit: Usage restricted"
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}

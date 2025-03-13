@@ -9,8 +9,10 @@ import (
 	"strings"
 	"time"
 
+	"github.com/go-kratos/kratos/v2/log"
+	"github.com/go-kratos/kratos/v2/metadata"
+	"github.com/go-pantheon/vulcan-util/sync"
 	"github.com/pkg/errors"
-	"github.com/vulcan-frame/vulcan-pkg-tool/sync"
 )
 
 // Use the custom type for your constants

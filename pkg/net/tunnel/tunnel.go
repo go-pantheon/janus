@@ -3,7 +3,7 @@ package tunnel
 import (
 	"context"
 
-	"github.com/vulcan-frame/vulcan-pkg-tool/sync"
+	"github.com/go-pantheon/vulcan-util/sync"
 )
 
 type Holder interface {

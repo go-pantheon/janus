@@ -25,7 +25,6 @@ Thumbs.db
 
 # secret files
 *.cert
-*.crt
 *.key
 
 # Develop tools
@@ -38,6 +37,7 @@ app/*/configs
 
 # submodules
 /api/
+/deps/
 
 # generated files
 bin/

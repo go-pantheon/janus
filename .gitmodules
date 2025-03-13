@@ -1,12 +1,12 @@
-[submodule "pkg/vulcan-pkg-app"]
-path = pkg/vulcan-pkg-app
-url = https://github.com/vulcan-frame/vulcan-pkg-app
-[submodule "pkg/vulcan-pkg-tool"]
-path = pkg/vulcan-pkg-tool
-url = https://github.com/vulcan-frame/vulcan-pkg-tool
 [submodule "api/client"]
-path = api/client
-url = https://github.com/vulcan-frame/vulcan-api-client
+	path = api/client
+	url = https://github.com/go-pantheon/api-client
 [submodule "api/server"]
-path = api/server
-url = https://github.com/vulcan-frame/vulcan-api-server
+	path = api/server
+	url = https://github.com/go-pantheon/api-server
+[submodule "deps/vulcan-util"]
+	path = deps/vulcan-util
+	url = https://github.com/go-pantheon/vulcan-util
+[submodule "deps/vulcan-kit"]
+	path = deps/vulcan-kit
+	url = https://github.com/go-pantheon/vulcan-kit

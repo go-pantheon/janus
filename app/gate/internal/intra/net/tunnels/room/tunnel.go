@@ -3,6 +3,7 @@ package room
 import (
 	"context"
 
+	"github.com/go-kratos/kratos/v2/log"
 	"github.com/pkg/errors"
 	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/intra/net/tunnels"
 	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/intra/net/tunnels/base"

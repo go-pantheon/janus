@@ -3,6 +3,7 @@ package v1
 import (
 	"context"
 
+	"github.com/go-kratos/kratos/v2/log"
 	servicev1 "github.com/vulcan-frame/vulcan-gate/gen/api/server/gate/service/push/v1"
 	tcp "github.com/vulcan-frame/vulcan-gate/pkg/net/tcp/server"
 )
