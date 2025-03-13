@@ -3,7 +3,7 @@ package pool
 import (
 	"sync"
 
-	clipkt "github.com/vulcan-frame/vulcan-gate/gen/api/client/packet"
+	clipkt "github.com/go-pantheon/janus/gen/api/client/packet"
 )
 
 type packetPool struct {

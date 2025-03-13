@@ -5,16 +5,16 @@ import (
 	"crypto/cipher"
 
 	"github.com/go-kratos/kratos/v2/log"
+	"github.com/go-pantheon/janus/app/gate/internal/pkg/pool"
+	"github.com/go-pantheon/janus/app/gate/internal/pkg/security"
+	climsg "github.com/go-pantheon/janus/gen/api/client/message"
+	clipkt "github.com/go-pantheon/janus/gen/api/client/packet"
+	cliseq "github.com/go-pantheon/janus/gen/api/client/sequence"
+	intrav1 "github.com/go-pantheon/janus/gen/api/server/gate/intra/v1"
+	"github.com/go-pantheon/janus/pkg/net"
 	"github.com/go-pantheon/vulcan-util/security/rsa"
 	"github.com/go-pantheon/vulcan-util/time"
 	"github.com/pkg/errors"
-	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/pkg/pool"
-	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/pkg/security"
-	climsg "github.com/vulcan-frame/vulcan-gate/gen/api/client/message"
-	clipkt "github.com/vulcan-frame/vulcan-gate/gen/api/client/packet"
-	cliseq "github.com/vulcan-frame/vulcan-gate/gen/api/client/sequence"
-	intrav1 "github.com/vulcan-frame/vulcan-gate/gen/api/server/gate/intra/v1"
-	"github.com/vulcan-frame/vulcan-gate/pkg/net"
 	"google.golang.org/protobuf/proto"
 )
 

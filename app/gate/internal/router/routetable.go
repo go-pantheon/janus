@@ -5,11 +5,11 @@ import (
 	"time"
 
 	"github.com/go-kratos/kratos/v2/log"
+	"github.com/go-pantheon/janus/app/gate/internal/data"
 	"github.com/go-pantheon/vulcan-kit/profile"
 	"github.com/go-pantheon/vulcan-kit/router/routetable"
 	"github.com/go-pantheon/vulcan-kit/router/routetable/redis"
 	"github.com/pkg/errors"
-	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/data"
 )
 
 type RouteTable struct {

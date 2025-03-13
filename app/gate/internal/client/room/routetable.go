@@ -1,9 +1,9 @@
 package room
 
 import (
+	"github.com/go-pantheon/janus/app/gate/internal/data"
 	"github.com/go-pantheon/vulcan-kit/router/routetable"
 	"github.com/go-pantheon/vulcan-kit/router/routetable/redis"
-	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/data"
 )
 
 type RouteTable struct {

@@ -1,4 +1,4 @@
-module github.com/vulcan-frame/vulcan-gate
+module github.com/go-pantheon/janus
 
 go 1.23.0
 

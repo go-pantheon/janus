@@ -3,9 +3,9 @@ package server
 import (
 	"github.com/go-kratos/kratos/contrib/registry/etcd/v2"
 	"github.com/go-kratos/kratos/v2/registry"
+	"github.com/go-pantheon/janus/app/gate/internal/conf"
 	"github.com/google/wire"
 	"github.com/pkg/errors"
-	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/conf"
 	etcdclient "go.etcd.io/etcd/client/v3"
 )
 

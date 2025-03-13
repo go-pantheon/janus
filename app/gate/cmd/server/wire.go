@@ -8,14 +8,14 @@ package main
 import (
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"
+	"github.com/go-pantheon/janus/app/gate/internal/client"
+	"github.com/go-pantheon/janus/app/gate/internal/conf"
+	"github.com/go-pantheon/janus/app/gate/internal/data"
+	"github.com/go-pantheon/janus/app/gate/internal/intra/net/service"
+	"github.com/go-pantheon/janus/app/gate/internal/server"
+	"github.com/go-pantheon/janus/app/gate/internal/service/push"
+	"github.com/go-pantheon/janus/pkg/net/health"
 	"github.com/google/wire"
-	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/client"
-	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/conf"
-	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/data"
-	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/intra/net/service"
-	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/server"
-	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/service/push"
-	"github.com/vulcan-frame/vulcan-gate/pkg/net/health"
 )
 
 func initApp(*conf.Server, *conf.Label, *conf.Registry, *conf.Data, log.Logger, *health.Server) (*kratos.App, func(), error) {

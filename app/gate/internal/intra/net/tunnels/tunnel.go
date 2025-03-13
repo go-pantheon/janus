@@ -6,14 +6,14 @@ import (
 	"time"
 
 	"github.com/go-kratos/kratos/v2/log"
+	"github.com/go-pantheon/janus/app/gate/internal/pkg/pool"
+	clipkt "github.com/go-pantheon/janus/gen/api/client/packet"
+	"github.com/go-pantheon/janus/pkg/net"
+	"github.com/go-pantheon/janus/pkg/net/tunnel"
 	verrors "github.com/go-pantheon/vulcan-kit/errors"
 	"github.com/go-pantheon/vulcan-util/compress"
 	"github.com/go-pantheon/vulcan-util/sync"
 	"github.com/pkg/errors"
-	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/pkg/pool"
-	clipkt "github.com/vulcan-frame/vulcan-gate/gen/api/client/packet"
-	"github.com/vulcan-frame/vulcan-gate/pkg/net"
-	"github.com/vulcan-frame/vulcan-gate/pkg/net/tunnel"
 	"golang.org/x/sync/errgroup"
 	"google.golang.org/protobuf/proto"
 )

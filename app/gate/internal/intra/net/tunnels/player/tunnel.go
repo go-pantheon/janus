@@ -4,16 +4,16 @@ import (
 	"context"
 
 	"github.com/go-kratos/kratos/v2/log"
+	"github.com/go-pantheon/janus/app/gate/internal/client/player"
+	"github.com/go-pantheon/janus/app/gate/internal/intra/net/tunnels"
+	"github.com/go-pantheon/janus/app/gate/internal/intra/net/tunnels/base"
+	clipkt "github.com/go-pantheon/janus/gen/api/client/packet"
+	intrav1 "github.com/go-pantheon/janus/gen/api/server/player/intra/v1"
+	"github.com/go-pantheon/janus/pkg/net"
+	"github.com/go-pantheon/janus/pkg/net/tunnel"
 	"github.com/go-pantheon/vulcan-kit/router"
 	"github.com/go-pantheon/vulcan-util/time"
 	"github.com/pkg/errors"
-	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/client/player"
-	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/intra/net/tunnels"
-	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/intra/net/tunnels/base"
-	clipkt "github.com/vulcan-frame/vulcan-gate/gen/api/client/packet"
-	intrav1 "github.com/vulcan-frame/vulcan-gate/gen/api/server/player/intra/v1"
-	"github.com/vulcan-frame/vulcan-gate/pkg/net"
-	"github.com/vulcan-frame/vulcan-gate/pkg/net/tunnel"
 )
 
 var _ tunnels.AppTunnel = (*Tunnel)(nil)

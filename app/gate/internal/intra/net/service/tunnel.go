@@ -3,13 +3,13 @@ package service
 import (
 	"context"
 
+	"github.com/go-pantheon/janus/app/gate/internal/intra/net/tunnels"
+	"github.com/go-pantheon/janus/app/gate/internal/intra/net/tunnels/player"
+	"github.com/go-pantheon/janus/app/gate/internal/intra/net/tunnels/room"
+	climod "github.com/go-pantheon/janus/gen/api/client/module"
+	xnet "github.com/go-pantheon/janus/pkg/net"
+	"github.com/go-pantheon/janus/pkg/net/tunnel"
 	"github.com/pkg/errors"
-	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/intra/net/tunnels"
-	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/intra/net/tunnels/player"
-	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/intra/net/tunnels/room"
-	climod "github.com/vulcan-frame/vulcan-gate/gen/api/client/module"
-	xnet "github.com/vulcan-frame/vulcan-gate/pkg/net"
-	"github.com/vulcan-frame/vulcan-gate/pkg/net/tunnel"
 )
 
 // TunnelType returns the tunnel type based on the module ID

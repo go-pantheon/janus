@@ -6,9 +6,9 @@ import (
 	"sync"
 	"testing"
 
+	clipkt "github.com/go-pantheon/janus/gen/api/client/packet"
 	"github.com/go-pantheon/vulcan-util/bitmap"
 	"github.com/stretchr/testify/assert"
-	clipkt "github.com/vulcan-frame/vulcan-gate/gen/api/client/packet"
 )
 
 func TestProfile(t *testing.T) {

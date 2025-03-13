@@ -12,15 +12,15 @@ import (
 	"github.com/go-kratos/kratos/v2/registry"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	"github.com/go-kratos/kratos/v2/transport/http"
+	"github.com/go-pantheon/janus/app/gate/internal/conf"
+	"github.com/go-pantheon/janus/app/gate/internal/pkg/security"
+	"github.com/go-pantheon/janus/pkg/net/health"
+	tcp "github.com/go-pantheon/janus/pkg/net/tcp/server"
 	vlog "github.com/go-pantheon/vulcan-kit/log"
 	"github.com/go-pantheon/vulcan-kit/metrics"
 	"github.com/go-pantheon/vulcan-kit/profile"
 	"github.com/go-pantheon/vulcan-kit/trace"
 	"github.com/go-pantheon/vulcan-util/time"
-	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/conf"
-	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/pkg/security"
-	"github.com/vulcan-frame/vulcan-gate/pkg/net/health"
-	tcp "github.com/vulcan-frame/vulcan-gate/pkg/net/tcp/server"
 )
 
 var (

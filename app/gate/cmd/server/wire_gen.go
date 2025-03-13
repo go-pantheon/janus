@@ -9,16 +9,16 @@ package main
 import (
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"
-	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/client"
-	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/client/player"
-	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/client/room"
-	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/conf"
-	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/data"
-	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/intra/net/service"
-	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/router"
-	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/server"
-	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/service/push/v1"
-	"github.com/vulcan-frame/vulcan-gate/pkg/net/health"
+	"github.com/go-pantheon/janus/app/gate/internal/client"
+	"github.com/go-pantheon/janus/app/gate/internal/client/player"
+	"github.com/go-pantheon/janus/app/gate/internal/client/room"
+	"github.com/go-pantheon/janus/app/gate/internal/conf"
+	"github.com/go-pantheon/janus/app/gate/internal/data"
+	"github.com/go-pantheon/janus/app/gate/internal/intra/net/service"
+	"github.com/go-pantheon/janus/app/gate/internal/router"
+	"github.com/go-pantheon/janus/app/gate/internal/server"
+	"github.com/go-pantheon/janus/app/gate/internal/service/push/v1"
+	"github.com/go-pantheon/janus/pkg/net/health"
 )
 
 // Injectors from wire.go:

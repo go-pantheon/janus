@@ -1,8 +1,8 @@
 package push
 
 import (
+	v1 "github.com/go-pantheon/janus/app/gate/internal/service/push/v1"
 	"github.com/google/wire"
-	v1 "github.com/vulcan-frame/vulcan-gate/app/gate/internal/service/push/v1"
 )
 
 var ProviderSet = wire.NewSet(v1.NewPushService)

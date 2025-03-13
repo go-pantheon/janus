@@ -9,11 +9,11 @@ import (
 	"time"
 
 	"github.com/go-kratos/kratos/v2/log"
+	vnet "github.com/go-pantheon/janus/pkg/net"
+	vctx "github.com/go-pantheon/janus/pkg/net/context"
+	"github.com/go-pantheon/janus/pkg/net/internal/bufreader"
 	"github.com/go-pantheon/vulcan-util/sync"
 	"github.com/pkg/errors"
-	vnet "github.com/vulcan-frame/vulcan-gate/pkg/net"
-	vctx "github.com/vulcan-frame/vulcan-gate/pkg/net/context"
-	"github.com/vulcan-frame/vulcan-gate/pkg/net/internal/bufreader"
 	"golang.org/x/sync/errgroup"
 )
 

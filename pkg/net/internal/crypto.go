@@ -1,9 +1,9 @@
 package internal
 
 import (
+	"github.com/go-pantheon/janus/pkg/net"
 	"github.com/go-pantheon/vulcan-util/security/aes"
 	"github.com/pkg/errors"
-	"github.com/vulcan-frame/vulcan-gate/pkg/net"
 )
 
 func encrypt(ss net.Session, data []byte) ([]byte, error) {

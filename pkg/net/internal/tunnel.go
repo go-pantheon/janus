@@ -4,7 +4,7 @@ import (
 	"context"
 	"sync"
 
-	"github.com/vulcan-frame/vulcan-gate/pkg/net/tunnel"
+	"github.com/go-pantheon/janus/pkg/net/tunnel"
 )
 
 type CreateTunnelFunc func(ctx context.Context, tp int32, rid int64) (tunnel.Tunnel, error)

@@ -10,13 +10,13 @@ import (
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware"
+	vnet "github.com/go-pantheon/janus/pkg/net"
+	"github.com/go-pantheon/janus/pkg/net/conf"
+	vctx "github.com/go-pantheon/janus/pkg/net/context"
+	"github.com/go-pantheon/janus/pkg/net/internal/bufreader"
+	"github.com/go-pantheon/janus/pkg/net/tunnel"
 	"github.com/go-pantheon/vulcan-util/sync"
 	"github.com/pkg/errors"
-	vnet "github.com/vulcan-frame/vulcan-gate/pkg/net"
-	"github.com/vulcan-frame/vulcan-gate/pkg/net/conf"
-	vctx "github.com/vulcan-frame/vulcan-gate/pkg/net/context"
-	"github.com/vulcan-frame/vulcan-gate/pkg/net/internal/bufreader"
-	"github.com/vulcan-frame/vulcan-gate/pkg/net/tunnel"
 	"go.uber.org/atomic"
 	"golang.org/x/sync/errgroup"
 )

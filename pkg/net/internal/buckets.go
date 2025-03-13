@@ -4,7 +4,7 @@ import (
 	"maps"
 	"sync"
 
-	"github.com/vulcan-frame/vulcan-gate/pkg/net/conf"
+	"github.com/go-pantheon/janus/pkg/net/conf"
 )
 
 var (

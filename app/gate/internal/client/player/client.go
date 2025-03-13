@@ -3,9 +3,9 @@ package player
 import (
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/registry"
+	intrav1 "github.com/go-pantheon/janus/gen/api/server/player/intra/v1"
 	"github.com/go-pantheon/vulcan-kit/router/balancer"
 	"github.com/go-pantheon/vulcan-kit/router/conn"
-	intrav1 "github.com/vulcan-frame/vulcan-gate/gen/api/server/player/intra/v1"
 )
 
 const (

@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package gate.internal.conf;
 
-option go_package = "github.com/vulcan-frame/vulcan-gate/app/gate/internal/conf;conf";
+option go_package = "github.com/go-pantheon/janus/app/gate/internal/conf;conf";
 
 import "google/protobuf/duration.proto";
 

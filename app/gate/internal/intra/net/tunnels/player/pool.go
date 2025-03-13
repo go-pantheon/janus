@@ -3,7 +3,7 @@ package player
 import (
 	"sync"
 
-	intrav1 "github.com/vulcan-frame/vulcan-gate/gen/api/server/player/intra/v1"
+	intrav1 "github.com/go-pantheon/janus/gen/api/server/player/intra/v1"
 )
 
 type messagePool struct {

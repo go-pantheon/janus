@@ -1,10 +1,10 @@
 package data
 
 import (
+	"github.com/go-pantheon/janus/app/gate/internal/conf"
 	"github.com/go-pantheon/vulcan-util/data/cache"
 	"github.com/google/wire"
 	"github.com/redis/go-redis/v9"
-	"github.com/vulcan-frame/vulcan-gate/app/gate/internal/conf"
 )
 
 var ProviderSet = wire.NewSet(NewData)
