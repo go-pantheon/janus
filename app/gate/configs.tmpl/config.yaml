@@ -1,5 +1,5 @@
 label:
-  service: "${SERVICE:vulcan.gate.interface}"
+  service: "${SERVICE:gate.interface}"
   profile: "${PROFILE:DEV}"
   color: "${COLOR:local}"
   node: "${NODE}"

@@ -13,7 +13,7 @@ import (
 	"github.com/go-pantheon/janus/pkg/net/conf"
 	vctx "github.com/go-pantheon/janus/pkg/net/context"
 	"github.com/go-pantheon/janus/pkg/net/internal"
-	"github.com/go-pantheon/vulcan-util/ip"
+	"github.com/go-pantheon/vulcan-kit/ip"
 	"github.com/go-pantheon/vulcan-util/sync"
 	"github.com/pkg/errors"
 	"go.uber.org/atomic"
