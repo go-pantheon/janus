@@ -14,7 +14,10 @@ var _ Pool = (*SyncPool)(nil)
 
 var (
 	// ErrInvalidSize when the input size parameters are invalid
-	ErrInvalidSize = errors.New("invalid size parameters")
+	ErrInvalidSize     = errors.New("invalid size parameters")
+	ErrMinSizeTooSmall = errors.New("minimum size must be positive")
+	ErrMaxSizeTooSmall = errors.New("maximum size must be greater than or equal to minimum size")
+	ErrFactorTooSmall  = errors.New("growth factor must be positive")
 )
 
 // SyncPool is a sync.Pool based slab allocation memory pool
@@ -31,44 +34,53 @@ type SyncPool struct {
 // maxSize: maximum chunk size
 // factor: factor for controlling chunk size growth
 func NewSyncPool(minSize, maxSize, factor int) (*SyncPool, error) {
-	if minSize <= 0 || maxSize < minSize || factor <= 0 {
-		return nil, ErrInvalidSize
+	if minSize <= 0 {
+		return nil, ErrMinSizeTooSmall
+	}
+	if maxSize < minSize {
+		return nil, ErrMaxSizeTooSmall
+	}
+	if factor <= 0 {
+		return nil, ErrFactorTooSmall
 	}
 
-	n := 0
-	curSize := minSize
-	for chunkSize := minSize; chunkSize <= maxSize; chunkSize += minSize * (n/factor*2 + 1) {
-		curSize = chunkSize
-		n++
+	var classesSize []int
+	var curSize = minSize
+
+	for curSize < maxSize {
+		classesSize = append(classesSize, curSize)
+		nextSize := int(float64(curSize) * (1.0 + 1.0/float64(factor)))
+		if nextSize <= curSize {
+			nextSize = curSize + minSize // make sure at least grow by minSize
+		}
+		curSize = nextSize
 	}
-	if curSize < maxSize {
-		n++
-	}
+	classesSize = append(classesSize, maxSize)
+
+	n := len(classesSize)
 
 	pool := &SyncPool{
 		classes:     make([]sync.Pool, n),
-		classesSize: make([]int, n),
+		classesSize: classesSize,
 		minSize:     minSize,
 		maxSize:     maxSize,
 		sizeLookup:  make([]uint8, maxSize+1),
 	}
 
-	chunkSize := minSize
+	// initialize each memory pool class and fill the lookup table
 	for k := range pool.classes {
-		chunkSize += minSize * (k/factor*2 + 1)
-		size := min(chunkSize, maxSize)
-		pool.classesSize[k] = size
+		size := pool.classesSize[k]
 		pool.classes[k].New = func() interface{} {
 			buf := make([]byte, size)
 			return &buf
 		}
 
-		// Fill lookup table for size to class index mapping
+		// fill the lookup table
 		start := 0
 		if k > 0 {
-			start = pool.classesSize[k-1]
+			start = pool.classesSize[k-1] + 1
 		}
-		for i := start; i <= size; i++ {
+		for i := start; i <= size && i <= maxSize; i++ {
 			pool.sizeLookup[i] = uint8(k)
 		}
 	}
@@ -94,17 +106,24 @@ func (pool *SyncPool) Alloc(size int) []byte {
 
 // Free frees the []byte allocated from Pool.Alloc
 func (pool *SyncPool) Free(mem []byte) {
-	if mem == nil {
+	if len(mem) == 0 {
 		return
 	}
 
 	size := cap(mem)
-	if size <= pool.maxSize {
-		classIndex := pool.sizeLookup[size]
-		// reset the slice to avoid memory leaks
-		mem = mem[:cap(mem)]
-		pool.classes[classIndex].Put(&mem)
+	// for memory blocks less than pool.minSize or larger than pool.maxSize, let GC handle it
+	if size < pool.minSize || size > pool.maxSize {
+		return
 	}
+
+	classIndex := pool.sizeLookup[size]
+	// reset the slice to avoid memory leaks
+	mem = mem[:cap(mem)]
+	// zero out sensitive data
+	for i := range mem {
+		mem[i] = 0
+	}
+	pool.classes[classIndex].Put(&mem)
 }
 
 // Size returns the actual allocation size for a given size
@@ -113,4 +132,19 @@ func (pool *SyncPool) Size(size int) int {
 		return size
 	}
 	return pool.classesSize[pool.sizeLookup[size]]
+}
+
+// ClassCount returns the number of memory pool classes
+func (pool *SyncPool) ClassCount() int {
+	return len(pool.classes)
+}
+
+// ClassSizes returns the sizes of all memory pool classes
+func (pool *SyncPool) ClassSizes() []int {
+	return append([]int{}, pool.classesSize...)
+}
+
+// MinMaxSize returns the minimum and maximum block sizes of the pool
+func (pool *SyncPool) MinMaxSize() (min, max int) {
+	return pool.minSize, pool.maxSize
 }
