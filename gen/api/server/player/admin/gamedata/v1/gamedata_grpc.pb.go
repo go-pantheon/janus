@@ -19,7 +19,7 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	GamedataAdmin_GetItemList_FullMethodName = "/server.player.admin.gamedata.v1.GamedataAdmin/GetItemList"
+	GamedataAdmin_GetItemList_FullMethodName = "/player.admin.gamedata.v1.GamedataAdmin/GetItemList"
 )
 
 // GamedataAdminClient is the client API for GamedataAdmin service.
@@ -118,7 +118,7 @@ func _GamedataAdmin_GetItemList_Handler(srv interface{}, ctx context.Context, de
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var GamedataAdmin_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "server.player.admin.gamedata.v1.GamedataAdmin",
+	ServiceName: "player.admin.gamedata.v1.GamedataAdmin",
 	HandlerType: (*GamedataAdminServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

@@ -386,7 +386,7 @@
       "properties": {
         "roomType": {
           "type": "string",
-          "format": "uint64",
+          "format": "int64",
           "title": "Room type"
         }
       },
@@ -473,7 +473,7 @@
         },
         "roomType": {
           "type": "string",
-          "format": "uint64",
+          "format": "int64",
           "title": "room type"
         },
         "creator": {

@@ -165,12 +165,12 @@
         },
         "dataId": {
           "type": "string",
-          "format": "uint64",
+          "format": "int64",
           "title": "Equipment DataID"
         },
         "level": {
           "type": "string",
-          "format": "uint64",
+          "format": "int64",
           "title": "Current level"
         },
         "wearing": {
@@ -223,7 +223,7 @@
           "type": "object",
           "additionalProperties": {
             "type": "string",
-            "format": "uint64"
+            "format": "int64"
           },
           "title": "Consumed materials"
         }

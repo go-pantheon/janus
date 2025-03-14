@@ -158,12 +158,12 @@
         },
         "dataId": {
           "type": "string",
-          "format": "uint64",
+          "format": "int64",
           "title": "Hero DataID"
         },
         "level": {
           "type": "string",
-          "format": "uint64",
+          "format": "int64",
           "title": "Hero level"
         },
         "equips": {
@@ -198,12 +198,12 @@
       "properties": {
         "count": {
           "type": "string",
-          "format": "uint64",
+          "format": "int64",
           "title": "Current amount"
         },
         "max": {
           "type": "string",
-          "format": "uint64",
+          "format": "int64",
           "title": "Maximum"
         },
         "recoverPerSecond": {
@@ -214,7 +214,7 @@
         "updatedAt": {
           "type": "string",
           "format": "int64",
-          "title": "Last updated timestamp, unit: second"
+          "title": "Last updated Time (Unix timestamp)"
         }
       },
       "title": "Recoverable numeric properties"
@@ -369,7 +369,7 @@
           "type": "object",
           "additionalProperties": {
             "type": "string",
-            "format": "uint64"
+            "format": "int64"
           },
           "title": "Numeric items. item DataID -\u003e amount"
         },

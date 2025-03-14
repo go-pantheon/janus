@@ -19,7 +19,7 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationNoticeInterfaceNoticeList = "/server.account.interface.v1.NoticeInterface/NoticeList"
+const OperationNoticeInterfaceNoticeList = "/account.interface.v1.NoticeInterface/NoticeList"
 
 type NoticeInterfaceHTTPServer interface {
 	// NoticeList Notice List

@@ -19,11 +19,11 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationNoticeAdminServiceCreateNotice = "/server.account.admin.notice.v1.NoticeAdminService/CreateNotice"
-const OperationNoticeAdminServiceDeleteNotice = "/server.account.admin.notice.v1.NoticeAdminService/DeleteNotice"
-const OperationNoticeAdminServiceGetNoticeById = "/server.account.admin.notice.v1.NoticeAdminService/GetNoticeById"
-const OperationNoticeAdminServiceGetNoticeList = "/server.account.admin.notice.v1.NoticeAdminService/GetNoticeList"
-const OperationNoticeAdminServiceUpdateNotice = "/server.account.admin.notice.v1.NoticeAdminService/UpdateNotice"
+const OperationNoticeAdminServiceCreateNotice = "/account.admin.notice.v1.NoticeAdminService/CreateNotice"
+const OperationNoticeAdminServiceDeleteNotice = "/account.admin.notice.v1.NoticeAdminService/DeleteNotice"
+const OperationNoticeAdminServiceGetNoticeById = "/account.admin.notice.v1.NoticeAdminService/GetNoticeById"
+const OperationNoticeAdminServiceGetNoticeList = "/account.admin.notice.v1.NoticeAdminService/GetNoticeList"
+const OperationNoticeAdminServiceUpdateNotice = "/account.admin.notice.v1.NoticeAdminService/UpdateNotice"
 
 type NoticeAdminServiceHTTPServer interface {
 	// CreateNotice Create notice

@@ -35,21 +35,22 @@ var (
 	_ = sort.Sort
 )
 
-// Validate checks the field values on Message with the rules defined in the
-// proto definition for this message. If any rules are violated, the first
+// Validate checks the field values on TunnelRequest with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.
-func (m *Message) Validate() error {
+func (m *TunnelRequest) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on Message with the rules defined in the
-// proto definition for this message. If any rules are violated, the result is
-// a list of violation errors wrapped in MessageMultiError, or nil if none found.
-func (m *Message) ValidateAll() error {
+// ValidateAll checks the field values on TunnelRequest with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in TunnelRequestMultiError, or
+// nil if none found.
+func (m *TunnelRequest) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *Message) validate(all bool) error {
+func (m *TunnelRequest) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -67,18 +68,19 @@ func (m *Message) validate(all bool) error {
 	// no validation rules for DataVersion
 
 	if len(errors) > 0 {
-		return MessageMultiError(errors)
+		return TunnelRequestMultiError(errors)
 	}
 
 	return nil
 }
 
-// MessageMultiError is an error wrapping multiple validation errors returned
-// by Message.ValidateAll() if the designated constraints aren't met.
-type MessageMultiError []error
+// TunnelRequestMultiError is an error wrapping multiple validation errors
+// returned by TunnelRequest.ValidateAll() if the designated constraints
+// aren't met.
+type TunnelRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m MessageMultiError) Error() string {
+func (m TunnelRequestMultiError) Error() string {
 	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -87,11 +89,11 @@ func (m MessageMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m MessageMultiError) AllErrors() []error { return m }
+func (m TunnelRequestMultiError) AllErrors() []error { return m }
 
-// MessageValidationError is the validation error returned by Message.Validate
-// if the designated constraints aren't met.
-type MessageValidationError struct {
+// TunnelRequestValidationError is the validation error returned by
+// TunnelRequest.Validate if the designated constraints aren't met.
+type TunnelRequestValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -99,22 +101,22 @@ type MessageValidationError struct {
 }
 
 // Field function returns field value.
-func (e MessageValidationError) Field() string { return e.field }
+func (e TunnelRequestValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e MessageValidationError) Reason() string { return e.reason }
+func (e TunnelRequestValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e MessageValidationError) Cause() error { return e.cause }
+func (e TunnelRequestValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e MessageValidationError) Key() bool { return e.key }
+func (e TunnelRequestValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e MessageValidationError) ErrorName() string { return "MessageValidationError" }
+func (e TunnelRequestValidationError) ErrorName() string { return "TunnelRequestValidationError" }
 
 // Error satisfies the builtin error interface
-func (e MessageValidationError) Error() string {
+func (e TunnelRequestValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -126,14 +128,14 @@ func (e MessageValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sMessage.%s: %s%s",
+		"invalid %sTunnelRequest.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = MessageValidationError{}
+var _ error = TunnelRequestValidationError{}
 
 var _ interface {
 	Field() string
@@ -141,4 +143,114 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = MessageValidationError{}
+} = TunnelRequestValidationError{}
+
+// Validate checks the field values on TunnelResponse with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *TunnelResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on TunnelResponse with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in TunnelResponseMultiError,
+// or nil if none found.
+func (m *TunnelResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *TunnelResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Mod
+
+	// no validation rules for Seq
+
+	// no validation rules for Obj
+
+	// no validation rules for Data
+
+	// no validation rules for DataVersion
+
+	if len(errors) > 0 {
+		return TunnelResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// TunnelResponseMultiError is an error wrapping multiple validation errors
+// returned by TunnelResponse.ValidateAll() if the designated constraints
+// aren't met.
+type TunnelResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m TunnelResponseMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m TunnelResponseMultiError) AllErrors() []error { return m }
+
+// TunnelResponseValidationError is the validation error returned by
+// TunnelResponse.Validate if the designated constraints aren't met.
+type TunnelResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e TunnelResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e TunnelResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e TunnelResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e TunnelResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e TunnelResponseValidationError) ErrorName() string { return "TunnelResponseValidationError" }
+
+// Error satisfies the builtin error interface
+func (e TunnelResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sTunnelResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = TunnelResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = TunnelResponseValidationError{}

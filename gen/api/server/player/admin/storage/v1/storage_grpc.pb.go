@@ -19,7 +19,7 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	StorageAdmin_AddItem_FullMethodName = "/server.player.admin.storage.v1.StorageAdmin/AddItem"
+	StorageAdmin_AddItem_FullMethodName = "/player.admin.storage.v1.StorageAdmin/AddItem"
 )
 
 // StorageAdminClient is the client API for StorageAdmin service.
@@ -116,7 +116,7 @@ func _StorageAdmin_AddItem_Handler(srv interface{}, ctx context.Context, dec fun
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var StorageAdmin_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "server.player.admin.storage.v1.StorageAdmin",
+	ServiceName: "player.admin.storage.v1.StorageAdmin",
 	HandlerType: (*StorageAdminServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

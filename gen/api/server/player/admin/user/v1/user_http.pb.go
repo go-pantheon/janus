@@ -19,8 +19,8 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationUserAdminGetById = "/server.player.admin.user.v1.UserAdmin/GetById"
-const OperationUserAdminUserList = "/server.player.admin.user.v1.UserAdmin/UserList"
+const OperationUserAdminGetById = "/player.admin.user.v1.UserAdmin/GetById"
+const OperationUserAdminUserList = "/player.admin.user.v1.UserAdmin/UserList"
 
 type UserAdminHTTPServer interface {
 	// GetById Query player by id

@@ -19,7 +19,7 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationGamedataAdminGetItemList = "/server.player.admin.gamedata.v1.GamedataAdmin/GetItemList"
+const OperationGamedataAdminGetItemList = "/player.admin.gamedata.v1.GamedataAdmin/GetItemList"
 
 type GamedataAdminHTTPServer interface {
 	// GetItemList Query all configuration items

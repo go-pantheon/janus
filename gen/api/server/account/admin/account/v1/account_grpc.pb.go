@@ -19,8 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	AccountAdminService_AccountList_FullMethodName = "/server.account.admin.account.v1.AccountAdminService/AccountList"
-	AccountAdminService_GetById_FullMethodName     = "/server.account.admin.account.v1.AccountAdminService/GetById"
+	AccountAdminService_AccountList_FullMethodName = "/account.admin.account.v1.AccountAdminService/AccountList"
+	AccountAdminService_GetById_FullMethodName     = "/account.admin.account.v1.AccountAdminService/GetById"
 )
 
 // AccountAdminServiceClient is the client API for AccountAdminService service.
@@ -150,7 +150,7 @@ func _AccountAdminService_GetById_Handler(srv interface{}, ctx context.Context, 
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var AccountAdminService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "server.account.admin.account.v1.AccountAdminService",
+	ServiceName: "account.admin.account.v1.AccountAdminService",
 	HandlerType: (*AccountAdminServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

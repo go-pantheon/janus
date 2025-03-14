@@ -19,11 +19,11 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	NoticeAdminService_GetNoticeList_FullMethodName = "/server.account.admin.notice.v1.NoticeAdminService/GetNoticeList"
-	NoticeAdminService_GetNoticeById_FullMethodName = "/server.account.admin.notice.v1.NoticeAdminService/GetNoticeById"
-	NoticeAdminService_CreateNotice_FullMethodName  = "/server.account.admin.notice.v1.NoticeAdminService/CreateNotice"
-	NoticeAdminService_UpdateNotice_FullMethodName  = "/server.account.admin.notice.v1.NoticeAdminService/UpdateNotice"
-	NoticeAdminService_DeleteNotice_FullMethodName  = "/server.account.admin.notice.v1.NoticeAdminService/DeleteNotice"
+	NoticeAdminService_GetNoticeList_FullMethodName = "/account.admin.notice.v1.NoticeAdminService/GetNoticeList"
+	NoticeAdminService_GetNoticeById_FullMethodName = "/account.admin.notice.v1.NoticeAdminService/GetNoticeById"
+	NoticeAdminService_CreateNotice_FullMethodName  = "/account.admin.notice.v1.NoticeAdminService/CreateNotice"
+	NoticeAdminService_UpdateNotice_FullMethodName  = "/account.admin.notice.v1.NoticeAdminService/UpdateNotice"
+	NoticeAdminService_DeleteNotice_FullMethodName  = "/account.admin.notice.v1.NoticeAdminService/DeleteNotice"
 )
 
 // NoticeAdminServiceClient is the client API for NoticeAdminService service.
@@ -262,7 +262,7 @@ func _NoticeAdminService_DeleteNotice_Handler(srv interface{}, ctx context.Conte
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var NoticeAdminService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "server.account.admin.notice.v1.NoticeAdminService",
+	ServiceName: "account.admin.notice.v1.NoticeAdminService",
 	HandlerType: (*NoticeAdminServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

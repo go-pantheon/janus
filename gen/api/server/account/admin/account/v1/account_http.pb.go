@@ -19,8 +19,8 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationAccountAdminServiceAccountList = "/server.account.admin.account.v1.AccountAdminService/AccountList"
-const OperationAccountAdminServiceGetById = "/server.account.admin.account.v1.AccountAdminService/GetById"
+const OperationAccountAdminServiceAccountList = "/account.admin.account.v1.AccountAdminService/AccountList"
+const OperationAccountAdminServiceGetById = "/account.admin.account.v1.AccountAdminService/GetById"
 
 type AccountAdminServiceHTTPServer interface {
 	AccountList(context.Context, *AccountListRequest) (*AccountListResponse, error)

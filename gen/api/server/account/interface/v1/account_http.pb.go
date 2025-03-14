@@ -19,15 +19,15 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationAccountInterfaceAppleLogin = "/server.account.interface.v1.AccountInterface/AppleLogin"
-const OperationAccountInterfaceAppleLoginCallback = "/server.account.interface.v1.AccountInterface/AppleLoginCallback"
-const OperationAccountInterfaceDevPing = "/server.account.interface.v1.AccountInterface/DevPing"
-const OperationAccountInterfaceFacebookLogin = "/server.account.interface.v1.AccountInterface/FacebookLogin"
-const OperationAccountInterfaceGoogleLogin = "/server.account.interface.v1.AccountInterface/GoogleLogin"
-const OperationAccountInterfaceLogin = "/server.account.interface.v1.AccountInterface/Login"
-const OperationAccountInterfaceRefresh = "/server.account.interface.v1.AccountInterface/Refresh"
-const OperationAccountInterfaceRegister = "/server.account.interface.v1.AccountInterface/Register"
-const OperationAccountInterfaceToken = "/server.account.interface.v1.AccountInterface/Token"
+const OperationAccountInterfaceAppleLogin = "/account.interface.v1.AccountInterface/AppleLogin"
+const OperationAccountInterfaceAppleLoginCallback = "/account.interface.v1.AccountInterface/AppleLoginCallback"
+const OperationAccountInterfaceDevPing = "/account.interface.v1.AccountInterface/DevPing"
+const OperationAccountInterfaceFacebookLogin = "/account.interface.v1.AccountInterface/FacebookLogin"
+const OperationAccountInterfaceGoogleLogin = "/account.interface.v1.AccountInterface/GoogleLogin"
+const OperationAccountInterfaceLogin = "/account.interface.v1.AccountInterface/Login"
+const OperationAccountInterfaceRefresh = "/account.interface.v1.AccountInterface/Refresh"
+const OperationAccountInterfaceRegister = "/account.interface.v1.AccountInterface/Register"
+const OperationAccountInterfaceToken = "/account.interface.v1.AccountInterface/Token"
 
 type AccountInterfaceHTTPServer interface {
 	// AppleLogin Apple login

@@ -19,7 +19,7 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	TunnelService_Tunnel_FullMethodName = "/server.player.intra.v1.TunnelService/Tunnel"
+	TunnelService_Tunnel_FullMethodName = "/player.intra.v1.TunnelService/Tunnel"
 )
 
 // TunnelServiceClient is the client API for TunnelService service.
@@ -30,7 +30,7 @@ const (
 // Open to the server cluster
 // Provide gRPC interfaces
 type TunnelServiceClient interface {
-	Tunnel(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[Message, Message], error)
+	Tunnel(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[TunnelRequest, TunnelResponse], error)
 }
 
 type tunnelServiceClient struct {
@@ -41,18 +41,18 @@ func NewTunnelServiceClient(cc grpc.ClientConnInterface) TunnelServiceClient {
 	return &tunnelServiceClient{cc}
 }
 
-func (c *tunnelServiceClient) Tunnel(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[Message, Message], error) {
+func (c *tunnelServiceClient) Tunnel(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[TunnelRequest, TunnelResponse], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	stream, err := c.cc.NewStream(ctx, &TunnelService_ServiceDesc.Streams[0], TunnelService_Tunnel_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &grpc.GenericClientStream[Message, Message]{ClientStream: stream}
+	x := &grpc.GenericClientStream[TunnelRequest, TunnelResponse]{ClientStream: stream}
 	return x, nil
 }
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type TunnelService_TunnelClient = grpc.BidiStreamingClient[Message, Message]
+type TunnelService_TunnelClient = grpc.BidiStreamingClient[TunnelRequest, TunnelResponse]
 
 // TunnelServiceServer is the server API for TunnelService service.
 // All implementations must embed UnimplementedTunnelServiceServer
@@ -62,7 +62,7 @@ type TunnelService_TunnelClient = grpc.BidiStreamingClient[Message, Message]
 // Open to the server cluster
 // Provide gRPC interfaces
 type TunnelServiceServer interface {
-	Tunnel(grpc.BidiStreamingServer[Message, Message]) error
+	Tunnel(grpc.BidiStreamingServer[TunnelRequest, TunnelResponse]) error
 	mustEmbedUnimplementedTunnelServiceServer()
 }
 
@@ -73,7 +73,7 @@ type TunnelServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedTunnelServiceServer struct{}
 
-func (UnimplementedTunnelServiceServer) Tunnel(grpc.BidiStreamingServer[Message, Message]) error {
+func (UnimplementedTunnelServiceServer) Tunnel(grpc.BidiStreamingServer[TunnelRequest, TunnelResponse]) error {
 	return status.Errorf(codes.Unimplemented, "method Tunnel not implemented")
 }
 func (UnimplementedTunnelServiceServer) mustEmbedUnimplementedTunnelServiceServer() {}
@@ -98,17 +98,17 @@ func RegisterTunnelServiceServer(s grpc.ServiceRegistrar, srv TunnelServiceServe
 }
 
 func _TunnelService_Tunnel_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(TunnelServiceServer).Tunnel(&grpc.GenericServerStream[Message, Message]{ServerStream: stream})
+	return srv.(TunnelServiceServer).Tunnel(&grpc.GenericServerStream[TunnelRequest, TunnelResponse]{ServerStream: stream})
 }
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type TunnelService_TunnelServer = grpc.BidiStreamingServer[Message, Message]
+type TunnelService_TunnelServer = grpc.BidiStreamingServer[TunnelRequest, TunnelResponse]
 
 // TunnelService_ServiceDesc is the grpc.ServiceDesc for TunnelService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var TunnelService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "server.player.intra.v1.TunnelService",
+	ServiceName: "player.intra.v1.TunnelService",
 	HandlerType: (*TunnelServiceServer)(nil),
 	Methods:     []grpc.MethodDesc{},
 	Streams: []grpc.StreamDesc{

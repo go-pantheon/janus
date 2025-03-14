@@ -19,7 +19,7 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	NoticeInterface_NoticeList_FullMethodName = "/server.account.interface.v1.NoticeInterface/NoticeList"
+	NoticeInterface_NoticeList_FullMethodName = "/account.interface.v1.NoticeInterface/NoticeList"
 )
 
 // NoticeInterfaceClient is the client API for NoticeInterface service.
@@ -118,7 +118,7 @@ func _NoticeInterface_NoticeList_Handler(srv interface{}, ctx context.Context, d
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var NoticeInterface_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "server.account.interface.v1.NoticeInterface",
+	ServiceName: "account.interface.v1.NoticeInterface",
 	HandlerType: (*NoticeInterfaceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

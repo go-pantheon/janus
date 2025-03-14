@@ -19,9 +19,9 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationRechargeAdminGetOrderById = "/server.player.admin.recharge.v1.RechargeAdmin/GetOrderById"
-const OperationRechargeAdminGetOrderList = "/server.player.admin.recharge.v1.RechargeAdmin/GetOrderList"
-const OperationRechargeAdminUpdateOrderAckStateById = "/server.player.admin.recharge.v1.RechargeAdmin/UpdateOrderAckStateById"
+const OperationRechargeAdminGetOrderById = "/player.admin.recharge.v1.RechargeAdmin/GetOrderById"
+const OperationRechargeAdminGetOrderList = "/player.admin.recharge.v1.RechargeAdmin/GetOrderList"
+const OperationRechargeAdminUpdateOrderAckStateById = "/player.admin.recharge.v1.RechargeAdmin/UpdateOrderAckStateById"
 
 type RechargeAdminHTTPServer interface {
 	// GetOrderById Query order by id

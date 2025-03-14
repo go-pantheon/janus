@@ -19,7 +19,7 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	RoomAdmin_GetById_FullMethodName = "/server.room.admin.room.v1.RoomAdmin/GetById"
+	RoomAdmin_GetById_FullMethodName = "/room.admin.room.v1.RoomAdmin/GetById"
 )
 
 // RoomAdminClient is the client API for RoomAdmin service.
@@ -116,7 +116,7 @@ func _RoomAdmin_GetById_Handler(srv interface{}, ctx context.Context, dec func(i
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var RoomAdmin_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "server.room.admin.room.v1.RoomAdmin",
+	ServiceName: "room.admin.room.v1.RoomAdmin",
 	HandlerType: (*RoomAdminServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

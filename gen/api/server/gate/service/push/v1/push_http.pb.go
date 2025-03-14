@@ -19,9 +19,9 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationPushServiceBroadcast = "/server.gate.service.push.v1.PushService/Broadcast"
-const OperationPushServiceMulticast = "/server.gate.service.push.v1.PushService/Multicast"
-const OperationPushServicePush = "/server.gate.service.push.v1.PushService/Push"
+const OperationPushServiceBroadcast = "/gate.service.push.v1.PushService/Broadcast"
+const OperationPushServiceMulticast = "/gate.service.push.v1.PushService/Multicast"
+const OperationPushServicePush = "/gate.service.push.v1.PushService/Push"
 
 type PushServiceHTTPServer interface {
 	Broadcast(context.Context, *BroadcastRequest) (*BroadcastResponse, error)

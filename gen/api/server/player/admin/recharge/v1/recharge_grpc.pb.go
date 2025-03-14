@@ -19,9 +19,9 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	RechargeAdmin_GetOrderList_FullMethodName            = "/server.player.admin.recharge.v1.RechargeAdmin/GetOrderList"
-	RechargeAdmin_GetOrderById_FullMethodName            = "/server.player.admin.recharge.v1.RechargeAdmin/GetOrderById"
-	RechargeAdmin_UpdateOrderAckStateById_FullMethodName = "/server.player.admin.recharge.v1.RechargeAdmin/UpdateOrderAckStateById"
+	RechargeAdmin_GetOrderList_FullMethodName            = "/player.admin.recharge.v1.RechargeAdmin/GetOrderList"
+	RechargeAdmin_GetOrderById_FullMethodName            = "/player.admin.recharge.v1.RechargeAdmin/GetOrderById"
+	RechargeAdmin_UpdateOrderAckStateById_FullMethodName = "/player.admin.recharge.v1.RechargeAdmin/UpdateOrderAckStateById"
 )
 
 // RechargeAdminClient is the client API for RechargeAdmin service.
@@ -190,7 +190,7 @@ func _RechargeAdmin_UpdateOrderAckStateById_Handler(srv interface{}, ctx context
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var RechargeAdmin_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "server.player.admin.recharge.v1.RechargeAdmin",
+	ServiceName: "player.admin.recharge.v1.RechargeAdmin",
 	HandlerType: (*RechargeAdminServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

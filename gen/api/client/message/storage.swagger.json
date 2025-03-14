@@ -77,7 +77,7 @@
           "type": "object",
           "additionalProperties": {
             "type": "string",
-            "format": "uint64"
+            "format": "int64"
           },
           "title": "Items with changed amounts. item DataID -\u003e current amount. value is 0 means the item has been deleted"
         }

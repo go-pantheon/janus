@@ -19,15 +19,15 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	AccountInterface_DevPing_FullMethodName            = "/server.account.interface.v1.AccountInterface/DevPing"
-	AccountInterface_Register_FullMethodName           = "/server.account.interface.v1.AccountInterface/Register"
-	AccountInterface_Login_FullMethodName              = "/server.account.interface.v1.AccountInterface/Login"
-	AccountInterface_Refresh_FullMethodName            = "/server.account.interface.v1.AccountInterface/Refresh"
-	AccountInterface_Token_FullMethodName              = "/server.account.interface.v1.AccountInterface/Token"
-	AccountInterface_AppleLogin_FullMethodName         = "/server.account.interface.v1.AccountInterface/AppleLogin"
-	AccountInterface_AppleLoginCallback_FullMethodName = "/server.account.interface.v1.AccountInterface/AppleLoginCallback"
-	AccountInterface_GoogleLogin_FullMethodName        = "/server.account.interface.v1.AccountInterface/GoogleLogin"
-	AccountInterface_FacebookLogin_FullMethodName      = "/server.account.interface.v1.AccountInterface/FacebookLogin"
+	AccountInterface_DevPing_FullMethodName            = "/account.interface.v1.AccountInterface/DevPing"
+	AccountInterface_Register_FullMethodName           = "/account.interface.v1.AccountInterface/Register"
+	AccountInterface_Login_FullMethodName              = "/account.interface.v1.AccountInterface/Login"
+	AccountInterface_Refresh_FullMethodName            = "/account.interface.v1.AccountInterface/Refresh"
+	AccountInterface_Token_FullMethodName              = "/account.interface.v1.AccountInterface/Token"
+	AccountInterface_AppleLogin_FullMethodName         = "/account.interface.v1.AccountInterface/AppleLogin"
+	AccountInterface_AppleLoginCallback_FullMethodName = "/account.interface.v1.AccountInterface/AppleLoginCallback"
+	AccountInterface_GoogleLogin_FullMethodName        = "/account.interface.v1.AccountInterface/GoogleLogin"
+	AccountInterface_FacebookLogin_FullMethodName      = "/account.interface.v1.AccountInterface/FacebookLogin"
 )
 
 // AccountInterfaceClient is the client API for AccountInterface service.
@@ -406,7 +406,7 @@ func _AccountInterface_FacebookLogin_Handler(srv interface{}, ctx context.Contex
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var AccountInterface_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "server.account.interface.v1.AccountInterface",
+	ServiceName: "account.interface.v1.AccountInterface",
 	HandlerType: (*AccountInterfaceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

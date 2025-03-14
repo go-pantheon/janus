@@ -19,8 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	UserAdmin_UserList_FullMethodName = "/server.player.admin.user.v1.UserAdmin/UserList"
-	UserAdmin_GetById_FullMethodName  = "/server.player.admin.user.v1.UserAdmin/GetById"
+	UserAdmin_UserList_FullMethodName = "/player.admin.user.v1.UserAdmin/UserList"
+	UserAdmin_GetById_FullMethodName  = "/player.admin.user.v1.UserAdmin/GetById"
 )
 
 // UserAdminClient is the client API for UserAdmin service.
@@ -154,7 +154,7 @@ func _UserAdmin_GetById_Handler(srv interface{}, ctx context.Context, dec func(i
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var UserAdmin_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "server.player.admin.user.v1.UserAdmin",
+	ServiceName: "player.admin.user.v1.UserAdmin",
 	HandlerType: (*UserAdminServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

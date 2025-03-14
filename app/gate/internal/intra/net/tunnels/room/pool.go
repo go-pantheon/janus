@@ -6,25 +6,25 @@ import (
 	intrav1 "github.com/go-pantheon/janus/gen/api/server/room/intra/v1"
 )
 
-type messagePool struct {
+type requestPool struct {
 	pool sync.Pool
 }
 
-func newMessagePool() *messagePool {
-	return &messagePool{
+func newRequestPool() *requestPool {
+	return &requestPool{
 		pool: sync.Pool{
 			New: func() interface{} {
-				return new(intrav1.Message)
+				return new(intrav1.TunnelRequest)
 			},
 		},
 	}
 }
 
-func (p *messagePool) get() *intrav1.Message {
-	return p.pool.Get().(*intrav1.Message)
+func (p *requestPool) get() *intrav1.TunnelRequest {
+	return p.pool.Get().(*intrav1.TunnelRequest)
 }
 
-func (p *messagePool) put(msg *intrav1.Message) {
+func (p *requestPool) put(msg *intrav1.TunnelRequest) {
 	if msg == nil {
 		return
 	}
@@ -32,12 +32,12 @@ func (p *messagePool) put(msg *intrav1.Message) {
 	p.pool.Put(msg)
 }
 
-var globalPool = newMessagePool()
+var globalPool = newRequestPool()
 
-func getMessage() *intrav1.Message {
+func getRequest() *intrav1.TunnelRequest {
 	return globalPool.get()
 }
 
-func putMessage(msg *intrav1.Message) {
+func putRequest(msg *intrav1.TunnelRequest) {
 	globalPool.put(msg)
 }

@@ -19,7 +19,7 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationRoomAdminGetById = "/server.room.admin.room.v1.RoomAdmin/GetById"
+const OperationRoomAdminGetById = "/room.admin.room.v1.RoomAdmin/GetById"
 
 type RoomAdminHTTPServer interface {
 	GetById(context.Context, *GetByIdRequest) (*GetByIdResponse, error)

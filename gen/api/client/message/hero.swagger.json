@@ -72,12 +72,12 @@
         },
         "dataId": {
           "type": "string",
-          "format": "uint64",
+          "format": "int64",
           "title": "Hero DataID"
         },
         "level": {
           "type": "string",
-          "format": "uint64",
+          "format": "int64",
           "title": "Hero level"
         },
         "equips": {
@@ -106,7 +106,7 @@
           "type": "object",
           "additionalProperties": {
             "type": "string",
-            "format": "uint64"
+            "format": "int64"
           },
           "title": "Consumed materials"
         }

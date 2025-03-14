@@ -19,10 +19,10 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	UserService_GetById_FullMethodName          = "/server.player.service.user.v1.UserService/GetById"
-	UserService_GetBasicById_FullMethodName     = "/server.player.service.user.v1.UserService/GetBasicById"
-	UserService_UserListById_FullMethodName     = "/server.player.service.user.v1.UserService/UserListById"
-	UserService_GetBasicListById_FullMethodName = "/server.player.service.user.v1.UserService/GetBasicListById"
+	UserService_GetById_FullMethodName          = "/player.service.user.v1.UserService/GetById"
+	UserService_GetBasicById_FullMethodName     = "/player.service.user.v1.UserService/GetBasicById"
+	UserService_UserListById_FullMethodName     = "/player.service.user.v1.UserService/UserListById"
+	UserService_GetBasicListById_FullMethodName = "/player.service.user.v1.UserService/GetBasicListById"
 )
 
 // UserServiceClient is the client API for UserService service.
@@ -226,7 +226,7 @@ func _UserService_GetBasicListById_Handler(srv interface{}, ctx context.Context,
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var UserService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "server.player.service.user.v1.UserService",
+	ServiceName: "player.service.user.v1.UserService",
 	HandlerType: (*UserServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

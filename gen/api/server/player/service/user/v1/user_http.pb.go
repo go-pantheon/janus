@@ -19,10 +19,10 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationUserServiceGetBasicById = "/server.player.service.user.v1.UserService/GetBasicById"
-const OperationUserServiceGetBasicListById = "/server.player.service.user.v1.UserService/GetBasicListById"
-const OperationUserServiceGetById = "/server.player.service.user.v1.UserService/GetById"
-const OperationUserServiceUserListById = "/server.player.service.user.v1.UserService/UserListById"
+const OperationUserServiceGetBasicById = "/player.service.user.v1.UserService/GetBasicById"
+const OperationUserServiceGetBasicListById = "/player.service.user.v1.UserService/GetBasicListById"
+const OperationUserServiceGetById = "/player.service.user.v1.UserService/GetById"
+const OperationUserServiceUserListById = "/player.service.user.v1.UserService/UserListById"
 
 type UserServiceHTTPServer interface {
 	// GetBasicById Get player basic data cache by id

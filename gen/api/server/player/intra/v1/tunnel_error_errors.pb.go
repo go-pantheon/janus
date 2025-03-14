@@ -11,26 +11,38 @@ import (
 // is compatible with the kratos package it is being compiled against.
 const _ = errors.SupportPackageIsVersion1
 
-func IsServerError(err error) bool {
+func IsTunnelServiceErrorReasonUnspecified(err error) bool {
 	if err == nil {
 		return false
 	}
 	e := errors.FromError(err)
-	return e.Reason == TunnelServiceErrorReason_SERVER_ERROR.String() && e.Code == 500
+	return e.Reason == TunnelServiceErrorReason_TUNNEL_SERVICE_ERROR_REASON_UNSPECIFIED.String() && e.Code == 500
 }
 
-func ErrorServerError(format string, args ...interface{}) *errors.Error {
-	return errors.New(500, TunnelServiceErrorReason_SERVER_ERROR.String(), fmt.Sprintf(format, args...))
+func ErrorTunnelServiceErrorReasonUnspecified(format string, args ...interface{}) *errors.Error {
+	return errors.New(500, TunnelServiceErrorReason_TUNNEL_SERVICE_ERROR_REASON_UNSPECIFIED.String(), fmt.Sprintf(format, args...))
 }
 
-func IsUidError(err error) bool {
+func IsTunnelServiceErrorReasonServer(err error) bool {
 	if err == nil {
 		return false
 	}
 	e := errors.FromError(err)
-	return e.Reason == TunnelServiceErrorReason_UID_ERROR.String() && e.Code == 401
+	return e.Reason == TunnelServiceErrorReason_TUNNEL_SERVICE_ERROR_REASON_SERVER.String() && e.Code == 500
 }
 
-func ErrorUidError(format string, args ...interface{}) *errors.Error {
-	return errors.New(401, TunnelServiceErrorReason_UID_ERROR.String(), fmt.Sprintf(format, args...))
+func ErrorTunnelServiceErrorReasonServer(format string, args ...interface{}) *errors.Error {
+	return errors.New(500, TunnelServiceErrorReason_TUNNEL_SERVICE_ERROR_REASON_SERVER.String(), fmt.Sprintf(format, args...))
+}
+
+func IsTunnelServiceErrorReasonUid(err error) bool {
+	if err == nil {
+		return false
+	}
+	e := errors.FromError(err)
+	return e.Reason == TunnelServiceErrorReason_TUNNEL_SERVICE_ERROR_REASON_UID.String() && e.Code == 401
+}
+
+func ErrorTunnelServiceErrorReasonUid(format string, args ...interface{}) *errors.Error {
+	return errors.New(401, TunnelServiceErrorReason_TUNNEL_SERVICE_ERROR_REASON_UID.String(), fmt.Sprintf(format, args...))
 }

@@ -19,9 +19,9 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	PushService_Push_FullMethodName      = "/server.gate.service.push.v1.PushService/Push"
-	PushService_Multicast_FullMethodName = "/server.gate.service.push.v1.PushService/Multicast"
-	PushService_Broadcast_FullMethodName = "/server.gate.service.push.v1.PushService/Broadcast"
+	PushService_Push_FullMethodName      = "/gate.service.push.v1.PushService/Push"
+	PushService_Multicast_FullMethodName = "/gate.service.push.v1.PushService/Multicast"
+	PushService_Broadcast_FullMethodName = "/gate.service.push.v1.PushService/Broadcast"
 )
 
 // PushServiceClient is the client API for PushService service.
@@ -184,7 +184,7 @@ func _PushService_Broadcast_Handler(srv interface{}, ctx context.Context, dec fu
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var PushService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "server.gate.service.push.v1.PushService",
+	ServiceName: "gate.service.push.v1.PushService",
 	HandlerType: (*PushServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

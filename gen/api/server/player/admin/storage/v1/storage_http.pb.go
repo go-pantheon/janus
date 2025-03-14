@@ -19,7 +19,7 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationStorageAdminAddItem = "/server.player.admin.storage.v1.StorageAdmin/AddItem"
+const OperationStorageAdminAddItem = "/player.admin.storage.v1.StorageAdmin/AddItem"
 
 type StorageAdminHTTPServer interface {
 	AddItem(context.Context, *AddItemRequest) (*AddItemResponse, error)

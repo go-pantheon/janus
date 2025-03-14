@@ -45,7 +45,7 @@
         }
       }
     },
-    "v1Message": {
+    "v1TunnelResponse": {
       "type": "object",
       "properties": {
         "mod": {
