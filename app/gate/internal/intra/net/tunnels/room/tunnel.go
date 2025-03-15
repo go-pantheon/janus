@@ -9,7 +9,7 @@ import (
 	clipkt "github.com/go-pantheon/janus/gen/api/client/packet"
 	intrav1 "github.com/go-pantheon/janus/gen/api/server/room/intra/v1"
 	"github.com/go-pantheon/janus/pkg/net"
-	"github.com/go-pantheon/janus/pkg/net/tunnel"
+	"github.com/go-pantheon/vulcan-kit/tunnel"
 	"github.com/pkg/errors"
 )
 

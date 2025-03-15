@@ -12,7 +12,7 @@ import (
 	roomv1 "github.com/go-pantheon/janus/gen/api/server/room/intra/v1"
 	xnet "github.com/go-pantheon/janus/pkg/net"
 	rctx "github.com/go-pantheon/janus/pkg/net/context"
-	"github.com/go-pantheon/janus/pkg/net/tunnel"
+	"github.com/go-pantheon/vulcan-kit/tunnel"
 	"github.com/go-pantheon/vulcan-util/compress"
 	"github.com/google/wire"
 	"github.com/pkg/errors"

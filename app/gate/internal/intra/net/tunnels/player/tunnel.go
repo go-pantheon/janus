@@ -10,8 +10,8 @@ import (
 	clipkt "github.com/go-pantheon/janus/gen/api/client/packet"
 	intrav1 "github.com/go-pantheon/janus/gen/api/server/player/intra/v1"
 	"github.com/go-pantheon/janus/pkg/net"
-	"github.com/go-pantheon/janus/pkg/net/tunnel"
 	"github.com/go-pantheon/vulcan-kit/router"
+	"github.com/go-pantheon/vulcan-kit/tunnel"
 	"github.com/go-pantheon/vulcan-util/time"
 	"github.com/pkg/errors"
 )

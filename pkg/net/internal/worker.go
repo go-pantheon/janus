@@ -14,7 +14,7 @@ import (
 	"github.com/go-pantheon/janus/pkg/net/conf"
 	vctx "github.com/go-pantheon/janus/pkg/net/context"
 	"github.com/go-pantheon/janus/pkg/net/internal/bufreader"
-	"github.com/go-pantheon/janus/pkg/net/tunnel"
+	"github.com/go-pantheon/vulcan-kit/tunnel"
 	"github.com/go-pantheon/vulcan-util/sync"
 	"github.com/pkg/errors"
 	"go.uber.org/atomic"
