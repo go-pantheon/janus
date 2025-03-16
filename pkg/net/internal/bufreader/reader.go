@@ -86,8 +86,17 @@ func (r *Reader) ReadFull(n int) ([]byte, error) {
 			return nil, ErrBufReaderAlreadyClosed
 		}
 
-		// Double capacity until it fits, with minimum 128 bytes extra
-		newSize := nextPowerOfTwo(needed + 128)
+		var extraSpace int
+		switch {
+		case n <= 4096:  // 50% extra for small buffers
+			extraSpace = n >> 1
+		case n <= 65536: // 25% extra for medium buffers
+			extraSpace = n >> 2
+		default:         // 12.5% extra for large buffers
+			extraSpace = n >> 3
+		}
+
+		newSize := nextPowerOfTwo(needed + extraSpace)
 		newBuf := pool.Alloc(newSize)
 
 		// Copy existing data and recycle old buffer

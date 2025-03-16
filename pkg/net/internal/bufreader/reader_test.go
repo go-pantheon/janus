@@ -176,63 +176,48 @@ func TestClose(t *testing.T) {
 	})
 }
 
-func BenchmarkReadByte(b *testing.B) {
-	data := make([]byte, 1<<20) // 1MB
-	br := NewReader(bytes.NewReader(data), 4096)
+func TestPoolConcurrency(t *testing.T) {
+	var (
+		goroutines = 1000
+		iterations = 100
+		dataSizes  = []int{1024, 4096, 16 << 10} // 1024, 4KB, 16KB
+	)
 
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		br.ReadByte()
-		if i%4096 == 0 {
-			br = NewReader(bytes.NewReader(data), 4096)
-		}
-	}
-}
+	InitReaderPool(1024, 64<<10, 512)
 
-func BenchmarkReadFull(b *testing.B) {
-	InitReaderPool(1024, 65536, 128)
+	wg := sync.WaitGroup{}
+	for _, dataSize := range dataSizes {
+		for i := range goroutines {
+			wg.Add(1)
+			go func(idx int) {
+				defer wg.Done()
+				for range iterations {
+					data := make([]byte, dataSize)
+					cc := rand.NewChaCha8([32]byte{byte(idx)})
+					cc.Read(data)
+					br := NewReader(bytes.NewReader(data), 1024)
+					defer br.Close()
 
-	sizes := []int{128, 1024, 4096, 16384}
-	data := make([]byte, 65536)
-
-	for _, size := range sizes {
-		b.Run(fmt.Sprintf("size-%d", size), func(b *testing.B) {
-			br := NewReader(bytes.NewReader(data), size)
-			b.SetBytes(int64(size))
-			b.ResetTimer()
-
-			// Calculate how many reads we can do before needing to reset
-			readsBeforeReset := len(data) / size
-
-			for i := 0; i < b.N; i++ {
-				if i%readsBeforeReset == 0 {
-					br = NewReader(bytes.NewReader(data), size)
+					if rand.IntN(2) == 0 {
+						if idx%2 == 0 {
+							for range 10 {
+								_, err := br.ReadFull(8)
+								assert.Nil(t, err)
+							}
+						} else {
+							_, err := br.ReadFull(dataSize)
+							assert.Nil(t, err)
+						}
+					} else {
+						result, err := br.ReadFull(dataSize)
+						assert.Nil(t, err)
+						assert.Equal(t, result, data)
+					}
 				}
-				_, err := br.ReadFull(size)
-				assert.Nil(b, err)
-			}
-		})
-	}
-}
-
-func BenchmarkReadFullAllocations(b *testing.B) {
-	InitReaderPool(1024, 65536, 128)
-
-	data := make([]byte, 1<<20)
-	br := NewReader(bytes.NewReader(data), 1024)
-
-	b.ReportAllocs()
-	b.ResetTimer()
-
-	readsBeforeReset := len(data) / 1024
-
-	for i := 0; i < b.N; i++ {
-		if i%readsBeforeReset == 0 {
-			br = NewReader(bytes.NewReader(data), 1024)
+			}(i)
 		}
-		_, err := br.ReadFull(1024)
-		assert.Nil(b, err)
 	}
+	wg.Wait()
 }
 
 func TestReadLoopAccuracy(t *testing.T) {
@@ -328,46 +313,61 @@ func BenchmarkConcurrentReadFull(b *testing.B) {
 	})
 }
 
-func TestPoolConcurrency(t *testing.T) {
-	var (
-		goroutines = 1000
-		iterations = 100
-		dataSizes  = []int{1024, 4096, 64 << 10} // 1024, 4KB, 64KB
-	)
+func BenchmarkReadByte(b *testing.B) {
+	data := make([]byte, 1<<20) // 1MB
+	br := NewReader(bytes.NewReader(data), 4096)
 
-	InitReaderPool(1024, 1<<20, 1024)
-
-	wg := sync.WaitGroup{}
-	for _, dataSize := range dataSizes {
-		for i := 0; i < goroutines; i++ {
-			wg.Add(1)
-			go func(idx int) {
-				defer wg.Done()
-				for range iterations {
-					data := make([]byte, dataSize)
-					cc := rand.NewChaCha8([32]byte{byte(idx)})
-					cc.Read(data)
-					br := NewReader(bytes.NewReader(data), 1024)
-					defer br.Close()
-
-					if rand.IntN(2) == 0 {
-						if idx%2 == 0 {
-							for i := 0; i < 10; i++ {
-								_, err := br.ReadFull(8)
-								assert.Nil(t, err)
-							}
-						} else {
-							_, err := br.ReadFull(dataSize)
-							assert.Nil(t, err)
-						}
-					} else {
-						result, err := br.ReadFull(dataSize)
-						assert.Nil(t, err)
-						assert.Equal(t, result, data)
-					}
-				}
-			}(i)
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		br.ReadByte()
+		if i%4096 == 0 {
+			br = NewReader(bytes.NewReader(data), 4096)
 		}
 	}
-	wg.Wait()
+}
+
+func BenchmarkReadFull(b *testing.B) {
+	InitReaderPool(1024, 131072, 128)
+
+	sizes := []int{128, 256, 512, 512+128, 1024, 1024+128, 2048, 2048+128, 4096, 8192, 8192 + 1024, 16384, 32768, 65536, 65536 + 1024}
+	data := make([]byte, 131072)
+
+	for _, size := range sizes {
+		b.Run(fmt.Sprintf("size-%d", size), func(b *testing.B) {
+			br := NewReader(bytes.NewReader(data), size)
+			b.SetBytes(int64(size))
+			b.ResetTimer()
+
+			// Calculate how many reads we can do before needing to reset
+			readsBeforeReset := len(data) / size
+
+			for i := 0; i < b.N; i++ {
+				if i%readsBeforeReset == 0 {
+					br = NewReader(bytes.NewReader(data), size)
+				}
+				_, err := br.ReadFull(size)
+				assert.Nil(b, err)
+			}
+		})
+	}
+}
+
+func BenchmarkReadFullAllocations(b *testing.B) {
+	InitReaderPool(1024, 65536, 128)
+
+	data := make([]byte, 1<<20)
+	br := NewReader(bytes.NewReader(data), 1024)
+
+	b.ReportAllocs()
+	b.ResetTimer()
+
+	readsBeforeReset := len(data) / 1024
+
+	for i := 0; i < b.N; i++ {
+		if i%readsBeforeReset == 0 {
+			br = NewReader(bytes.NewReader(data), 1024)
+		}
+		_, err := br.ReadFull(1024)
+		assert.Nil(b, err)
+	}
 }

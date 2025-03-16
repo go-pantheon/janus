@@ -2,6 +2,7 @@ package bufreader
 
 import (
 	"errors"
+	"slices"
 	"sync"
 )
 
@@ -26,7 +27,7 @@ type SyncPool struct {
 	classesSize []int       // size of each memory pool
 	minSize     int         // minimum chunk size
 	maxSize     int         // maximum chunk size
-	sizeLookup  []uint8     // fast lookup table from size to class index
+	sizeLookup  []uint32    // fast lookup table from size to class index
 }
 
 // NewSyncPool creates a sync.Pool based slab allocation memory pool
@@ -64,7 +65,7 @@ func NewSyncPool(minSize, maxSize, factor int) (*SyncPool, error) {
 		classesSize: classesSize,
 		minSize:     minSize,
 		maxSize:     maxSize,
-		sizeLookup:  make([]uint8, maxSize+1),
+		sizeLookup:  make([]uint32, maxSize+1),
 	}
 
 	// initialize each memory pool class and fill the lookup table
@@ -81,7 +82,7 @@ func NewSyncPool(minSize, maxSize, factor int) (*SyncPool, error) {
 			start = pool.classesSize[k-1] + 1
 		}
 		for i := start; i <= size && i <= maxSize; i++ {
-			pool.sizeLookup[i] = uint8(k)
+			pool.sizeLookup[i] = uint32(k)
 		}
 	}
 
@@ -126,14 +127,6 @@ func (pool *SyncPool) Free(mem []byte) {
 	pool.classes[classIndex].Put(&mem)
 }
 
-// Size returns the actual allocation size for a given size
-func (pool *SyncPool) Size(size int) int {
-	if size <= 0 || size > pool.maxSize {
-		return size
-	}
-	return pool.classesSize[pool.sizeLookup[size]]
-}
-
 // ClassCount returns the number of memory pool classes
 func (pool *SyncPool) ClassCount() int {
 	return len(pool.classes)
@@ -141,7 +134,7 @@ func (pool *SyncPool) ClassCount() int {
 
 // ClassSizes returns the sizes of all memory pool classes
 func (pool *SyncPool) ClassSizes() []int {
-	return append([]int{}, pool.classesSize...)
+	return slices.Clone(pool.classesSize)
 }
 
 // MinMaxSize returns the minimum and maximum block sizes of the pool

@@ -140,133 +140,6 @@ func TestFree(t *testing.T) {
 		assert.NotPanics(t, func() { pool.Free(buf) })
 	})
 }
-
-func TestSize(t *testing.T) {
-	minSize := 128
-	maxSize := 512
-	factor := 2
-	pool, err := NewSyncPool(minSize, maxSize, factor)
-	require.NoError(t, err)
-
-	// Get the actual class sizes from the pool
-	classSizes := pool.ClassSizes()
-	require.NotEmpty(t, classSizes)
-
-	// First class size should be minSize
-	require.Equal(t, minSize, classSizes[0])
-
-	tests := []struct {
-		name     string
-		size     int
-		expected int
-	}{
-		{"zero size", 0, 0},
-		{"negative size", -10, 0},
-		{"below min size", minSize - 1, classSizes[0]},
-		{"at min size", minSize, classSizes[0]},
-		{"just above min size", minSize + 1, classSizes[1]},
-		{"at second class", classSizes[1], classSizes[1]},
-		{"just above second class", classSizes[1] + 1, classSizes[2]},
-		{"at max size", maxSize, maxSize},
-		{"just below max size", maxSize - 1, classSizes[len(classSizes)-1]},
-		{"above max size", maxSize + 1, maxSize + 1},
-		{"way above max size", maxSize * 10, maxSize * 10},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			actual := pool.Size(tt.size)
-			assert.Equal(t, tt.expected, actual,
-				"Size(%d) should return %d, got %d", tt.size, tt.expected, actual)
-		})
-	}
-}
-
-func TestClassSizes(t *testing.T) {
-	minSize := 1024
-	maxSize := 65536
-	factor := 4
-
-	pool, err := NewSyncPool(minSize, maxSize, factor)
-	require.NoError(t, err)
-
-	prev := 0
-	for i, size := range pool.classesSize {
-		t.Logf("Class %d: %d bytes", i, size)
-		assert.True(t, size > prev, "sizes should be increasing")
-		prev = size
-
-		// We're not going to check the exact formula since the implementation
-		// seems to use a different growth algorithm than what was originally tested.
-		// Just ensure the sizes are increasing and within bounds.
-	}
-	assert.Equal(t, maxSize, pool.classesSize[len(pool.classesSize)-1])
-}
-
-func TestClassSizesCalculation(t *testing.T) {
-	minSize := 128
-	maxSize := 8192
-	factor := 2
-
-	pool, err := NewSyncPool(minSize, maxSize, factor)
-	require.NoError(t, err)
-
-	sizes := pool.ClassSizes()
-
-	// Verify first size is min size
-	assert.Equal(t, minSize, sizes[0])
-
-	// Verify last size is max size
-	assert.Equal(t, maxSize, sizes[len(sizes)-1])
-
-	// Verify progression of sizes follows the factor
-	for i := 1; i < len(sizes); i++ {
-		// nextSize := int(float64(curSize) * (1.0 + 1.0/float64(factor)))
-		assert.Equal(t, int(math.Min(float64(sizes[i-1])*(1+1/float64(factor)), float64(maxSize))), sizes[i],
-			"Class size %d should be %d×factor(%d) = %d, got %d",
-			i, sizes[i-1], factor, sizes[i-1]*factor, sizes[i])
-	}
-}
-
-func BenchmarkAllocAndFree(b *testing.B) {
-	pool, _ := NewSyncPool(1024, 65536, 4)
-	sizes := []int{512, 1024, 4096, 16384, 65536, 131072}
-
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		size := sizes[i%len(sizes)]
-		buf := pool.Alloc(size)
-		pool.Free(buf)
-	}
-}
-
-func BenchmarkAllocOnly(b *testing.B) {
-	pool, _ := NewSyncPool(1024, 65536, 4)
-	sizes := []int{512, 1024, 4096, 16384, 65536, 131072}
-
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		size := sizes[i%len(sizes)]
-		buf := pool.Alloc(size)
-		_ = buf
-	}
-}
-
-func BenchmarkParallelAllocFree(b *testing.B) {
-	pool, _ := NewSyncPool(1024, 65536, 4)
-	sizes := []int{512, 1024, 4096, 16384, 65536, 131072}
-
-	b.RunParallel(func(pb *testing.PB) {
-		i := 0
-		for pb.Next() {
-			size := sizes[i%len(sizes)]
-			buf := pool.Alloc(size)
-			pool.Free(buf)
-			i++
-		}
-	})
-}
-
 func TestConcurrentAllocFree(t *testing.T) {
 	if testing.Short() {
 		t.Skip("skipping stress test in short mode")
@@ -313,14 +186,78 @@ func TestConcurrentAllocFree(t *testing.T) {
 	wg.Wait()
 }
 
-func BenchmarkAllocFreeSameSize(b *testing.B) {
+func TestClassSizes(t *testing.T) {
+	minSize := 1024
+	maxSize := 65536
+	factor := 4
+
+	pool, err := NewSyncPool(minSize, maxSize, factor)
+	require.NoError(t, err)
+
+	prev := 0
+	for _, size := range pool.classesSize {
+		// t.Logf("Class %d: %d bytes", i, size)
+		assert.True(t, size > prev, "sizes should be increasing")
+		prev = size
+
+		// We're not going to check the exact formula since the implementation
+		// seems to use a different growth algorithm than what was originally tested.
+		// Just ensure the sizes are increasing and within bounds.
+	}
+	assert.Equal(t, maxSize, pool.classesSize[len(pool.classesSize)-1])
+}
+
+func TestClassSizesCalculation(t *testing.T) {
+	minSize := 128
+	maxSize := 8192
+	factor := 2
+
+	pool, err := NewSyncPool(minSize, maxSize, factor)
+	require.NoError(t, err)
+
+	sizes := pool.ClassSizes()
+
+	// Verify first size is min size
+	assert.Equal(t, minSize, sizes[0])
+
+	// Verify last size is max size
+	assert.Equal(t, maxSize, sizes[len(sizes)-1])
+
+	// Verify progression of sizes follows the factor
+	for i := 1; i < len(sizes); i++ {
+		// nextSize := int(float64(curSize) * (1.0 + 1.0/float64(factor)))
+		assert.Equal(t, int(math.Min(float64(sizes[i-1])*(1+1/float64(factor)), float64(maxSize))), sizes[i],
+			"Class size %d should be %d×factor(%d) = %d, got %d",
+			i, sizes[i-1], factor, sizes[i-1]*factor, sizes[i])
+	}
+}
+
+func BenchmarkAllocOnly(b *testing.B) {
 	pool, _ := NewSyncPool(1024, 65536, 4)
-	size := 4096 // Common buffer size
+	sizes := []int{512, 1024, 4096, 16384, 65536}
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
+		size := sizes[i%len(sizes)]
 		buf := pool.Alloc(size)
-		pool.Free(buf)
+		_ = buf
+	}
+}
+
+func BenchmarkFreeOnly(b *testing.B) {
+	pool, _ := NewSyncPool(1024, 65536, 4)
+	sizes := []int{512, 1024, 4096, 16384, 65536}
+
+	bufSize := 10000
+	bufs := make([][]byte, bufSize)
+	for i := range bufSize {
+		size := sizes[i%len(sizes)]
+		bufs[i] = pool.Alloc(size)
+	}
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		pool.Free(bufs[i%bufSize])
 	}
 }
 
@@ -331,43 +268,6 @@ func BenchmarkAllocFreeRandomSizes(b *testing.B) {
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		size := rand.Intn(maxSize) + 1024
-		buf := pool.Alloc(size)
-		pool.Free(buf)
-	}
-}
-
-func BenchmarkParallelRandomSizes(b *testing.B) {
-	pool, _ := NewSyncPool(1024, 65536, 4)
-	maxSize := 65536 - 1024
-
-	b.RunParallel(func(pb *testing.PB) {
-		// Each goroutine needs its own rand source to avoid lock contention
-		r := rand.New(rand.NewSource(time.Now().UnixNano()))
-		for pb.Next() {
-			size := r.Intn(maxSize) + 1024
-			buf := pool.Alloc(size)
-			pool.Free(buf)
-		}
-	})
-}
-
-func BenchmarkAllocFreeConsistentSize(b *testing.B) {
-	pool, _ := NewSyncPool(1024, 65536, 4)
-	size := 4096
-
-	warmupBufs := make([]*[]byte, 100)
-	for i := 0; i < 100; i++ {
-		buf := pool.Alloc(size)
-		warmupBufs[i] = &buf
-	}
-	for _, bufPtr := range warmupBufs {
-		pool.Free(*bufPtr)
-	}
-
-	b.ResetTimer()
-	b.ReportAllocs()
-
-	for i := 0; i < b.N; i++ {
 		buf := pool.Alloc(size)
 		pool.Free(buf)
 	}
@@ -415,4 +315,41 @@ func BenchmarkAllocFreeMaxSize(b *testing.B) {
 		buf := pool.Alloc(size)
 		pool.Free(buf)
 	}
+}
+
+func BenchmarkAllocFreeConsistentSize(b *testing.B) {
+	pool, _ := NewSyncPool(1024, 65536, 4)
+	size := 4096
+
+	warmupBufs := make([]*[]byte, 100)
+	for i := 0; i < 100; i++ {
+		buf := pool.Alloc(size)
+		warmupBufs[i] = &buf
+	}
+	for _, bufPtr := range warmupBufs {
+		pool.Free(*bufPtr)
+	}
+
+	b.ResetTimer()
+	b.ReportAllocs()
+
+	for i := 0; i < b.N; i++ {
+		buf := pool.Alloc(size)
+		pool.Free(buf)
+	}
+}
+
+func BenchmarkParallelRandomSizes(b *testing.B) {
+	pool, _ := NewSyncPool(1024, 65536, 4)
+	maxSize := 65536 - 1024
+
+	b.RunParallel(func(pb *testing.PB) {
+		// Each goroutine needs its own rand source to avoid lock contention
+		r := rand.New(rand.NewSource(time.Now().UnixNano()))
+		for pb.Next() {
+			size := r.Intn(maxSize) + 1024
+			buf := pool.Alloc(size)
+			pool.Free(buf)
+		}
+	})
 }
