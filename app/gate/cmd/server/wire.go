@@ -14,7 +14,7 @@ import (
 	"github.com/go-pantheon/janus/app/gate/internal/intra/net/service"
 	"github.com/go-pantheon/janus/app/gate/internal/server"
 	"github.com/go-pantheon/janus/app/gate/internal/service/push"
-	"github.com/go-pantheon/janus/pkg/net/health"
+	"github.com/go-pantheon/vulcan-net/health"
 	"github.com/google/wire"
 )
 

@@ -5,16 +5,14 @@ go 1.23.0
 require (
 	github.com/go-kratos/kratos/contrib/registry/etcd/v2 v2.0.0-20250312125852-142ea0a93a9f
 	github.com/go-kratos/kratos/v2 v2.8.4
-	github.com/go-kratos/swagger-api v1.0.1
 	github.com/go-pantheon/vulcan-kit v0.0.0
+	github.com/go-pantheon/vulcan-net v0.0.0-20250316143032-5ee7c0722ec4
 	github.com/go-pantheon/vulcan-util v0.0.0
 	github.com/google/wire v0.6.0
 	github.com/pkg/errors v0.9.1
-	github.com/prometheus/client_golang v1.21.1
 	github.com/redis/go-redis/v9 v9.7.1
 	github.com/stretchr/testify v1.10.0
 	go.etcd.io/etcd/client/v3 v3.5.19
-	go.uber.org/atomic v1.11.0
 	golang.org/x/sync v0.12.0
 	google.golang.org/genproto/googleapis/api v0.0.0-20250313205543-e70fdf4c4cb4
 	google.golang.org/grpc v1.71.0
@@ -36,6 +34,7 @@ require (
 	github.com/go-kratos/aegis v0.2.0 // indirect
 	github.com/go-kratos/grpc-gateway/v2 v2.5.1-0.20210811062259-c92d36e434b1 // indirect
 	github.com/go-kratos/kratos/contrib/log/zap/v2 v2.0.0-20250312125852-142ea0a93a9f // indirect
+	github.com/go-kratos/swagger-api v1.0.1 // indirect
 	github.com/go-logr/logr v1.4.2 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-playground/form/v4 v4.2.1 // indirect
@@ -50,6 +49,7 @@ require (
 	github.com/klauspost/compress v1.18.0 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/prometheus/client_golang v1.21.1 // indirect
 	github.com/prometheus/client_model v0.6.1 // indirect
 	github.com/prometheus/common v0.63.0 // indirect
 	github.com/prometheus/procfs v0.15.1 // indirect
@@ -65,6 +65,7 @@ require (
 	go.opentelemetry.io/otel/sdk/metric v1.35.0 // indirect
 	go.opentelemetry.io/otel/trace v1.35.0 // indirect
 	go.opentelemetry.io/proto/otlp v1.5.0 // indirect
+	go.uber.org/atomic v1.11.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap v1.27.0 // indirect
 	golang.org/x/net v0.37.0 // indirect
@@ -77,5 +78,7 @@ require (
 )
 
 replace github.com/go-pantheon/vulcan-kit => ./deps/vulcan-kit
+
+replace github.com/go-pantheon/vulcan-net => ./deps/vulcan-net
 
 replace github.com/go-pantheon/vulcan-util => ./deps/vulcan-util

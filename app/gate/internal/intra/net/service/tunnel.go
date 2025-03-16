@@ -7,8 +7,8 @@ import (
 	"github.com/go-pantheon/janus/app/gate/internal/intra/net/tunnels/player"
 	"github.com/go-pantheon/janus/app/gate/internal/intra/net/tunnels/room"
 	climod "github.com/go-pantheon/janus/gen/api/client/module"
-	xnet "github.com/go-pantheon/janus/pkg/net"
 	"github.com/go-pantheon/vulcan-kit/tunnel"
+	xnet "github.com/go-pantheon/vulcan-net"
 	"github.com/pkg/errors"
 )
 

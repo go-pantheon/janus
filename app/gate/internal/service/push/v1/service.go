@@ -5,7 +5,7 @@ import (
 
 	"github.com/go-kratos/kratos/v2/log"
 	servicev1 "github.com/go-pantheon/janus/gen/api/server/gate/service/push/v1"
-	tcp "github.com/go-pantheon/janus/pkg/net/tcp/server"
+	tcp "github.com/go-pantheon/vulcan-net/tcp/server"
 )
 
 var _ servicev1.PushServiceServer = (*PushService)(nil)

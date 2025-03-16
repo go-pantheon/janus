@@ -11,9 +11,9 @@ import (
 	"github.com/go-pantheon/janus/app/gate/internal/pkg/pool"
 	climod "github.com/go-pantheon/janus/gen/api/client/module"
 	cliseq "github.com/go-pantheon/janus/gen/api/client/sequence"
-	"github.com/go-pantheon/janus/pkg/net"
-	vctx "github.com/go-pantheon/janus/pkg/net/context"
 	"github.com/go-pantheon/vulcan-kit/profile"
+	net "github.com/go-pantheon/vulcan-net"
+	vctx "github.com/go-pantheon/vulcan-net/context"
 	"google.golang.org/protobuf/proto"
 )
 

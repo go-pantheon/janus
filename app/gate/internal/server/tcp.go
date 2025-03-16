@@ -12,10 +12,10 @@ import (
 	"github.com/go-pantheon/janus/app/gate/internal/pkg/middleware/logging"
 	"github.com/go-pantheon/janus/app/gate/internal/pkg/middleware/metadata"
 	"github.com/go-pantheon/janus/app/gate/internal/router"
-	"github.com/go-pantheon/janus/pkg/net"
-	tcp "github.com/go-pantheon/janus/pkg/net/tcp/server"
 	"github.com/go-pantheon/vulcan-kit/metrics"
 	"github.com/go-pantheon/vulcan-kit/router/routetable"
+	"github.com/go-pantheon/vulcan-net"
+	tcp "github.com/go-pantheon/vulcan-net/tcp/server"
 	"github.com/pkg/errors"
 )
 

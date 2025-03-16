@@ -1,7 +1,8 @@
 go 1.23.0
 
 use (
-    .
+	.
 	./deps/vulcan-kit
+	./deps/vulcan-net
 	./deps/vulcan-util
 )

@@ -18,7 +18,7 @@ import (
 	"github.com/go-pantheon/janus/app/gate/internal/router"
 	"github.com/go-pantheon/janus/app/gate/internal/server"
 	"github.com/go-pantheon/janus/app/gate/internal/service/push/v1"
-	"github.com/go-pantheon/janus/pkg/net/health"
+	"github.com/go-pantheon/vulcan-net/health"
 )
 
 // Injectors from wire.go:

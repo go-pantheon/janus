@@ -8,8 +8,8 @@ import (
 	"github.com/go-pantheon/janus/app/gate/internal/intra/net/tunnels/base"
 	clipkt "github.com/go-pantheon/janus/gen/api/client/packet"
 	intrav1 "github.com/go-pantheon/janus/gen/api/server/room/intra/v1"
-	"github.com/go-pantheon/janus/pkg/net"
 	"github.com/go-pantheon/vulcan-kit/tunnel"
+	"github.com/go-pantheon/vulcan-net"
 	"github.com/pkg/errors"
 )
 
