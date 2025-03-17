@@ -22,7 +22,7 @@ server:
 data:
   redis:
     addr: localhost:6379
-    password: vulcan_hammer
+    password: fabrica_hammer
     dial_timeout: 2s
     read_timeout: 0.5s
     write_timeout: 0.5s

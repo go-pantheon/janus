@@ -4,8 +4,8 @@ import (
 	"context"
 
 	"github.com/go-kratos/kratos/v2/log"
+	tcp "github.com/go-pantheon/fabrica-net/tcp/server"
 	servicev1 "github.com/go-pantheon/janus/gen/api/server/gate/service/push/v1"
-	tcp "github.com/go-pantheon/vulcan-net/tcp/server"
 )
 
 var _ servicev1.PushServiceServer = (*PushService)(nil)

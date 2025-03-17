@@ -3,13 +3,13 @@ package room
 import (
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/registry"
+	"github.com/go-pantheon/fabrica-kit/router/balancer"
+	"github.com/go-pantheon/fabrica-kit/router/conn"
 	intrav1 "github.com/go-pantheon/janus/gen/api/server/room/intra/v1"
-	"github.com/go-pantheon/vulcan-kit/router/balancer"
-	"github.com/go-pantheon/vulcan-kit/router/conn"
 )
 
 const (
-	serviceName = "vulcan.room.service"
+	serviceName = "roma.room.service"
 )
 
 type Conn struct {

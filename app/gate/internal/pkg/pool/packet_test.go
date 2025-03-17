@@ -6,8 +6,8 @@ import (
 	"sync"
 	"testing"
 
+	"github.com/go-pantheon/fabrica-util/bitmap"
 	clipkt "github.com/go-pantheon/janus/gen/api/client/packet"
-	"github.com/go-pantheon/vulcan-util/bitmap"
 	"github.com/stretchr/testify/assert"
 )
 

@@ -3,12 +3,12 @@ package service
 import (
 	"context"
 
+	"github.com/go-pantheon/fabrica-kit/tunnel"
+	xnet "github.com/go-pantheon/fabrica-net"
 	"github.com/go-pantheon/janus/app/gate/internal/intra/net/tunnels"
 	"github.com/go-pantheon/janus/app/gate/internal/intra/net/tunnels/player"
 	"github.com/go-pantheon/janus/app/gate/internal/intra/net/tunnels/room"
 	climod "github.com/go-pantheon/janus/gen/api/client/module"
-	"github.com/go-pantheon/vulcan-kit/tunnel"
-	xnet "github.com/go-pantheon/vulcan-net"
 	"github.com/pkg/errors"
 )
 

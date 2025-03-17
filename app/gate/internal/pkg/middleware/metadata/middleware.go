@@ -6,9 +6,9 @@ import (
 
 	"github.com/go-kratos/kratos/v2/middleware"
 	"github.com/go-kratos/kratos/v2/transport"
+	"github.com/go-pantheon/fabrica-kit/profile"
+	"github.com/go-pantheon/fabrica-net"
 	clipkt "github.com/go-pantheon/janus/gen/api/client/packet"
-	"github.com/go-pantheon/vulcan-kit/profile"
-	"github.com/go-pantheon/vulcan-net"
 	"google.golang.org/grpc/metadata"
 )
 

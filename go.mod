@@ -5,9 +5,9 @@ go 1.23.0
 require (
 	github.com/go-kratos/kratos/contrib/registry/etcd/v2 v2.0.0-20250312125852-142ea0a93a9f
 	github.com/go-kratos/kratos/v2 v2.8.4
-	github.com/go-pantheon/vulcan-kit v0.0.0
-	github.com/go-pantheon/vulcan-net v0.0.0-20250316143032-5ee7c0722ec4
-	github.com/go-pantheon/vulcan-util v0.0.0
+	github.com/go-pantheon/fabrica-kit v0.0.1
+	github.com/go-pantheon/fabrica-net v0.0.1
+	github.com/go-pantheon/fabrica-util v0.0.1
 	github.com/google/wire v0.6.0
 	github.com/pkg/errors v0.9.1
 	github.com/redis/go-redis/v9 v9.7.1
@@ -77,8 +77,8 @@ require (
 	gorm.io/gorm v1.25.12 // indirect
 )
 
-replace github.com/go-pantheon/vulcan-kit => ./deps/vulcan-kit
+replace github.com/go-pantheon/fabrica-kit => ./deps/fabrica-kit
 
-replace github.com/go-pantheon/vulcan-net => ./deps/vulcan-net
+replace github.com/go-pantheon/fabrica-net => ./deps/fabrica-net
 
-replace github.com/go-pantheon/vulcan-util => ./deps/vulcan-util
+replace github.com/go-pantheon/fabrica-util => ./deps/fabrica-util

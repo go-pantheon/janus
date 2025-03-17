@@ -2,4 +2,4 @@ etcd:
   endpoints:
     - localhost:2379
   username: root
-  password: vulcan_hammer
+  password: fabrica_hammer

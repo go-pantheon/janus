@@ -1,8 +1,8 @@
 package data
 
 import (
+	"github.com/go-pantheon/fabrica-util/data/cache"
 	"github.com/go-pantheon/janus/app/gate/internal/conf"
-	"github.com/go-pantheon/vulcan-util/data/cache"
 	"github.com/google/wire"
 	"github.com/redis/go-redis/v9"
 )

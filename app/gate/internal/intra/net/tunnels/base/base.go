@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"github.com/go-kratos/kratos/v2/log"
+	"github.com/go-pantheon/fabrica-net"
 	"github.com/go-pantheon/janus/app/gate/internal/intra/net/tunnels"
-	"github.com/go-pantheon/vulcan-net"
 )
 
 var _ tunnels.AppTunnelBase = (*Tunnel)(nil)

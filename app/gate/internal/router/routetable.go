@@ -5,10 +5,10 @@ import (
 	"time"
 
 	"github.com/go-kratos/kratos/v2/log"
+	"github.com/go-pantheon/fabrica-kit/profile"
+	"github.com/go-pantheon/fabrica-kit/router/routetable"
+	"github.com/go-pantheon/fabrica-kit/router/routetable/redis"
 	"github.com/go-pantheon/janus/app/gate/internal/data"
-	"github.com/go-pantheon/vulcan-kit/profile"
-	"github.com/go-pantheon/vulcan-kit/router/routetable"
-	"github.com/go-pantheon/vulcan-kit/router/routetable/redis"
 	"github.com/pkg/errors"
 )
 

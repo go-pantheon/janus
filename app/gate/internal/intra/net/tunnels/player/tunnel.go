@@ -4,15 +4,15 @@ import (
 	"context"
 
 	"github.com/go-kratos/kratos/v2/log"
+	"github.com/go-pantheon/fabrica-kit/router"
+	"github.com/go-pantheon/fabrica-kit/tunnel"
+	"github.com/go-pantheon/fabrica-net"
+	"github.com/go-pantheon/fabrica-util/time"
 	"github.com/go-pantheon/janus/app/gate/internal/client/player"
 	"github.com/go-pantheon/janus/app/gate/internal/intra/net/tunnels"
 	"github.com/go-pantheon/janus/app/gate/internal/intra/net/tunnels/base"
 	clipkt "github.com/go-pantheon/janus/gen/api/client/packet"
 	intrav1 "github.com/go-pantheon/janus/gen/api/server/player/intra/v1"
-	"github.com/go-pantheon/vulcan-kit/router"
-	"github.com/go-pantheon/vulcan-kit/tunnel"
-	"github.com/go-pantheon/vulcan-net"
-	"github.com/go-pantheon/vulcan-util/time"
 	"github.com/pkg/errors"
 )
 

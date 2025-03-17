@@ -9,9 +9,9 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	kgrpc "github.com/go-kratos/kratos/v2/transport/grpc"
+	"github.com/go-pantheon/fabrica-kit/metrics"
 	"github.com/go-pantheon/janus/app/gate/internal/conf"
 	pushv1 "github.com/go-pantheon/janus/gen/api/server/gate/service/push/v1"
-	"github.com/go-pantheon/vulcan-kit/metrics"
 	"google.golang.org/grpc"
 )
 

@@ -4,12 +4,12 @@
 [submodule "api/server"]
 	path = api/server
 	url = https://github.com/go-pantheon/api-server
-[submodule "deps/vulcan-util"]
-	path = deps/vulcan-util
-	url = https://github.com/go-pantheon/vulcan-util
-[submodule "deps/vulcan-kit"]
-	path = deps/vulcan-kit
-	url = https://github.com/go-pantheon/vulcan-kit
-[submodule "deps/vulcan-net"]
-	path = deps/vulcan-net
-	url = https://github.com/go-pantheon/vulcan-net
+[submodule "deps/fabrica-net"]
+	path = deps/fabrica-net
+	url = https://github.com/go-pantheon/fabrica-net
+[submodule "deps/fabrica-kit"]
+	path = deps/fabrica-kit
+	url = https://github.com/go-pantheon/fabrica-kit
+[submodule "deps/fabrica-util"]
+	path = deps/fabrica-util
+	url = https://github.com/go-pantheon/fabrica-util

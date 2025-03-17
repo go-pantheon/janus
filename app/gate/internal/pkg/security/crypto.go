@@ -6,9 +6,9 @@ import (
 	"crypto/x509"
 	"encoding/base64"
 
-	"github.com/go-pantheon/vulcan-util/rand"
-	"github.com/go-pantheon/vulcan-util/security/aes"
-	rrsa "github.com/go-pantheon/vulcan-util/security/rsa"
+	"github.com/go-pantheon/fabrica-util/rand"
+	"github.com/go-pantheon/fabrica-util/security/aes"
+	rrsa "github.com/go-pantheon/fabrica-util/security/rsa"
 	"github.com/pkg/errors"
 )
 
