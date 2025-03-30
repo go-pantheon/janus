@@ -763,13 +763,13 @@ func (m *PushBody) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Mod
-
-	// no validation rules for Seq
+	// no validation rules for Data
 
 	// no validation rules for Obj
 
-	// no validation rules for Data
+	// no validation rules for Mod
+
+	// no validation rules for Seq
 
 	if len(errors) > 0 {
 		return PushBodyMultiError(errors)

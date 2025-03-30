@@ -35,316 +35,6 @@ var (
 	_ = sort.Sort
 )
 
-// Validate checks the field values on SCPushItemUpdated with the rules defined
-// in the proto definition for this message. If any rules are violated, the
-// first error encountered is returned, or nil if there are no violations.
-func (m *SCPushItemUpdated) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on SCPushItemUpdated with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, the result is a list of violation errors wrapped in
-// SCPushItemUpdatedMultiError, or nil if none found.
-func (m *SCPushItemUpdated) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *SCPushItemUpdated) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	// no validation rules for Items
-
-	if len(errors) > 0 {
-		return SCPushItemUpdatedMultiError(errors)
-	}
-
-	return nil
-}
-
-// SCPushItemUpdatedMultiError is an error wrapping multiple validation errors
-// returned by SCPushItemUpdated.ValidateAll() if the designated constraints
-// aren't met.
-type SCPushItemUpdatedMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m SCPushItemUpdatedMultiError) Error() string {
-	msgs := make([]string, 0, len(m))
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m SCPushItemUpdatedMultiError) AllErrors() []error { return m }
-
-// SCPushItemUpdatedValidationError is the validation error returned by
-// SCPushItemUpdated.Validate if the designated constraints aren't met.
-type SCPushItemUpdatedValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e SCPushItemUpdatedValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e SCPushItemUpdatedValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e SCPushItemUpdatedValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e SCPushItemUpdatedValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e SCPushItemUpdatedValidationError) ErrorName() string {
-	return "SCPushItemUpdatedValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e SCPushItemUpdatedValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sSCPushItemUpdated.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = SCPushItemUpdatedValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = SCPushItemUpdatedValidationError{}
-
-// Validate checks the field values on CSUsePack with the rules defined in the
-// proto definition for this message. If any rules are violated, the first
-// error encountered is returned, or nil if there are no violations.
-func (m *CSUsePack) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on CSUsePack with the rules defined in
-// the proto definition for this message. If any rules are violated, the
-// result is a list of violation errors wrapped in CSUsePackMultiError, or nil
-// if none found.
-func (m *CSUsePack) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *CSUsePack) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	// no validation rules for Id
-
-	if len(errors) > 0 {
-		return CSUsePackMultiError(errors)
-	}
-
-	return nil
-}
-
-// CSUsePackMultiError is an error wrapping multiple validation errors returned
-// by CSUsePack.ValidateAll() if the designated constraints aren't met.
-type CSUsePackMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m CSUsePackMultiError) Error() string {
-	msgs := make([]string, 0, len(m))
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m CSUsePackMultiError) AllErrors() []error { return m }
-
-// CSUsePackValidationError is the validation error returned by
-// CSUsePack.Validate if the designated constraints aren't met.
-type CSUsePackValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e CSUsePackValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e CSUsePackValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e CSUsePackValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e CSUsePackValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e CSUsePackValidationError) ErrorName() string { return "CSUsePackValidationError" }
-
-// Error satisfies the builtin error interface
-func (e CSUsePackValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sCSUsePack.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = CSUsePackValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = CSUsePackValidationError{}
-
-// Validate checks the field values on SCUsePack with the rules defined in the
-// proto definition for this message. If any rules are violated, the first
-// error encountered is returned, or nil if there are no violations.
-func (m *SCUsePack) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on SCUsePack with the rules defined in
-// the proto definition for this message. If any rules are violated, the
-// result is a list of violation errors wrapped in SCUsePackMultiError, or nil
-// if none found.
-func (m *SCUsePack) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *SCUsePack) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	// no validation rules for Code
-
-	// no validation rules for Id
-
-	// no validation rules for ChangedItems
-
-	if len(errors) > 0 {
-		return SCUsePackMultiError(errors)
-	}
-
-	return nil
-}
-
-// SCUsePackMultiError is an error wrapping multiple validation errors returned
-// by SCUsePack.ValidateAll() if the designated constraints aren't met.
-type SCUsePackMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m SCUsePackMultiError) Error() string {
-	msgs := make([]string, 0, len(m))
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m SCUsePackMultiError) AllErrors() []error { return m }
-
-// SCUsePackValidationError is the validation error returned by
-// SCUsePack.Validate if the designated constraints aren't met.
-type SCUsePackValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e SCUsePackValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e SCUsePackValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e SCUsePackValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e SCUsePackValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e SCUsePackValidationError) ErrorName() string { return "SCUsePackValidationError" }
-
-// Error satisfies the builtin error interface
-func (e SCUsePackValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sSCUsePack.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = SCUsePackValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = SCUsePackValidationError{}
-
 // Validate checks the field values on UserStorageProto with the rules defined
 // in the proto definition for this message. If any rules are violated, the
 // first error encountered is returned, or nil if there are no violations.
@@ -367,28 +57,30 @@ func (m *UserStorageProto) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Amounts
+	// no validation rules for Items
+
+	// no validation rules for Packs
 
 	{
-		sorted_keys := make([]int64, len(m.GetPacks()))
+		sorted_keys := make([]int64, len(m.GetRecoveryInfos()))
 		i := 0
-		for key := range m.GetPacks() {
+		for key := range m.GetRecoveryInfos() {
 			sorted_keys[i] = key
 			i++
 		}
 		sort.Slice(sorted_keys, func(i, j int) bool { return sorted_keys[i] < sorted_keys[j] })
 		for _, key := range sorted_keys {
-			val := m.GetPacks()[key]
+			val := m.GetRecoveryInfos()[key]
 			_ = val
 
-			// no validation rules for Packs[key]
+			// no validation rules for RecoveryInfos[key]
 
 			if all {
 				switch v := interface{}(val).(type) {
 				case interface{ ValidateAll() error }:
 					if err := v.ValidateAll(); err != nil {
 						errors = append(errors, UserStorageProtoValidationError{
-							field:  fmt.Sprintf("Packs[%v]", key),
+							field:  fmt.Sprintf("RecoveryInfos[%v]", key),
 							reason: "embedded message failed validation",
 							cause:  err,
 						})
@@ -396,7 +88,7 @@ func (m *UserStorageProto) validate(all bool) error {
 				case interface{ Validate() error }:
 					if err := v.Validate(); err != nil {
 						errors = append(errors, UserStorageProtoValidationError{
-							field:  fmt.Sprintf("Packs[%v]", key),
+							field:  fmt.Sprintf("RecoveryInfos[%v]", key),
 							reason: "embedded message failed validation",
 							cause:  err,
 						})
@@ -405,53 +97,7 @@ func (m *UserStorageProto) validate(all bool) error {
 			} else if v, ok := interface{}(val).(interface{ Validate() error }); ok {
 				if err := v.Validate(); err != nil {
 					return UserStorageProtoValidationError{
-						field:  fmt.Sprintf("Packs[%v]", key),
-						reason: "embedded message failed validation",
-						cause:  err,
-					}
-				}
-			}
-
-		}
-	}
-
-	{
-		sorted_keys := make([]int64, len(m.GetRecoverableItems()))
-		i := 0
-		for key := range m.GetRecoverableItems() {
-			sorted_keys[i] = key
-			i++
-		}
-		sort.Slice(sorted_keys, func(i, j int) bool { return sorted_keys[i] < sorted_keys[j] })
-		for _, key := range sorted_keys {
-			val := m.GetRecoverableItems()[key]
-			_ = val
-
-			// no validation rules for RecoverableItems[key]
-
-			if all {
-				switch v := interface{}(val).(type) {
-				case interface{ ValidateAll() error }:
-					if err := v.ValidateAll(); err != nil {
-						errors = append(errors, UserStorageProtoValidationError{
-							field:  fmt.Sprintf("RecoverableItems[%v]", key),
-							reason: "embedded message failed validation",
-							cause:  err,
-						})
-					}
-				case interface{ Validate() error }:
-					if err := v.Validate(); err != nil {
-						errors = append(errors, UserStorageProtoValidationError{
-							field:  fmt.Sprintf("RecoverableItems[%v]", key),
-							reason: "embedded message failed validation",
-							cause:  err,
-						})
-					}
-				}
-			} else if v, ok := interface{}(val).(interface{ Validate() error }); ok {
-				if err := v.Validate(); err != nil {
-					return UserStorageProtoValidationError{
-						field:  fmt.Sprintf("RecoverableItems[%v]", key),
+						field:  fmt.Sprintf("RecoveryInfos[%v]", key),
 						reason: "embedded message failed validation",
 						cause:  err,
 					}
@@ -539,22 +185,22 @@ var _ interface {
 	ErrorName() string
 } = UserStorageProtoValidationError{}
 
-// Validate checks the field values on ItemPackProto with the rules defined in
-// the proto definition for this message. If any rules are violated, the first
-// error encountered is returned, or nil if there are no violations.
-func (m *ItemPackProto) Validate() error {
+// Validate checks the field values on ItemRecoveryInfoProto with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ItemRecoveryInfoProto) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on ItemPackProto with the rules defined
-// in the proto definition for this message. If any rules are violated, the
-// result is a list of violation errors wrapped in ItemPackProtoMultiError, or
-// nil if none found.
-func (m *ItemPackProto) ValidateAll() error {
+// ValidateAll checks the field values on ItemRecoveryInfoProto with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ItemRecoveryInfoProtoMultiError, or nil if none found.
+func (m *ItemRecoveryInfoProto) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *ItemPackProto) validate(all bool) error {
+func (m *ItemRecoveryInfoProto) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -563,130 +209,26 @@ func (m *ItemPackProto) validate(all bool) error {
 
 	// no validation rules for DataId
 
-	// no validation rules for ReceivedAt
-
-	if len(errors) > 0 {
-		return ItemPackProtoMultiError(errors)
-	}
-
-	return nil
-}
-
-// ItemPackProtoMultiError is an error wrapping multiple validation errors
-// returned by ItemPackProto.ValidateAll() if the designated constraints
-// aren't met.
-type ItemPackProtoMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m ItemPackProtoMultiError) Error() string {
-	msgs := make([]string, 0, len(m))
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m ItemPackProtoMultiError) AllErrors() []error { return m }
-
-// ItemPackProtoValidationError is the validation error returned by
-// ItemPackProto.Validate if the designated constraints aren't met.
-type ItemPackProtoValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e ItemPackProtoValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e ItemPackProtoValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e ItemPackProtoValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e ItemPackProtoValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e ItemPackProtoValidationError) ErrorName() string { return "ItemPackProtoValidationError" }
-
-// Error satisfies the builtin error interface
-func (e ItemPackProtoValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sItemPackProto.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = ItemPackProtoValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = ItemPackProtoValidationError{}
-
-// Validate checks the field values on ItemRecoverableProto with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, the first error encountered is returned, or nil if there are no violations.
-func (m *ItemRecoverableProto) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on ItemRecoverableProto with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, the result is a list of violation errors wrapped in
-// ItemRecoverableProtoMultiError, or nil if none found.
-func (m *ItemRecoverableProto) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *ItemRecoverableProto) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	// no validation rules for Count
-
 	// no validation rules for Max
 
-	// no validation rules for RecoverPerSecond
+	// no validation rules for RecoverPerSec
 
 	// no validation rules for UpdatedAt
 
 	if len(errors) > 0 {
-		return ItemRecoverableProtoMultiError(errors)
+		return ItemRecoveryInfoProtoMultiError(errors)
 	}
 
 	return nil
 }
 
-// ItemRecoverableProtoMultiError is an error wrapping multiple validation
-// errors returned by ItemRecoverableProto.ValidateAll() if the designated
+// ItemRecoveryInfoProtoMultiError is an error wrapping multiple validation
+// errors returned by ItemRecoveryInfoProto.ValidateAll() if the designated
 // constraints aren't met.
-type ItemRecoverableProtoMultiError []error
+type ItemRecoveryInfoProtoMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m ItemRecoverableProtoMultiError) Error() string {
+func (m ItemRecoveryInfoProtoMultiError) Error() string {
 	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -695,11 +237,11 @@ func (m ItemRecoverableProtoMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m ItemRecoverableProtoMultiError) AllErrors() []error { return m }
+func (m ItemRecoveryInfoProtoMultiError) AllErrors() []error { return m }
 
-// ItemRecoverableProtoValidationError is the validation error returned by
-// ItemRecoverableProto.Validate if the designated constraints aren't met.
-type ItemRecoverableProtoValidationError struct {
+// ItemRecoveryInfoProtoValidationError is the validation error returned by
+// ItemRecoveryInfoProto.Validate if the designated constraints aren't met.
+type ItemRecoveryInfoProtoValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -707,24 +249,24 @@ type ItemRecoverableProtoValidationError struct {
 }
 
 // Field function returns field value.
-func (e ItemRecoverableProtoValidationError) Field() string { return e.field }
+func (e ItemRecoveryInfoProtoValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e ItemRecoverableProtoValidationError) Reason() string { return e.reason }
+func (e ItemRecoveryInfoProtoValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e ItemRecoverableProtoValidationError) Cause() error { return e.cause }
+func (e ItemRecoveryInfoProtoValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e ItemRecoverableProtoValidationError) Key() bool { return e.key }
+func (e ItemRecoveryInfoProtoValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e ItemRecoverableProtoValidationError) ErrorName() string {
-	return "ItemRecoverableProtoValidationError"
+func (e ItemRecoveryInfoProtoValidationError) ErrorName() string {
+	return "ItemRecoveryInfoProtoValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e ItemRecoverableProtoValidationError) Error() string {
+func (e ItemRecoveryInfoProtoValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -736,14 +278,14 @@ func (e ItemRecoverableProtoValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sItemRecoverableProto.%s: %s%s",
+		"invalid %sItemRecoveryInfoProto.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = ItemRecoverableProtoValidationError{}
+var _ error = ItemRecoveryInfoProtoValidationError{}
 
 var _ interface {
 	Field() string
@@ -751,4 +293,4 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = ItemRecoverableProtoValidationError{}
+} = ItemRecoveryInfoProtoValidationError{}

@@ -1,5 +1,5 @@
 etcd:
   endpoints:
     - localhost:2379
-  username: root
-  password: fabrica_hammer
+  username: ${ETCD_USERNAME}
+  password: ${ETCD_PASSWORD}

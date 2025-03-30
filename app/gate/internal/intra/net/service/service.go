@@ -5,8 +5,8 @@ import (
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-pantheon/fabrica-kit/tunnel"
-	xnet "github.com/go-pantheon/fabrica-net"
-	rctx "github.com/go-pantheon/fabrica-net/context"
+	net "github.com/go-pantheon/fabrica-net"
+	"github.com/go-pantheon/fabrica-net/xcontext"
 	"github.com/go-pantheon/fabrica-util/compress"
 	"github.com/go-pantheon/janus/app/gate/internal/client/player"
 	"github.com/go-pantheon/janus/app/gate/internal/client/room"
@@ -21,7 +21,7 @@ import (
 
 var ProviderSet = wire.NewSet(NewTCPService)
 
-var _ xnet.Service = (*Service)(nil)
+var _ net.Service = (*Service)(nil)
 
 type Service struct {
 	logger    log.Logger
@@ -48,14 +48,14 @@ func NewTCPService(logger log.Logger, label *conf.Label,
 	}
 }
 
-func (s *Service) Handle(ctx context.Context, ss xnet.Session, th tunnel.Holder, in []byte) (err error) {
+func (s *Service) Handle(ctx context.Context, ss net.Session, th tunnel.Holder, in []byte) (err error) {
 	if err = s.handle(ctx, ss, th, in); err != nil {
 		return errors.WithMessagef(err, "uid=%d color=%s status=%d", ss.UID(), ss.Color(), ss.Status())
 	}
 	return nil
 }
 
-func (s *Service) handle(ctx context.Context, ss xnet.Session, th tunnel.Holder, in []byte) (err error) {
+func (s *Service) handle(ctx context.Context, ss net.Session, th tunnel.Holder, in []byte) (err error) {
 	p := pool.GetPacket()
 	defer pool.PutPacket(p)
 
@@ -83,7 +83,7 @@ func (s *Service) handle(ctx context.Context, ss xnet.Session, th tunnel.Holder,
 	if p.Obj == 0 {
 		p.Obj = int64(ss.UID())
 	}
-	ctx = rctx.SetOID(ctx, p.Obj)
+	ctx = xcontext.SetOID(ctx, p.Obj)
 
 	var t tunnel.Tunnel
 	if t, err = th.Tunnel(ctx, p.Mod, p.Obj); err != nil {

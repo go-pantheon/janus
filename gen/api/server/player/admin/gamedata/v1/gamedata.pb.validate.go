@@ -197,6 +197,40 @@ func (m *GetItemListResponse) validate(all bool) error {
 
 	}
 
+	for idx, item := range m.GetPacks() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, GetItemListResponseValidationError{
+						field:  fmt.Sprintf("Packs[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, GetItemListResponseValidationError{
+						field:  fmt.Sprintf("Packs[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return GetItemListResponseValidationError{
+					field:  fmt.Sprintf("Packs[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
 	if len(errors) > 0 {
 		return GetItemListResponseMultiError(errors)
 	}
@@ -303,10 +337,6 @@ func (m *ItemDataProto) validate(all bool) error {
 
 	// no validation rules for Name
 
-	// no validation rules for Type
-
-	// no validation rules for TypeValue
-
 	if len(errors) > 0 {
 		return ItemDataProtoMultiError(errors)
 	}
@@ -384,3 +414,107 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = ItemDataProtoValidationError{}
+
+// Validate checks the field values on PackDataProto with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *PackDataProto) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on PackDataProto with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in PackDataProtoMultiError, or
+// nil if none found.
+func (m *PackDataProto) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *PackDataProto) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Id
+
+	// no validation rules for Name
+
+	if len(errors) > 0 {
+		return PackDataProtoMultiError(errors)
+	}
+
+	return nil
+}
+
+// PackDataProtoMultiError is an error wrapping multiple validation errors
+// returned by PackDataProto.ValidateAll() if the designated constraints
+// aren't met.
+type PackDataProtoMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m PackDataProtoMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m PackDataProtoMultiError) AllErrors() []error { return m }
+
+// PackDataProtoValidationError is the validation error returned by
+// PackDataProto.Validate if the designated constraints aren't met.
+type PackDataProtoValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e PackDataProtoValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e PackDataProtoValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e PackDataProtoValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e PackDataProtoValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e PackDataProtoValidationError) ErrorName() string { return "PackDataProtoValidationError" }
+
+// Error satisfies the builtin error interface
+func (e PackDataProtoValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sPackDataProto.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = PackDataProtoValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = PackDataProtoValidationError{}

@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-http v2.8.4
 // - protoc             (unknown)
-// source: message/hero.proto
+// source: message/hero_service.proto
 
 package climsg
 
@@ -19,19 +19,19 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationHeroTCPServiceHeroLevelUpgrade = "/message.HeroTCPService/HeroLevelUpgrade"
+const OperationHeroServiceHeroLevelUpgrade = "/message.HeroService/HeroLevelUpgrade"
 
-type HeroTCPServiceHTTPServer interface {
+type HeroServiceHTTPServer interface {
 	// HeroLevelUpgrade Hero level upgrade
 	HeroLevelUpgrade(context.Context, *CSHeroLevelUpgrade) (*SCHeroLevelUpgrade, error)
 }
 
-func RegisterHeroTCPServiceHTTPServer(s *http.Server, srv HeroTCPServiceHTTPServer) {
+func RegisterHeroServiceHTTPServer(s *http.Server, srv HeroServiceHTTPServer) {
 	r := s.Route("/")
-	r.POST("/hero/level/upgrade", _HeroTCPService_HeroLevelUpgrade0_HTTP_Handler(srv))
+	r.POST("/hero/level/upgrade", _HeroService_HeroLevelUpgrade0_HTTP_Handler(srv))
 }
 
-func _HeroTCPService_HeroLevelUpgrade0_HTTP_Handler(srv HeroTCPServiceHTTPServer) func(ctx http.Context) error {
+func _HeroService_HeroLevelUpgrade0_HTTP_Handler(srv HeroServiceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in CSHeroLevelUpgrade
 		if err := ctx.Bind(&in); err != nil {
@@ -40,7 +40,7 @@ func _HeroTCPService_HeroLevelUpgrade0_HTTP_Handler(srv HeroTCPServiceHTTPServer
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationHeroTCPServiceHeroLevelUpgrade)
+		http.SetOperation(ctx, OperationHeroServiceHeroLevelUpgrade)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.HeroLevelUpgrade(ctx, req.(*CSHeroLevelUpgrade))
 		})
@@ -53,23 +53,23 @@ func _HeroTCPService_HeroLevelUpgrade0_HTTP_Handler(srv HeroTCPServiceHTTPServer
 	}
 }
 
-type HeroTCPServiceHTTPClient interface {
+type HeroServiceHTTPClient interface {
 	HeroLevelUpgrade(ctx context.Context, req *CSHeroLevelUpgrade, opts ...http.CallOption) (rsp *SCHeroLevelUpgrade, err error)
 }
 
-type HeroTCPServiceHTTPClientImpl struct {
+type HeroServiceHTTPClientImpl struct {
 	cc *http.Client
 }
 
-func NewHeroTCPServiceHTTPClient(client *http.Client) HeroTCPServiceHTTPClient {
-	return &HeroTCPServiceHTTPClientImpl{client}
+func NewHeroServiceHTTPClient(client *http.Client) HeroServiceHTTPClient {
+	return &HeroServiceHTTPClientImpl{client}
 }
 
-func (c *HeroTCPServiceHTTPClientImpl) HeroLevelUpgrade(ctx context.Context, in *CSHeroLevelUpgrade, opts ...http.CallOption) (*SCHeroLevelUpgrade, error) {
+func (c *HeroServiceHTTPClientImpl) HeroLevelUpgrade(ctx context.Context, in *CSHeroLevelUpgrade, opts ...http.CallOption) (*SCHeroLevelUpgrade, error) {
 	var out SCHeroLevelUpgrade
 	pattern := "/hero/level/upgrade"
 	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationHeroTCPServiceHeroLevelUpgrade))
+	opts = append(opts, http.Operation(OperationHeroServiceHeroLevelUpgrade))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {

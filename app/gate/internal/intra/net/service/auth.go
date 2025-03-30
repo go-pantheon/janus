@@ -7,7 +7,7 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-pantheon/fabrica-net"
 	"github.com/go-pantheon/fabrica-util/security/rsa"
-	"github.com/go-pantheon/fabrica-util/time"
+	"github.com/go-pantheon/fabrica-util/xtime"
 	"github.com/go-pantheon/janus/app/gate/internal/pkg/pool"
 	"github.com/go-pantheon/janus/app/gate/internal/pkg/security"
 	climsg "github.com/go-pantheon/janus/gen/api/client/message"
@@ -110,11 +110,11 @@ func (s *Service) auth(authToken string, sid int64) (key []byte, ss net.Session,
 		block cipher.Block
 	)
 
-	now := time.Now()
+	now := xtime.Now()
 	if token, err = decryptAccountToken(authToken); err != nil {
 		return
 	}
-	if now.After(time.Time(token.Timeout)) {
+	if now.After(xtime.Time(token.Timeout)) {
 		err = errors.New("token expired")
 		return
 	}

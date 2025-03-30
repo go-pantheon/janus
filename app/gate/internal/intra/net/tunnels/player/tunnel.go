@@ -6,8 +6,8 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-pantheon/fabrica-kit/router"
 	"github.com/go-pantheon/fabrica-kit/tunnel"
-	"github.com/go-pantheon/fabrica-net"
-	"github.com/go-pantheon/fabrica-util/time"
+	net "github.com/go-pantheon/fabrica-net"
+	"github.com/go-pantheon/fabrica-util/xtime"
 	"github.com/go-pantheon/janus/app/gate/internal/client/player"
 	"github.com/go-pantheon/janus/app/gate/internal/intra/net/tunnels"
 	"github.com/go-pantheon/janus/app/gate/internal/intra/net/tunnels/base"
@@ -92,6 +92,6 @@ func (t *Tunnel) OnStop() {
 // OnGroupStop is called when the player tunnel is closed
 // it will close the worker when the player tunnel is closed
 func (t *Tunnel) OnGroupStop(ctx context.Context, err error) {
-	t.worker.SetExpiryTime(time.Now())
+	t.worker.SetExpiryTime(xtime.Now())
 	t.Log().Debugf("[player.Tunnel] tunnel group exit. uid=%d color=%s oid=%d %+v", t.UID(), t.Color(), t.OID(), err)
 }

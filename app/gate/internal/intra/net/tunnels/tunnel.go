@@ -6,11 +6,11 @@ import (
 	"time"
 
 	"github.com/go-kratos/kratos/v2/log"
-	verrors "github.com/go-pantheon/fabrica-kit/errors"
 	"github.com/go-pantheon/fabrica-kit/tunnel"
-	"github.com/go-pantheon/fabrica-net"
+	"github.com/go-pantheon/fabrica-kit/xerrors"
+	net "github.com/go-pantheon/fabrica-net"
 	"github.com/go-pantheon/fabrica-util/compress"
-	"github.com/go-pantheon/fabrica-util/sync"
+	"github.com/go-pantheon/fabrica-util/xsync"
 	"github.com/go-pantheon/janus/app/gate/internal/pkg/pool"
 	clipkt "github.com/go-pantheon/janus/gen/api/client/packet"
 	"github.com/pkg/errors"
@@ -40,7 +40,7 @@ type AppTunnelBase interface {
 var _ tunnel.Tunnel = (*Tunnel)(nil)
 
 type Tunnel struct {
-	sync.Stoppable
+	xsync.Stoppable
 	tunnel.Pusher
 
 	app AppTunnel
@@ -50,7 +50,7 @@ type Tunnel struct {
 
 func NewTunnel(ctx context.Context, pusher tunnel.Pusher, app AppTunnel) *Tunnel {
 	t := &Tunnel{
-		Stoppable: sync.NewStopper(time.Second * 10),
+		Stoppable: xsync.NewStopper(time.Second * 10),
 		app:       app,
 		Pusher:    pusher,
 		csChan:    make(chan tunnel.ForwardMessage, 1024),
@@ -66,7 +66,7 @@ func (t *Tunnel) Type() int32 {
 
 func (t *Tunnel) Forward(ctx context.Context, p tunnel.ForwardMessage) error {
 	if t.IsStopping() {
-		return verrors.ErrTunnelStopped
+		return xerrors.ErrTunnelStopped
 	}
 
 	msg, err := t.transform(p)
@@ -92,7 +92,7 @@ func (t *Tunnel) Push(ctx context.Context, pack []byte) error {
 }
 
 func (t *Tunnel) start(ctx context.Context) {
-	sync.GoSafe(fmt.Sprintf("gate.Tunnel-%d-%d-%d", t.app.UID(), t.app.Type(), t.app.OID()), func() error {
+	xsync.GoSafe(fmt.Sprintf("gate.Tunnel-%d-%d-%d", t.app.UID(), t.app.Type(), t.app.OID()), func() error {
 		return t.run(ctx)
 	})
 }
@@ -106,16 +106,16 @@ func (t *Tunnel) run(ctx context.Context) error {
 		case <-ctx.Done():
 			return ctx.Err()
 		case <-t.StopTriggered():
-			return sync.GroupStopping
+			return xsync.GroupStopping
 		}
 	})
 	eg.Go(func() error {
-		return sync.RunSafe(func() error {
+		return xsync.RunSafe(func() error {
 			return t.csLoop(ctx)
 		})
 	})
 	eg.Go(func() error {
-		return sync.RunSafe(func() error {
+		return xsync.RunSafe(func() error {
 			return t.scLoop(ctx)
 		})
 	})
@@ -131,7 +131,7 @@ func (t *Tunnel) csLoop(ctx context.Context) error {
 		case <-ctx.Done():
 			return ctx.Err()
 		case <-t.StopTriggered():
-			return sync.GroupStopping
+			return xsync.GroupStopping
 		case cs := <-t.csChan:
 			if err := t.app.CSHandle(cs); err != nil {
 				return err

@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-http v2.8.4
 // - protoc             (unknown)
-// source: message/dev.proto
+// source: message/dev_service.proto
 
 package climsg
 
@@ -19,23 +19,23 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationDevTCPServiceDevExecute = "/message.DevTCPService/DevExecute"
-const OperationDevTCPServiceDevList = "/message.DevTCPService/DevList"
+const OperationDevServiceDevExecute = "/message.DevService/DevExecute"
+const OperationDevServiceDevList = "/message.DevService/DevList"
 
-type DevTCPServiceHTTPServer interface {
+type DevServiceHTTPServer interface {
 	// DevExecute Execute Dev command
 	DevExecute(context.Context, *CSDevExecute) (*SCDevExecute, error)
 	// DevList Dev command list
 	DevList(context.Context, *CSDevList) (*SCDevList, error)
 }
 
-func RegisterDevTCPServiceHTTPServer(s *http.Server, srv DevTCPServiceHTTPServer) {
+func RegisterDevServiceHTTPServer(s *http.Server, srv DevServiceHTTPServer) {
 	r := s.Route("/")
-	r.POST("/dev/list", _DevTCPService_DevList0_HTTP_Handler(srv))
-	r.POST("/dev/execute", _DevTCPService_DevExecute0_HTTP_Handler(srv))
+	r.POST("/dev/list", _DevService_DevList0_HTTP_Handler(srv))
+	r.POST("/dev/execute", _DevService_DevExecute0_HTTP_Handler(srv))
 }
 
-func _DevTCPService_DevList0_HTTP_Handler(srv DevTCPServiceHTTPServer) func(ctx http.Context) error {
+func _DevService_DevList0_HTTP_Handler(srv DevServiceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in CSDevList
 		if err := ctx.Bind(&in); err != nil {
@@ -44,7 +44,7 @@ func _DevTCPService_DevList0_HTTP_Handler(srv DevTCPServiceHTTPServer) func(ctx 
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationDevTCPServiceDevList)
+		http.SetOperation(ctx, OperationDevServiceDevList)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.DevList(ctx, req.(*CSDevList))
 		})
@@ -57,7 +57,7 @@ func _DevTCPService_DevList0_HTTP_Handler(srv DevTCPServiceHTTPServer) func(ctx 
 	}
 }
 
-func _DevTCPService_DevExecute0_HTTP_Handler(srv DevTCPServiceHTTPServer) func(ctx http.Context) error {
+func _DevService_DevExecute0_HTTP_Handler(srv DevServiceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in CSDevExecute
 		if err := ctx.Bind(&in); err != nil {
@@ -66,7 +66,7 @@ func _DevTCPService_DevExecute0_HTTP_Handler(srv DevTCPServiceHTTPServer) func(c
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationDevTCPServiceDevExecute)
+		http.SetOperation(ctx, OperationDevServiceDevExecute)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.DevExecute(ctx, req.(*CSDevExecute))
 		})
@@ -79,24 +79,24 @@ func _DevTCPService_DevExecute0_HTTP_Handler(srv DevTCPServiceHTTPServer) func(c
 	}
 }
 
-type DevTCPServiceHTTPClient interface {
+type DevServiceHTTPClient interface {
 	DevExecute(ctx context.Context, req *CSDevExecute, opts ...http.CallOption) (rsp *SCDevExecute, err error)
 	DevList(ctx context.Context, req *CSDevList, opts ...http.CallOption) (rsp *SCDevList, err error)
 }
 
-type DevTCPServiceHTTPClientImpl struct {
+type DevServiceHTTPClientImpl struct {
 	cc *http.Client
 }
 
-func NewDevTCPServiceHTTPClient(client *http.Client) DevTCPServiceHTTPClient {
-	return &DevTCPServiceHTTPClientImpl{client}
+func NewDevServiceHTTPClient(client *http.Client) DevServiceHTTPClient {
+	return &DevServiceHTTPClientImpl{client}
 }
 
-func (c *DevTCPServiceHTTPClientImpl) DevExecute(ctx context.Context, in *CSDevExecute, opts ...http.CallOption) (*SCDevExecute, error) {
+func (c *DevServiceHTTPClientImpl) DevExecute(ctx context.Context, in *CSDevExecute, opts ...http.CallOption) (*SCDevExecute, error) {
 	var out SCDevExecute
 	pattern := "/dev/execute"
 	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationDevTCPServiceDevExecute))
+	opts = append(opts, http.Operation(OperationDevServiceDevExecute))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {
@@ -105,11 +105,11 @@ func (c *DevTCPServiceHTTPClientImpl) DevExecute(ctx context.Context, in *CSDevE
 	return &out, nil
 }
 
-func (c *DevTCPServiceHTTPClientImpl) DevList(ctx context.Context, in *CSDevList, opts ...http.CallOption) (*SCDevList, error) {
+func (c *DevServiceHTTPClientImpl) DevList(ctx context.Context, in *CSDevList, opts ...http.CallOption) (*SCDevList, error) {
 	var out SCDevList
 	pattern := "/dev/list"
 	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationDevTCPServiceDevList))
+	opts = append(opts, http.Operation(OperationDevServiceDevList))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {

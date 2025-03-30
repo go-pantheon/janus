@@ -56,21 +56,21 @@ func (m *Packet) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Ver
+	// no validation rules for Data
 
-	// no validation rules for Index
+	// no validation rules for DataVersion
 
-	// no validation rules for Compress
+	// no validation rules for Obj
 
 	// no validation rules for Mod
 
 	// no validation rules for Seq
 
-	// no validation rules for Obj
+	// no validation rules for Ver
 
-	// no validation rules for Data
+	// no validation rules for Index
 
-	// no validation rules for DataVersion
+	// no validation rules for Compress
 
 	if len(errors) > 0 {
 		return PacketMultiError(errors)

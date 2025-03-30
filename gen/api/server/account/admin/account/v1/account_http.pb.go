@@ -19,27 +19,27 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationAccountAdminServiceAccountList = "/account.admin.account.v1.AccountAdminService/AccountList"
-const OperationAccountAdminServiceGetById = "/account.admin.account.v1.AccountAdminService/GetById"
+const OperationAccountAdminAccountList = "/account.admin.account.v1.AccountAdmin/AccountList"
+const OperationAccountAdminGetById = "/account.admin.account.v1.AccountAdmin/GetById"
 
-type AccountAdminServiceHTTPServer interface {
+type AccountAdminHTTPServer interface {
 	AccountList(context.Context, *AccountListRequest) (*AccountListResponse, error)
 	GetById(context.Context, *GetByIdRequest) (*GetByIdResponse, error)
 }
 
-func RegisterAccountAdminServiceHTTPServer(s *http.Server, srv AccountAdminServiceHTTPServer) {
+func RegisterAccountAdminHTTPServer(s *http.Server, srv AccountAdminHTTPServer) {
 	r := s.Route("/")
-	r.GET("/admin/account/list", _AccountAdminService_AccountList0_HTTP_Handler(srv))
-	r.GET("/admin/account/id", _AccountAdminService_GetById0_HTTP_Handler(srv))
+	r.GET("/admin/account/list", _AccountAdmin_AccountList0_HTTP_Handler(srv))
+	r.GET("/admin/account/id", _AccountAdmin_GetById0_HTTP_Handler(srv))
 }
 
-func _AccountAdminService_AccountList0_HTTP_Handler(srv AccountAdminServiceHTTPServer) func(ctx http.Context) error {
+func _AccountAdmin_AccountList0_HTTP_Handler(srv AccountAdminHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in AccountListRequest
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationAccountAdminServiceAccountList)
+		http.SetOperation(ctx, OperationAccountAdminAccountList)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.AccountList(ctx, req.(*AccountListRequest))
 		})
@@ -52,13 +52,13 @@ func _AccountAdminService_AccountList0_HTTP_Handler(srv AccountAdminServiceHTTPS
 	}
 }
 
-func _AccountAdminService_GetById0_HTTP_Handler(srv AccountAdminServiceHTTPServer) func(ctx http.Context) error {
+func _AccountAdmin_GetById0_HTTP_Handler(srv AccountAdminHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in GetByIdRequest
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationAccountAdminServiceGetById)
+		http.SetOperation(ctx, OperationAccountAdminGetById)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.GetById(ctx, req.(*GetByIdRequest))
 		})
@@ -71,24 +71,24 @@ func _AccountAdminService_GetById0_HTTP_Handler(srv AccountAdminServiceHTTPServe
 	}
 }
 
-type AccountAdminServiceHTTPClient interface {
+type AccountAdminHTTPClient interface {
 	AccountList(ctx context.Context, req *AccountListRequest, opts ...http.CallOption) (rsp *AccountListResponse, err error)
 	GetById(ctx context.Context, req *GetByIdRequest, opts ...http.CallOption) (rsp *GetByIdResponse, err error)
 }
 
-type AccountAdminServiceHTTPClientImpl struct {
+type AccountAdminHTTPClientImpl struct {
 	cc *http.Client
 }
 
-func NewAccountAdminServiceHTTPClient(client *http.Client) AccountAdminServiceHTTPClient {
-	return &AccountAdminServiceHTTPClientImpl{client}
+func NewAccountAdminHTTPClient(client *http.Client) AccountAdminHTTPClient {
+	return &AccountAdminHTTPClientImpl{client}
 }
 
-func (c *AccountAdminServiceHTTPClientImpl) AccountList(ctx context.Context, in *AccountListRequest, opts ...http.CallOption) (*AccountListResponse, error) {
+func (c *AccountAdminHTTPClientImpl) AccountList(ctx context.Context, in *AccountListRequest, opts ...http.CallOption) (*AccountListResponse, error) {
 	var out AccountListResponse
 	pattern := "/admin/account/list"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationAccountAdminServiceAccountList))
+	opts = append(opts, http.Operation(OperationAccountAdminAccountList))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {
@@ -97,11 +97,11 @@ func (c *AccountAdminServiceHTTPClientImpl) AccountList(ctx context.Context, in 
 	return &out, nil
 }
 
-func (c *AccountAdminServiceHTTPClientImpl) GetById(ctx context.Context, in *GetByIdRequest, opts ...http.CallOption) (*GetByIdResponse, error) {
+func (c *AccountAdminHTTPClientImpl) GetById(ctx context.Context, in *GetByIdRequest, opts ...http.CallOption) (*GetByIdResponse, error) {
 	var out GetByIdResponse
 	pattern := "/admin/account/id"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationAccountAdminServiceGetById))
+	opts = append(opts, http.Operation(OperationAccountAdminGetById))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {

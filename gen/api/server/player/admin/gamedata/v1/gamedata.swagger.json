@@ -85,6 +85,13 @@
             "type": "object",
             "$ref": "#/definitions/v1ItemDataProto"
           }
+        },
+        "packs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1PackDataProto"
+          }
         }
       }
     },
@@ -97,14 +104,18 @@
         },
         "name": {
           "type": "string"
-        },
-        "type": {
+        }
+      }
+    },
+    "v1PackDataProto": {
+      "type": "object",
+      "properties": {
+        "id": {
           "type": "string",
           "format": "int64"
         },
-        "typeValue": {
-          "type": "string",
-          "format": "int64"
+        "name": {
+          "type": "string"
         }
       }
     }

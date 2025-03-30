@@ -3,20 +3,20 @@ module github.com/go-pantheon/janus
 go 1.23.0
 
 require (
-	github.com/go-kratos/kratos/contrib/registry/etcd/v2 v2.0.0-20250312125852-142ea0a93a9f
+	github.com/go-kratos/kratos/contrib/registry/etcd/v2 v2.0.0-20250321075247-025c2dc2b0ff
 	github.com/go-kratos/kratos/v2 v2.8.4
-	github.com/go-pantheon/fabrica-kit v0.0.1
-	github.com/go-pantheon/fabrica-net v0.0.1
-	github.com/go-pantheon/fabrica-util v0.0.1
+	github.com/go-pantheon/fabrica-kit v0.0.3
+	github.com/go-pantheon/fabrica-net v0.0.2
+	github.com/go-pantheon/fabrica-util v0.0.3
 	github.com/google/wire v0.6.0
 	github.com/pkg/errors v0.9.1
-	github.com/redis/go-redis/v9 v9.7.1
+	github.com/redis/go-redis/v9 v9.7.3
 	github.com/stretchr/testify v1.10.0
-	go.etcd.io/etcd/client/v3 v3.5.19
+	go.etcd.io/etcd/client/v3 v3.5.21
 	golang.org/x/sync v0.12.0
-	google.golang.org/genproto/googleapis/api v0.0.0-20250313205543-e70fdf4c4cb4
+	google.golang.org/genproto/googleapis/api v0.0.0-20250324211829-b45e905df463
 	google.golang.org/grpc v1.71.0
-	google.golang.org/protobuf v1.36.5
+	google.golang.org/protobuf v1.36.6
 )
 
 require (
@@ -28,12 +28,12 @@ require (
 	github.com/coreos/go-systemd/v22 v22.5.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
-	github.com/dromara/carbon/v2 v2.5.4 // indirect
+	github.com/dromara/carbon/v2 v2.6.1 // indirect
 	github.com/fsnotify/fsnotify v1.8.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/go-kratos/aegis v0.2.0 // indirect
 	github.com/go-kratos/grpc-gateway/v2 v2.5.1-0.20210811062259-c92d36e434b1 // indirect
-	github.com/go-kratos/kratos/contrib/log/zap/v2 v2.0.0-20250312125852-142ea0a93a9f // indirect
+	github.com/go-kratos/kratos/contrib/log/zap/v2 v2.0.0-20250321075247-025c2dc2b0ff // indirect
 	github.com/go-kratos/swagger-api v1.0.1 // indirect
 	github.com/go-logr/logr v1.4.2 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
@@ -52,10 +52,10 @@ require (
 	github.com/prometheus/client_golang v1.21.1 // indirect
 	github.com/prometheus/client_model v0.6.1 // indirect
 	github.com/prometheus/common v0.63.0 // indirect
-	github.com/prometheus/procfs v0.15.1 // indirect
+	github.com/prometheus/procfs v0.16.0 // indirect
 	github.com/rakyll/statik v0.1.7 // indirect
-	go.etcd.io/etcd/api/v3 v3.5.19 // indirect
-	go.etcd.io/etcd/client/pkg/v3 v3.5.19 // indirect
+	go.etcd.io/etcd/api/v3 v3.5.21 // indirect
+	go.etcd.io/etcd/client/pkg/v3 v3.5.21 // indirect
 	go.opentelemetry.io/auto/sdk v1.1.0 // indirect
 	go.opentelemetry.io/otel v1.35.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.35.0 // indirect
@@ -68,10 +68,10 @@ require (
 	go.uber.org/atomic v1.11.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap v1.27.0 // indirect
-	golang.org/x/net v0.37.0 // indirect
+	golang.org/x/net v0.38.0 // indirect
 	golang.org/x/sys v0.31.0 // indirect
 	golang.org/x/text v0.23.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20250313205543-e70fdf4c4cb4 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20250324211829-b45e905df463 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	gorm.io/gorm v1.25.12 // indirect

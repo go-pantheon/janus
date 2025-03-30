@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-http v2.8.4
 // - protoc             (unknown)
-// source: message/equip.proto
+// source: message/equip_service.proto
 
 package climsg
 
@@ -19,11 +19,11 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationEquipTCPServiceEquipTakeOff = "/message.EquipTCPService/EquipTakeOff"
-const OperationEquipTCPServiceEquipUpgrade = "/message.EquipTCPService/EquipUpgrade"
-const OperationEquipTCPServiceEquipWear = "/message.EquipTCPService/EquipWear"
+const OperationEquipServiceEquipTakeOff = "/message.EquipService/EquipTakeOff"
+const OperationEquipServiceEquipUpgrade = "/message.EquipService/EquipUpgrade"
+const OperationEquipServiceEquipWear = "/message.EquipService/EquipWear"
 
-type EquipTCPServiceHTTPServer interface {
+type EquipServiceHTTPServer interface {
 	// EquipTakeOff Take off equipment
 	EquipTakeOff(context.Context, *CSEquipTakeOff) (*SCEquipTakeOff, error)
 	// EquipUpgrade Equipment upgrade
@@ -32,14 +32,14 @@ type EquipTCPServiceHTTPServer interface {
 	EquipWear(context.Context, *CSEquipWear) (*SCEquipWear, error)
 }
 
-func RegisterEquipTCPServiceHTTPServer(s *http.Server, srv EquipTCPServiceHTTPServer) {
+func RegisterEquipServiceHTTPServer(s *http.Server, srv EquipServiceHTTPServer) {
 	r := s.Route("/")
-	r.POST("/equip/wear", _EquipTCPService_EquipWear0_HTTP_Handler(srv))
-	r.POST("/equip/takeoff", _EquipTCPService_EquipTakeOff0_HTTP_Handler(srv))
-	r.POST("/equip/upgrade", _EquipTCPService_EquipUpgrade0_HTTP_Handler(srv))
+	r.POST("/equip/wear", _EquipService_EquipWear0_HTTP_Handler(srv))
+	r.POST("/equip/takeoff", _EquipService_EquipTakeOff0_HTTP_Handler(srv))
+	r.POST("/equip/upgrade", _EquipService_EquipUpgrade0_HTTP_Handler(srv))
 }
 
-func _EquipTCPService_EquipWear0_HTTP_Handler(srv EquipTCPServiceHTTPServer) func(ctx http.Context) error {
+func _EquipService_EquipWear0_HTTP_Handler(srv EquipServiceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in CSEquipWear
 		if err := ctx.Bind(&in); err != nil {
@@ -48,7 +48,7 @@ func _EquipTCPService_EquipWear0_HTTP_Handler(srv EquipTCPServiceHTTPServer) fun
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationEquipTCPServiceEquipWear)
+		http.SetOperation(ctx, OperationEquipServiceEquipWear)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.EquipWear(ctx, req.(*CSEquipWear))
 		})
@@ -61,7 +61,7 @@ func _EquipTCPService_EquipWear0_HTTP_Handler(srv EquipTCPServiceHTTPServer) fun
 	}
 }
 
-func _EquipTCPService_EquipTakeOff0_HTTP_Handler(srv EquipTCPServiceHTTPServer) func(ctx http.Context) error {
+func _EquipService_EquipTakeOff0_HTTP_Handler(srv EquipServiceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in CSEquipTakeOff
 		if err := ctx.Bind(&in); err != nil {
@@ -70,7 +70,7 @@ func _EquipTCPService_EquipTakeOff0_HTTP_Handler(srv EquipTCPServiceHTTPServer) 
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationEquipTCPServiceEquipTakeOff)
+		http.SetOperation(ctx, OperationEquipServiceEquipTakeOff)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.EquipTakeOff(ctx, req.(*CSEquipTakeOff))
 		})
@@ -83,7 +83,7 @@ func _EquipTCPService_EquipTakeOff0_HTTP_Handler(srv EquipTCPServiceHTTPServer) 
 	}
 }
 
-func _EquipTCPService_EquipUpgrade0_HTTP_Handler(srv EquipTCPServiceHTTPServer) func(ctx http.Context) error {
+func _EquipService_EquipUpgrade0_HTTP_Handler(srv EquipServiceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in CSEquipUpgrade
 		if err := ctx.Bind(&in); err != nil {
@@ -92,7 +92,7 @@ func _EquipTCPService_EquipUpgrade0_HTTP_Handler(srv EquipTCPServiceHTTPServer) 
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationEquipTCPServiceEquipUpgrade)
+		http.SetOperation(ctx, OperationEquipServiceEquipUpgrade)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.EquipUpgrade(ctx, req.(*CSEquipUpgrade))
 		})
@@ -105,25 +105,25 @@ func _EquipTCPService_EquipUpgrade0_HTTP_Handler(srv EquipTCPServiceHTTPServer) 
 	}
 }
 
-type EquipTCPServiceHTTPClient interface {
+type EquipServiceHTTPClient interface {
 	EquipTakeOff(ctx context.Context, req *CSEquipTakeOff, opts ...http.CallOption) (rsp *SCEquipTakeOff, err error)
 	EquipUpgrade(ctx context.Context, req *CSEquipUpgrade, opts ...http.CallOption) (rsp *SCEquipUpgrade, err error)
 	EquipWear(ctx context.Context, req *CSEquipWear, opts ...http.CallOption) (rsp *SCEquipWear, err error)
 }
 
-type EquipTCPServiceHTTPClientImpl struct {
+type EquipServiceHTTPClientImpl struct {
 	cc *http.Client
 }
 
-func NewEquipTCPServiceHTTPClient(client *http.Client) EquipTCPServiceHTTPClient {
-	return &EquipTCPServiceHTTPClientImpl{client}
+func NewEquipServiceHTTPClient(client *http.Client) EquipServiceHTTPClient {
+	return &EquipServiceHTTPClientImpl{client}
 }
 
-func (c *EquipTCPServiceHTTPClientImpl) EquipTakeOff(ctx context.Context, in *CSEquipTakeOff, opts ...http.CallOption) (*SCEquipTakeOff, error) {
+func (c *EquipServiceHTTPClientImpl) EquipTakeOff(ctx context.Context, in *CSEquipTakeOff, opts ...http.CallOption) (*SCEquipTakeOff, error) {
 	var out SCEquipTakeOff
 	pattern := "/equip/takeoff"
 	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationEquipTCPServiceEquipTakeOff))
+	opts = append(opts, http.Operation(OperationEquipServiceEquipTakeOff))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {
@@ -132,11 +132,11 @@ func (c *EquipTCPServiceHTTPClientImpl) EquipTakeOff(ctx context.Context, in *CS
 	return &out, nil
 }
 
-func (c *EquipTCPServiceHTTPClientImpl) EquipUpgrade(ctx context.Context, in *CSEquipUpgrade, opts ...http.CallOption) (*SCEquipUpgrade, error) {
+func (c *EquipServiceHTTPClientImpl) EquipUpgrade(ctx context.Context, in *CSEquipUpgrade, opts ...http.CallOption) (*SCEquipUpgrade, error) {
 	var out SCEquipUpgrade
 	pattern := "/equip/upgrade"
 	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationEquipTCPServiceEquipUpgrade))
+	opts = append(opts, http.Operation(OperationEquipServiceEquipUpgrade))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {
@@ -145,11 +145,11 @@ func (c *EquipTCPServiceHTTPClientImpl) EquipUpgrade(ctx context.Context, in *CS
 	return &out, nil
 }
 
-func (c *EquipTCPServiceHTTPClientImpl) EquipWear(ctx context.Context, in *CSEquipWear, opts ...http.CallOption) (*SCEquipWear, error) {
+func (c *EquipServiceHTTPClientImpl) EquipWear(ctx context.Context, in *CSEquipWear, opts ...http.CallOption) (*SCEquipWear, error) {
 	var out SCEquipWear
 	pattern := "/equip/wear"
 	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationEquipTCPServiceEquipWear))
+	opts = append(opts, http.Operation(OperationEquipServiceEquipWear))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {

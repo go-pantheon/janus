@@ -4,127 +4,14 @@
     "title": "message/hero.proto",
     "version": "version not set"
   },
-  "tags": [
-    {
-      "name": "HeroTCPService"
-    }
-  ],
   "consumes": [
     "application/json"
   ],
   "produces": [
     "application/json"
   ],
-  "paths": {
-    "/hero/level/upgrade": {
-      "post": {
-        "summary": "Hero level upgrade",
-        "operationId": "HeroTCPService_HeroLevelUpgrade",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/messageSCHeroLevelUpgrade"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/messageCSHeroLevelUpgrade"
-            }
-          }
-        ],
-        "tags": [
-          "HeroTCPService"
-        ]
-      }
-    }
-  },
+  "paths": {},
   "definitions": {
-    "messageCSHeroLevelUpgrade": {
-      "type": "object",
-      "properties": {
-        "heroId": {
-          "type": "string",
-          "format": "int64",
-          "title": "Hero_id"
-        }
-      },
-      "title": "Request: Hero level upgrade"
-    },
-    "messageHeroProto": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "format": "int64",
-          "title": "Hero ID"
-        },
-        "dataId": {
-          "type": "string",
-          "format": "int64",
-          "title": "Hero DataID"
-        },
-        "level": {
-          "type": "string",
-          "format": "int64",
-          "title": "Hero level"
-        },
-        "equips": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "format": "int64"
-          },
-          "title": "Equip IDs"
-        }
-      },
-      "title": "Hero"
-    },
-    "messageSCHeroLevelUpgrade": {
-      "type": "object",
-      "properties": {
-        "code": {
-          "$ref": "#/definitions/messageSCHeroLevelUpgradeCode",
-          "title": "Status code"
-        },
-        "hero": {
-          "$ref": "#/definitions/messageHeroProto",
-          "title": "Hero information"
-        },
-        "costs": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "string",
-            "format": "int64"
-          },
-          "title": "Consumed materials"
-        }
-      },
-      "title": "Response: Hero level upgrade"
-    },
-    "messageSCHeroLevelUpgradeCode": {
-      "type": "string",
-      "enum": [
-        "ErrServer",
-        "Success",
-        "ErrRoleNotExist",
-        "ErrMaxLevel",
-        "ErrCostNotEnough"
-      ],
-      "default": "ErrServer",
-      "title": "- ErrServer: Please try again later\n - Success: Success\n - ErrRoleNotExist: Hero does not exist\n - ErrMaxLevel: Already max level\n - ErrCostNotEnough: Cost not enough"
-    },
     "protobufAny": {
       "type": "object",
       "properties": {

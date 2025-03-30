@@ -12,13 +12,13 @@ import (
 	"github.com/go-kratos/kratos/v2/registry"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	"github.com/go-kratos/kratos/v2/transport/http"
-	vlog "github.com/go-pantheon/fabrica-kit/log"
+	xlog "github.com/go-pantheon/fabrica-kit/log"
 	"github.com/go-pantheon/fabrica-kit/metrics"
 	"github.com/go-pantheon/fabrica-kit/profile"
 	"github.com/go-pantheon/fabrica-kit/trace"
 	"github.com/go-pantheon/fabrica-net/health"
 	tcp "github.com/go-pantheon/fabrica-net/tcp/server"
-	"github.com/go-pantheon/fabrica-util/time"
+	"github.com/go-pantheon/fabrica-util/xtime"
 	"github.com/go-pantheon/janus/app/gate/internal/conf"
 	"github.com/go-pantheon/janus/app/gate/internal/pkg/security"
 )
@@ -81,7 +81,7 @@ func main() {
 		panic(err)
 	}
 
-	time.Init(bc.Label.Language)
+	xtime.Init(bc.Label.Language)
 
 	var rc conf.Registry
 	if err := c.Scan(&rc); err != nil {
@@ -100,7 +100,7 @@ func main() {
 		panic(err)
 	}
 
-	logger := vlog.Init(bc.Log.Type, bc.Log.Level, bc.Label.Profile, bc.Label.Color, bc.Label.Service, bc.Label.Version, bc.Label.Node)
+	logger := xlog.Init(bc.Log.Type, bc.Log.Level, bc.Label.Profile, bc.Label.Color, bc.Label.Service, bc.Label.Version, bc.Label.Node)
 	metrics.Init(bc.Label.Service)
 
 	app, cleanup, err := initApp(bc.Server, bc.Label, &rc, bc.Data, logger, health.NewServer(bc.Server.Health))

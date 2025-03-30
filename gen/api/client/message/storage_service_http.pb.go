@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-http v2.8.4
 // - protoc             (unknown)
-// source: message/storage.proto
+// source: message/storage_service.proto
 
 package climsg
 
@@ -19,19 +19,19 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationStorageTCPServiceUsePack = "/message.StorageTCPService/UsePack"
+const OperationStorageServiceUsePack = "/message.StorageService/UsePack"
 
-type StorageTCPServiceHTTPServer interface {
+type StorageServiceHTTPServer interface {
 	// UsePack Use pack
 	UsePack(context.Context, *CSUsePack) (*SCUsePack, error)
 }
 
-func RegisterStorageTCPServiceHTTPServer(s *http.Server, srv StorageTCPServiceHTTPServer) {
+func RegisterStorageServiceHTTPServer(s *http.Server, srv StorageServiceHTTPServer) {
 	r := s.Route("/")
-	r.POST("/storage/use/pack", _StorageTCPService_UsePack0_HTTP_Handler(srv))
+	r.POST("/storage/use/pack", _StorageService_UsePack0_HTTP_Handler(srv))
 }
 
-func _StorageTCPService_UsePack0_HTTP_Handler(srv StorageTCPServiceHTTPServer) func(ctx http.Context) error {
+func _StorageService_UsePack0_HTTP_Handler(srv StorageServiceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in CSUsePack
 		if err := ctx.Bind(&in); err != nil {
@@ -40,7 +40,7 @@ func _StorageTCPService_UsePack0_HTTP_Handler(srv StorageTCPServiceHTTPServer) f
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationStorageTCPServiceUsePack)
+		http.SetOperation(ctx, OperationStorageServiceUsePack)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.UsePack(ctx, req.(*CSUsePack))
 		})
@@ -53,23 +53,23 @@ func _StorageTCPService_UsePack0_HTTP_Handler(srv StorageTCPServiceHTTPServer) f
 	}
 }
 
-type StorageTCPServiceHTTPClient interface {
+type StorageServiceHTTPClient interface {
 	UsePack(ctx context.Context, req *CSUsePack, opts ...http.CallOption) (rsp *SCUsePack, err error)
 }
 
-type StorageTCPServiceHTTPClientImpl struct {
+type StorageServiceHTTPClientImpl struct {
 	cc *http.Client
 }
 
-func NewStorageTCPServiceHTTPClient(client *http.Client) StorageTCPServiceHTTPClient {
-	return &StorageTCPServiceHTTPClientImpl{client}
+func NewStorageServiceHTTPClient(client *http.Client) StorageServiceHTTPClient {
+	return &StorageServiceHTTPClientImpl{client}
 }
 
-func (c *StorageTCPServiceHTTPClientImpl) UsePack(ctx context.Context, in *CSUsePack, opts ...http.CallOption) (*SCUsePack, error) {
+func (c *StorageServiceHTTPClientImpl) UsePack(ctx context.Context, in *CSUsePack, opts ...http.CallOption) (*SCUsePack, error) {
 	var out SCUsePack
 	pattern := "/storage/use/pack"
 	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationStorageTCPServiceUsePack))
+	opts = append(opts, http.Operation(OperationStorageServiceUsePack))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {

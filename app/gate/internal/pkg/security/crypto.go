@@ -6,9 +6,9 @@ import (
 	"crypto/x509"
 	"encoding/base64"
 
-	"github.com/go-pantheon/fabrica-util/rand"
 	"github.com/go-pantheon/fabrica-util/security/aes"
 	rrsa "github.com/go-pantheon/fabrica-util/security/rsa"
+	"github.com/go-pantheon/fabrica-util/xrand"
 	"github.com/pkg/errors"
 )
 
@@ -45,7 +45,7 @@ func Init(aesKey string, priKey string) error {
 }
 
 func InitApiCrypto() (cipher.Block, []byte, error) {
-	str, err := rand.RandAlphaNumString(32)
+	str, err := xrand.RandAlphaNumString(32)
 	if err != nil {
 		return nil, nil, errors.Wrapf(err, "xrand RandString failed.")
 	}

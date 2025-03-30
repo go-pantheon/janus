@@ -182,6 +182,16 @@
     "v1PushBody": {
       "type": "object",
       "properties": {
+        "data": {
+          "type": "string",
+          "format": "byte",
+          "title": "Message body proto bytes array"
+        },
+        "obj": {
+          "type": "string",
+          "format": "int64",
+          "title": "Object ID, according to the business agreement"
+        },
         "mod": {
           "type": "integer",
           "format": "int32",
@@ -191,16 +201,6 @@
           "type": "integer",
           "format": "int32",
           "title": "Message ID within the module, unique within the module"
-        },
-        "obj": {
-          "type": "string",
-          "format": "int64",
-          "title": "Object ID, according to the business agreement"
-        },
-        "data": {
-          "type": "string",
-          "format": "byte",
-          "title": "Message body proto bytes array"
         }
       }
     },

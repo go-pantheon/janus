@@ -6,7 +6,7 @@
   },
   "tags": [
     {
-      "name": "NoticeAdminService"
+      "name": "NoticeAdmin"
     }
   ],
   "consumes": [
@@ -19,7 +19,7 @@
     "/admin/notice/create": {
       "post": {
         "summary": "Create notice",
-        "operationId": "NoticeAdminService_CreateNotice",
+        "operationId": "NoticeAdmin_CreateNotice",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -45,14 +45,14 @@
           }
         ],
         "tags": [
-          "NoticeAdminService"
+          "NoticeAdmin"
         ]
       }
     },
     "/admin/notice/delete": {
       "post": {
         "summary": "Delete notice",
-        "operationId": "NoticeAdminService_DeleteNotice",
+        "operationId": "NoticeAdmin_DeleteNotice",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -78,14 +78,14 @@
           }
         ],
         "tags": [
-          "NoticeAdminService"
+          "NoticeAdmin"
         ]
       }
     },
     "/admin/notice/id": {
       "get": {
         "summary": "Query notice by id",
-        "operationId": "NoticeAdminService_GetNoticeById",
+        "operationId": "NoticeAdmin_GetNoticeById",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -110,14 +110,14 @@
           }
         ],
         "tags": [
-          "NoticeAdminService"
+          "NoticeAdmin"
         ]
       }
     },
     "/admin/notice/list": {
       "get": {
         "summary": "Query notice page list",
-        "operationId": "NoticeAdminService_GetNoticeList",
+        "operationId": "NoticeAdmin_GetNoticeList",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -149,14 +149,14 @@
           }
         ],
         "tags": [
-          "NoticeAdminService"
+          "NoticeAdmin"
         ]
       }
     },
     "/admin/notice/update": {
       "post": {
         "summary": "Update notice",
-        "operationId": "NoticeAdminService_UpdateNotice",
+        "operationId": "NoticeAdmin_UpdateNotice",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -182,7 +182,7 @@
           }
         ],
         "tags": [
-          "NoticeAdminService"
+          "NoticeAdmin"
         ]
       }
     }

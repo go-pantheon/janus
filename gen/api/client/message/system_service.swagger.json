@@ -1,12 +1,12 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "message/system.proto",
+    "title": "message/system_service.proto",
     "version": "version not set"
   },
   "tags": [
     {
-      "name": "SystemTCPService"
+      "name": "SystemService"
     }
   ],
   "consumes": [
@@ -18,12 +18,12 @@
   "paths": {
     "/system/heartbeat": {
       "post": {
-        "operationId": "SystemTCPService_HeartBeat",
+        "operationId": "SystemService_Heartbeat",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/messageSCHeartBeat"
+              "$ref": "#/definitions/messageSCHeartbeat"
             }
           },
           "default": {
@@ -39,18 +39,18 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/messageCSHeartBeat"
+              "$ref": "#/definitions/messageCSHeartbeat"
             }
           }
         ],
         "tags": [
-          "SystemTCPService"
+          "SystemService"
         ]
       }
     }
   },
   "definitions": {
-    "messageCSHeartBeat": {
+    "messageCSHeartbeat": {
       "type": "object",
       "properties": {
         "clientTime": {
@@ -61,7 +61,7 @@
       },
       "title": "Heartbeat request"
     },
-    "messageSCHeartBeat": {
+    "messageSCHeartbeat": {
       "type": "object",
       "properties": {
         "serverTime": {
@@ -70,12 +70,12 @@
           "title": "Server timestamp, accurate to seconds"
         },
         "code": {
-          "$ref": "#/definitions/messageSCHeartBeatCode"
+          "$ref": "#/definitions/messageSCHeartbeatCode"
         }
       },
       "title": "Heartbeat response"
     },
-    "messageSCHeartBeatCode": {
+    "messageSCHeartbeatCode": {
       "type": "string",
       "enum": [
         "ErrServer",

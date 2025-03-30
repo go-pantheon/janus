@@ -10,7 +10,7 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-pantheon/fabrica-kit/profile"
 	net "github.com/go-pantheon/fabrica-net"
-	vctx "github.com/go-pantheon/fabrica-net/context"
+	"github.com/go-pantheon/fabrica-net/xcontext"
 	"github.com/go-pantheon/janus/app/gate/internal/pkg/pool"
 	climod "github.com/go-pantheon/janus/gen/api/client/module"
 	cliseq "github.com/go-pantheon/janus/gen/api/client/sequence"
@@ -56,8 +56,8 @@ func logReply(ctx context.Context, netKind net.NetKind, reply interface{}) {
 	)
 
 	if md, ok := metadata.FromServerContext(ctx); ok {
-		uid = md.Get(vctx.CtxUID)
-		sid = md.Get(vctx.CtxSID)
+		uid = md.Get(xcontext.CtxUID)
+		sid = md.Get(xcontext.CtxSID)
 	}
 	obj = strconv.FormatInt(p.Obj, 10)
 	mod = strconv.FormatInt(int64(p.Mod), 10)

@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/go-pantheon/fabrica-kit/tunnel"
-	xnet "github.com/go-pantheon/fabrica-net"
+	net "github.com/go-pantheon/fabrica-net"
 	"github.com/go-pantheon/janus/app/gate/internal/intra/net/tunnels"
 	"github.com/go-pantheon/janus/app/gate/internal/intra/net/tunnels/player"
 	"github.com/go-pantheon/janus/app/gate/internal/intra/net/tunnels/room"
@@ -23,7 +23,7 @@ func (s *Service) TunnelType(mod int32) (int32, error) {
 	}
 }
 
-func (s *Service) CreateTunnel(ctx context.Context, ss xnet.Session, tp int32, oid int64, worker tunnel.Worker) (tunnel.Tunnel, error) {
+func (s *Service) CreateTunnel(ctx context.Context, ss net.Session, tp int32, oid int64, worker tunnel.Worker) (tunnel.Tunnel, error) {
 	tunnel, err := s.createAppTunnel(ctx, ss, tp, oid, worker)
 	if err != nil {
 		return nil, err
@@ -31,7 +31,7 @@ func (s *Service) CreateTunnel(ctx context.Context, ss xnet.Session, tp int32, o
 	return tunnels.NewTunnel(ctx, worker, tunnel), nil
 }
 
-func (s *Service) createAppTunnel(ctx context.Context, ss xnet.Session, tp int32, oid int64, worker tunnel.Worker) (tunnels.AppTunnel, error) {
+func (s *Service) createAppTunnel(ctx context.Context, ss net.Session, tp int32, oid int64, worker tunnel.Worker) (tunnels.AppTunnel, error) {
 	switch tunnels.TunnelType(tp) {
 	case tunnels.PlayerTunnelType:
 		return player.NewTunnel(ctx, s.playerClient, ss, s.logger, s.playerRT, worker)

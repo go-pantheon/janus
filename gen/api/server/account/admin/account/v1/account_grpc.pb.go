@@ -19,147 +19,147 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	AccountAdminService_AccountList_FullMethodName = "/account.admin.account.v1.AccountAdminService/AccountList"
-	AccountAdminService_GetById_FullMethodName     = "/account.admin.account.v1.AccountAdminService/GetById"
+	AccountAdmin_AccountList_FullMethodName = "/account.admin.account.v1.AccountAdmin/AccountList"
+	AccountAdmin_GetById_FullMethodName     = "/account.admin.account.v1.AccountAdmin/GetById"
 )
 
-// AccountAdminServiceClient is the client API for AccountAdminService service.
+// AccountAdminClient is the client API for AccountAdmin service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 //
 // Account admin service
 // Open to the server cluster
 // Provide gRPC interfaceseditorconfig
-type AccountAdminServiceClient interface {
+type AccountAdminClient interface {
 	AccountList(ctx context.Context, in *AccountListRequest, opts ...grpc.CallOption) (*AccountListResponse, error)
 	GetById(ctx context.Context, in *GetByIdRequest, opts ...grpc.CallOption) (*GetByIdResponse, error)
 }
 
-type accountAdminServiceClient struct {
+type accountAdminClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewAccountAdminServiceClient(cc grpc.ClientConnInterface) AccountAdminServiceClient {
-	return &accountAdminServiceClient{cc}
+func NewAccountAdminClient(cc grpc.ClientConnInterface) AccountAdminClient {
+	return &accountAdminClient{cc}
 }
 
-func (c *accountAdminServiceClient) AccountList(ctx context.Context, in *AccountListRequest, opts ...grpc.CallOption) (*AccountListResponse, error) {
+func (c *accountAdminClient) AccountList(ctx context.Context, in *AccountListRequest, opts ...grpc.CallOption) (*AccountListResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(AccountListResponse)
-	err := c.cc.Invoke(ctx, AccountAdminService_AccountList_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, AccountAdmin_AccountList_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *accountAdminServiceClient) GetById(ctx context.Context, in *GetByIdRequest, opts ...grpc.CallOption) (*GetByIdResponse, error) {
+func (c *accountAdminClient) GetById(ctx context.Context, in *GetByIdRequest, opts ...grpc.CallOption) (*GetByIdResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetByIdResponse)
-	err := c.cc.Invoke(ctx, AccountAdminService_GetById_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, AccountAdmin_GetById_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// AccountAdminServiceServer is the server API for AccountAdminService service.
-// All implementations must embed UnimplementedAccountAdminServiceServer
+// AccountAdminServer is the server API for AccountAdmin service.
+// All implementations must embed UnimplementedAccountAdminServer
 // for forward compatibility.
 //
 // Account admin service
 // Open to the server cluster
 // Provide gRPC interfaceseditorconfig
-type AccountAdminServiceServer interface {
+type AccountAdminServer interface {
 	AccountList(context.Context, *AccountListRequest) (*AccountListResponse, error)
 	GetById(context.Context, *GetByIdRequest) (*GetByIdResponse, error)
-	mustEmbedUnimplementedAccountAdminServiceServer()
+	mustEmbedUnimplementedAccountAdminServer()
 }
 
-// UnimplementedAccountAdminServiceServer must be embedded to have
+// UnimplementedAccountAdminServer must be embedded to have
 // forward compatible implementations.
 //
 // NOTE: this should be embedded by value instead of pointer to avoid a nil
 // pointer dereference when methods are called.
-type UnimplementedAccountAdminServiceServer struct{}
+type UnimplementedAccountAdminServer struct{}
 
-func (UnimplementedAccountAdminServiceServer) AccountList(context.Context, *AccountListRequest) (*AccountListResponse, error) {
+func (UnimplementedAccountAdminServer) AccountList(context.Context, *AccountListRequest) (*AccountListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AccountList not implemented")
 }
-func (UnimplementedAccountAdminServiceServer) GetById(context.Context, *GetByIdRequest) (*GetByIdResponse, error) {
+func (UnimplementedAccountAdminServer) GetById(context.Context, *GetByIdRequest) (*GetByIdResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetById not implemented")
 }
-func (UnimplementedAccountAdminServiceServer) mustEmbedUnimplementedAccountAdminServiceServer() {}
-func (UnimplementedAccountAdminServiceServer) testEmbeddedByValue()                             {}
+func (UnimplementedAccountAdminServer) mustEmbedUnimplementedAccountAdminServer() {}
+func (UnimplementedAccountAdminServer) testEmbeddedByValue()                      {}
 
-// UnsafeAccountAdminServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to AccountAdminServiceServer will
+// UnsafeAccountAdminServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to AccountAdminServer will
 // result in compilation errors.
-type UnsafeAccountAdminServiceServer interface {
-	mustEmbedUnimplementedAccountAdminServiceServer()
+type UnsafeAccountAdminServer interface {
+	mustEmbedUnimplementedAccountAdminServer()
 }
 
-func RegisterAccountAdminServiceServer(s grpc.ServiceRegistrar, srv AccountAdminServiceServer) {
-	// If the following call pancis, it indicates UnimplementedAccountAdminServiceServer was
+func RegisterAccountAdminServer(s grpc.ServiceRegistrar, srv AccountAdminServer) {
+	// If the following call pancis, it indicates UnimplementedAccountAdminServer was
 	// embedded by pointer and is nil.  This will cause panics if an
 	// unimplemented method is ever invoked, so we test this at initialization
 	// time to prevent it from happening at runtime later due to I/O.
 	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
 		t.testEmbeddedByValue()
 	}
-	s.RegisterService(&AccountAdminService_ServiceDesc, srv)
+	s.RegisterService(&AccountAdmin_ServiceDesc, srv)
 }
 
-func _AccountAdminService_AccountList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _AccountAdmin_AccountList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(AccountListRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AccountAdminServiceServer).AccountList(ctx, in)
+		return srv.(AccountAdminServer).AccountList(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: AccountAdminService_AccountList_FullMethodName,
+		FullMethod: AccountAdmin_AccountList_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AccountAdminServiceServer).AccountList(ctx, req.(*AccountListRequest))
+		return srv.(AccountAdminServer).AccountList(ctx, req.(*AccountListRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _AccountAdminService_GetById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _AccountAdmin_GetById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetByIdRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AccountAdminServiceServer).GetById(ctx, in)
+		return srv.(AccountAdminServer).GetById(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: AccountAdminService_GetById_FullMethodName,
+		FullMethod: AccountAdmin_GetById_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AccountAdminServiceServer).GetById(ctx, req.(*GetByIdRequest))
+		return srv.(AccountAdminServer).GetById(ctx, req.(*GetByIdRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// AccountAdminService_ServiceDesc is the grpc.ServiceDesc for AccountAdminService service.
+// AccountAdmin_ServiceDesc is the grpc.ServiceDesc for AccountAdmin service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var AccountAdminService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "account.admin.account.v1.AccountAdminService",
-	HandlerType: (*AccountAdminServiceServer)(nil),
+var AccountAdmin_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "account.admin.account.v1.AccountAdmin",
+	HandlerType: (*AccountAdminServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "AccountList",
-			Handler:    _AccountAdminService_AccountList_Handler,
+			Handler:    _AccountAdmin_AccountList_Handler,
 		},
 		{
 			MethodName: "GetById",
-			Handler:    _AccountAdminService_GetById_Handler,
+			Handler:    _AccountAdmin_GetById_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

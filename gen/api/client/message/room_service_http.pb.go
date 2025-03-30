@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-http v2.8.4
 // - protoc             (unknown)
-// source: message/room.proto
+// source: message/room_service.proto
 
 package climsg
 
@@ -19,18 +19,18 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationRoomTCPServiceAgreeToInviteJoinRoom = "/message.RoomTCPService/AgreeToInviteJoinRoom"
-const OperationRoomTCPServiceApproveRequestToJoinRoom = "/message.RoomTCPService/ApproveRequestToJoinRoom"
-const OperationRoomTCPServiceCloseRoom = "/message.RoomTCPService/CloseRoom"
-const OperationRoomTCPServiceCreateRoom = "/message.RoomTCPService/CreateRoom"
-const OperationRoomTCPServiceInviteToJoinRoom = "/message.RoomTCPService/InviteToJoinRoom"
-const OperationRoomTCPServiceKickUserFromRoom = "/message.RoomTCPService/KickUserFromRoom"
-const OperationRoomTCPServiceLeaveRoom = "/message.RoomTCPService/LeaveRoom"
-const OperationRoomTCPServiceRequestToJoinRoom = "/message.RoomTCPService/RequestToJoinRoom"
-const OperationRoomTCPServiceRoomDetail = "/message.RoomTCPService/RoomDetail"
-const OperationRoomTCPServiceRoomList = "/message.RoomTCPService/RoomList"
+const OperationRoomServiceAgreeToInviteJoinRoom = "/message.RoomService/AgreeToInviteJoinRoom"
+const OperationRoomServiceApproveRequestToJoinRoom = "/message.RoomService/ApproveRequestToJoinRoom"
+const OperationRoomServiceCloseRoom = "/message.RoomService/CloseRoom"
+const OperationRoomServiceCreateRoom = "/message.RoomService/CreateRoom"
+const OperationRoomServiceInviteToJoinRoom = "/message.RoomService/InviteToJoinRoom"
+const OperationRoomServiceKickUserFromRoom = "/message.RoomService/KickUserFromRoom"
+const OperationRoomServiceLeaveRoom = "/message.RoomService/LeaveRoom"
+const OperationRoomServiceRequestToJoinRoom = "/message.RoomService/RequestToJoinRoom"
+const OperationRoomServiceRoomDetail = "/message.RoomService/RoomDetail"
+const OperationRoomServiceRoomList = "/message.RoomService/RoomList"
 
-type RoomTCPServiceHTTPServer interface {
+type RoomServiceHTTPServer interface {
 	// AgreeToInviteJoinRoom Agree to invite to join room
 	AgreeToInviteJoinRoom(context.Context, *CSAgreeToInviteJoinRoom) (*SCAgreeToInviteJoinRoom, error)
 	// ApproveRequestToJoinRoom Approve request to join room
@@ -53,21 +53,21 @@ type RoomTCPServiceHTTPServer interface {
 	RoomList(context.Context, *CSRoomList) (*SCRoomList, error)
 }
 
-func RegisterRoomTCPServiceHTTPServer(s *http.Server, srv RoomTCPServiceHTTPServer) {
+func RegisterRoomServiceHTTPServer(s *http.Server, srv RoomServiceHTTPServer) {
 	r := s.Route("/")
-	r.POST("/room/list", _RoomTCPService_RoomList0_HTTP_Handler(srv))
-	r.POST("/room/detail", _RoomTCPService_RoomDetail0_HTTP_Handler(srv))
-	r.POST("/room/create", _RoomTCPService_CreateRoom0_HTTP_Handler(srv))
-	r.POST("/room/invite_to_join", _RoomTCPService_InviteToJoinRoom0_HTTP_Handler(srv))
-	r.POST("/room/agree_to_invite_join", _RoomTCPService_AgreeToInviteJoinRoom0_HTTP_Handler(srv))
-	r.POST("/room/request_to_join", _RoomTCPService_RequestToJoinRoom0_HTTP_Handler(srv))
-	r.POST("/room/approve_request_to_join", _RoomTCPService_ApproveRequestToJoinRoom0_HTTP_Handler(srv))
-	r.POST("/room/kick_user", _RoomTCPService_KickUserFromRoom0_HTTP_Handler(srv))
-	r.POST("/room/leave", _RoomTCPService_LeaveRoom0_HTTP_Handler(srv))
-	r.POST("/room/close", _RoomTCPService_CloseRoom0_HTTP_Handler(srv))
+	r.POST("/room/list", _RoomService_RoomList0_HTTP_Handler(srv))
+	r.POST("/room/detail", _RoomService_RoomDetail0_HTTP_Handler(srv))
+	r.POST("/room/create", _RoomService_CreateRoom0_HTTP_Handler(srv))
+	r.POST("/room/invite_to_join", _RoomService_InviteToJoinRoom0_HTTP_Handler(srv))
+	r.POST("/room/agree_to_invite_join", _RoomService_AgreeToInviteJoinRoom0_HTTP_Handler(srv))
+	r.POST("/room/request_to_join", _RoomService_RequestToJoinRoom0_HTTP_Handler(srv))
+	r.POST("/room/approve_request_to_join", _RoomService_ApproveRequestToJoinRoom0_HTTP_Handler(srv))
+	r.POST("/room/kick_user", _RoomService_KickUserFromRoom0_HTTP_Handler(srv))
+	r.POST("/room/leave", _RoomService_LeaveRoom0_HTTP_Handler(srv))
+	r.POST("/room/close", _RoomService_CloseRoom0_HTTP_Handler(srv))
 }
 
-func _RoomTCPService_RoomList0_HTTP_Handler(srv RoomTCPServiceHTTPServer) func(ctx http.Context) error {
+func _RoomService_RoomList0_HTTP_Handler(srv RoomServiceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in CSRoomList
 		if err := ctx.Bind(&in); err != nil {
@@ -76,7 +76,7 @@ func _RoomTCPService_RoomList0_HTTP_Handler(srv RoomTCPServiceHTTPServer) func(c
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationRoomTCPServiceRoomList)
+		http.SetOperation(ctx, OperationRoomServiceRoomList)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.RoomList(ctx, req.(*CSRoomList))
 		})
@@ -89,7 +89,7 @@ func _RoomTCPService_RoomList0_HTTP_Handler(srv RoomTCPServiceHTTPServer) func(c
 	}
 }
 
-func _RoomTCPService_RoomDetail0_HTTP_Handler(srv RoomTCPServiceHTTPServer) func(ctx http.Context) error {
+func _RoomService_RoomDetail0_HTTP_Handler(srv RoomServiceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in CSRoomDetail
 		if err := ctx.Bind(&in); err != nil {
@@ -98,7 +98,7 @@ func _RoomTCPService_RoomDetail0_HTTP_Handler(srv RoomTCPServiceHTTPServer) func
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationRoomTCPServiceRoomDetail)
+		http.SetOperation(ctx, OperationRoomServiceRoomDetail)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.RoomDetail(ctx, req.(*CSRoomDetail))
 		})
@@ -111,7 +111,7 @@ func _RoomTCPService_RoomDetail0_HTTP_Handler(srv RoomTCPServiceHTTPServer) func
 	}
 }
 
-func _RoomTCPService_CreateRoom0_HTTP_Handler(srv RoomTCPServiceHTTPServer) func(ctx http.Context) error {
+func _RoomService_CreateRoom0_HTTP_Handler(srv RoomServiceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in CSCreateRoom
 		if err := ctx.Bind(&in); err != nil {
@@ -120,7 +120,7 @@ func _RoomTCPService_CreateRoom0_HTTP_Handler(srv RoomTCPServiceHTTPServer) func
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationRoomTCPServiceCreateRoom)
+		http.SetOperation(ctx, OperationRoomServiceCreateRoom)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.CreateRoom(ctx, req.(*CSCreateRoom))
 		})
@@ -133,7 +133,7 @@ func _RoomTCPService_CreateRoom0_HTTP_Handler(srv RoomTCPServiceHTTPServer) func
 	}
 }
 
-func _RoomTCPService_InviteToJoinRoom0_HTTP_Handler(srv RoomTCPServiceHTTPServer) func(ctx http.Context) error {
+func _RoomService_InviteToJoinRoom0_HTTP_Handler(srv RoomServiceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in CSInviteToJoinRoom
 		if err := ctx.Bind(&in); err != nil {
@@ -142,7 +142,7 @@ func _RoomTCPService_InviteToJoinRoom0_HTTP_Handler(srv RoomTCPServiceHTTPServer
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationRoomTCPServiceInviteToJoinRoom)
+		http.SetOperation(ctx, OperationRoomServiceInviteToJoinRoom)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.InviteToJoinRoom(ctx, req.(*CSInviteToJoinRoom))
 		})
@@ -155,7 +155,7 @@ func _RoomTCPService_InviteToJoinRoom0_HTTP_Handler(srv RoomTCPServiceHTTPServer
 	}
 }
 
-func _RoomTCPService_AgreeToInviteJoinRoom0_HTTP_Handler(srv RoomTCPServiceHTTPServer) func(ctx http.Context) error {
+func _RoomService_AgreeToInviteJoinRoom0_HTTP_Handler(srv RoomServiceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in CSAgreeToInviteJoinRoom
 		if err := ctx.Bind(&in); err != nil {
@@ -164,7 +164,7 @@ func _RoomTCPService_AgreeToInviteJoinRoom0_HTTP_Handler(srv RoomTCPServiceHTTPS
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationRoomTCPServiceAgreeToInviteJoinRoom)
+		http.SetOperation(ctx, OperationRoomServiceAgreeToInviteJoinRoom)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.AgreeToInviteJoinRoom(ctx, req.(*CSAgreeToInviteJoinRoom))
 		})
@@ -177,7 +177,7 @@ func _RoomTCPService_AgreeToInviteJoinRoom0_HTTP_Handler(srv RoomTCPServiceHTTPS
 	}
 }
 
-func _RoomTCPService_RequestToJoinRoom0_HTTP_Handler(srv RoomTCPServiceHTTPServer) func(ctx http.Context) error {
+func _RoomService_RequestToJoinRoom0_HTTP_Handler(srv RoomServiceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in CSRequestToJoinRoom
 		if err := ctx.Bind(&in); err != nil {
@@ -186,7 +186,7 @@ func _RoomTCPService_RequestToJoinRoom0_HTTP_Handler(srv RoomTCPServiceHTTPServe
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationRoomTCPServiceRequestToJoinRoom)
+		http.SetOperation(ctx, OperationRoomServiceRequestToJoinRoom)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.RequestToJoinRoom(ctx, req.(*CSRequestToJoinRoom))
 		})
@@ -199,7 +199,7 @@ func _RoomTCPService_RequestToJoinRoom0_HTTP_Handler(srv RoomTCPServiceHTTPServe
 	}
 }
 
-func _RoomTCPService_ApproveRequestToJoinRoom0_HTTP_Handler(srv RoomTCPServiceHTTPServer) func(ctx http.Context) error {
+func _RoomService_ApproveRequestToJoinRoom0_HTTP_Handler(srv RoomServiceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in CSApproveRequestToJoinRoom
 		if err := ctx.Bind(&in); err != nil {
@@ -208,7 +208,7 @@ func _RoomTCPService_ApproveRequestToJoinRoom0_HTTP_Handler(srv RoomTCPServiceHT
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationRoomTCPServiceApproveRequestToJoinRoom)
+		http.SetOperation(ctx, OperationRoomServiceApproveRequestToJoinRoom)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.ApproveRequestToJoinRoom(ctx, req.(*CSApproveRequestToJoinRoom))
 		})
@@ -221,7 +221,7 @@ func _RoomTCPService_ApproveRequestToJoinRoom0_HTTP_Handler(srv RoomTCPServiceHT
 	}
 }
 
-func _RoomTCPService_KickUserFromRoom0_HTTP_Handler(srv RoomTCPServiceHTTPServer) func(ctx http.Context) error {
+func _RoomService_KickUserFromRoom0_HTTP_Handler(srv RoomServiceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in CSKickUserFromRoom
 		if err := ctx.Bind(&in); err != nil {
@@ -230,7 +230,7 @@ func _RoomTCPService_KickUserFromRoom0_HTTP_Handler(srv RoomTCPServiceHTTPServer
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationRoomTCPServiceKickUserFromRoom)
+		http.SetOperation(ctx, OperationRoomServiceKickUserFromRoom)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.KickUserFromRoom(ctx, req.(*CSKickUserFromRoom))
 		})
@@ -243,7 +243,7 @@ func _RoomTCPService_KickUserFromRoom0_HTTP_Handler(srv RoomTCPServiceHTTPServer
 	}
 }
 
-func _RoomTCPService_LeaveRoom0_HTTP_Handler(srv RoomTCPServiceHTTPServer) func(ctx http.Context) error {
+func _RoomService_LeaveRoom0_HTTP_Handler(srv RoomServiceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in CSLeaveRoom
 		if err := ctx.Bind(&in); err != nil {
@@ -252,7 +252,7 @@ func _RoomTCPService_LeaveRoom0_HTTP_Handler(srv RoomTCPServiceHTTPServer) func(
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationRoomTCPServiceLeaveRoom)
+		http.SetOperation(ctx, OperationRoomServiceLeaveRoom)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.LeaveRoom(ctx, req.(*CSLeaveRoom))
 		})
@@ -265,7 +265,7 @@ func _RoomTCPService_LeaveRoom0_HTTP_Handler(srv RoomTCPServiceHTTPServer) func(
 	}
 }
 
-func _RoomTCPService_CloseRoom0_HTTP_Handler(srv RoomTCPServiceHTTPServer) func(ctx http.Context) error {
+func _RoomService_CloseRoom0_HTTP_Handler(srv RoomServiceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in CSCloseRoom
 		if err := ctx.Bind(&in); err != nil {
@@ -274,7 +274,7 @@ func _RoomTCPService_CloseRoom0_HTTP_Handler(srv RoomTCPServiceHTTPServer) func(
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationRoomTCPServiceCloseRoom)
+		http.SetOperation(ctx, OperationRoomServiceCloseRoom)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.CloseRoom(ctx, req.(*CSCloseRoom))
 		})
@@ -287,7 +287,7 @@ func _RoomTCPService_CloseRoom0_HTTP_Handler(srv RoomTCPServiceHTTPServer) func(
 	}
 }
 
-type RoomTCPServiceHTTPClient interface {
+type RoomServiceHTTPClient interface {
 	AgreeToInviteJoinRoom(ctx context.Context, req *CSAgreeToInviteJoinRoom, opts ...http.CallOption) (rsp *SCAgreeToInviteJoinRoom, err error)
 	ApproveRequestToJoinRoom(ctx context.Context, req *CSApproveRequestToJoinRoom, opts ...http.CallOption) (rsp *SCApproveRequestToJoinRoom, err error)
 	CloseRoom(ctx context.Context, req *CSCloseRoom, opts ...http.CallOption) (rsp *SCCloseRoom, err error)
@@ -300,19 +300,19 @@ type RoomTCPServiceHTTPClient interface {
 	RoomList(ctx context.Context, req *CSRoomList, opts ...http.CallOption) (rsp *SCRoomList, err error)
 }
 
-type RoomTCPServiceHTTPClientImpl struct {
+type RoomServiceHTTPClientImpl struct {
 	cc *http.Client
 }
 
-func NewRoomTCPServiceHTTPClient(client *http.Client) RoomTCPServiceHTTPClient {
-	return &RoomTCPServiceHTTPClientImpl{client}
+func NewRoomServiceHTTPClient(client *http.Client) RoomServiceHTTPClient {
+	return &RoomServiceHTTPClientImpl{client}
 }
 
-func (c *RoomTCPServiceHTTPClientImpl) AgreeToInviteJoinRoom(ctx context.Context, in *CSAgreeToInviteJoinRoom, opts ...http.CallOption) (*SCAgreeToInviteJoinRoom, error) {
+func (c *RoomServiceHTTPClientImpl) AgreeToInviteJoinRoom(ctx context.Context, in *CSAgreeToInviteJoinRoom, opts ...http.CallOption) (*SCAgreeToInviteJoinRoom, error) {
 	var out SCAgreeToInviteJoinRoom
 	pattern := "/room/agree_to_invite_join"
 	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationRoomTCPServiceAgreeToInviteJoinRoom))
+	opts = append(opts, http.Operation(OperationRoomServiceAgreeToInviteJoinRoom))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {
@@ -321,11 +321,11 @@ func (c *RoomTCPServiceHTTPClientImpl) AgreeToInviteJoinRoom(ctx context.Context
 	return &out, nil
 }
 
-func (c *RoomTCPServiceHTTPClientImpl) ApproveRequestToJoinRoom(ctx context.Context, in *CSApproveRequestToJoinRoom, opts ...http.CallOption) (*SCApproveRequestToJoinRoom, error) {
+func (c *RoomServiceHTTPClientImpl) ApproveRequestToJoinRoom(ctx context.Context, in *CSApproveRequestToJoinRoom, opts ...http.CallOption) (*SCApproveRequestToJoinRoom, error) {
 	var out SCApproveRequestToJoinRoom
 	pattern := "/room/approve_request_to_join"
 	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationRoomTCPServiceApproveRequestToJoinRoom))
+	opts = append(opts, http.Operation(OperationRoomServiceApproveRequestToJoinRoom))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {
@@ -334,11 +334,11 @@ func (c *RoomTCPServiceHTTPClientImpl) ApproveRequestToJoinRoom(ctx context.Cont
 	return &out, nil
 }
 
-func (c *RoomTCPServiceHTTPClientImpl) CloseRoom(ctx context.Context, in *CSCloseRoom, opts ...http.CallOption) (*SCCloseRoom, error) {
+func (c *RoomServiceHTTPClientImpl) CloseRoom(ctx context.Context, in *CSCloseRoom, opts ...http.CallOption) (*SCCloseRoom, error) {
 	var out SCCloseRoom
 	pattern := "/room/close"
 	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationRoomTCPServiceCloseRoom))
+	opts = append(opts, http.Operation(OperationRoomServiceCloseRoom))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {
@@ -347,11 +347,11 @@ func (c *RoomTCPServiceHTTPClientImpl) CloseRoom(ctx context.Context, in *CSClos
 	return &out, nil
 }
 
-func (c *RoomTCPServiceHTTPClientImpl) CreateRoom(ctx context.Context, in *CSCreateRoom, opts ...http.CallOption) (*SCCreateRoom, error) {
+func (c *RoomServiceHTTPClientImpl) CreateRoom(ctx context.Context, in *CSCreateRoom, opts ...http.CallOption) (*SCCreateRoom, error) {
 	var out SCCreateRoom
 	pattern := "/room/create"
 	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationRoomTCPServiceCreateRoom))
+	opts = append(opts, http.Operation(OperationRoomServiceCreateRoom))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {
@@ -360,11 +360,11 @@ func (c *RoomTCPServiceHTTPClientImpl) CreateRoom(ctx context.Context, in *CSCre
 	return &out, nil
 }
 
-func (c *RoomTCPServiceHTTPClientImpl) InviteToJoinRoom(ctx context.Context, in *CSInviteToJoinRoom, opts ...http.CallOption) (*SCInviteToJoinRoom, error) {
+func (c *RoomServiceHTTPClientImpl) InviteToJoinRoom(ctx context.Context, in *CSInviteToJoinRoom, opts ...http.CallOption) (*SCInviteToJoinRoom, error) {
 	var out SCInviteToJoinRoom
 	pattern := "/room/invite_to_join"
 	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationRoomTCPServiceInviteToJoinRoom))
+	opts = append(opts, http.Operation(OperationRoomServiceInviteToJoinRoom))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {
@@ -373,11 +373,11 @@ func (c *RoomTCPServiceHTTPClientImpl) InviteToJoinRoom(ctx context.Context, in 
 	return &out, nil
 }
 
-func (c *RoomTCPServiceHTTPClientImpl) KickUserFromRoom(ctx context.Context, in *CSKickUserFromRoom, opts ...http.CallOption) (*SCKickUserFromRoom, error) {
+func (c *RoomServiceHTTPClientImpl) KickUserFromRoom(ctx context.Context, in *CSKickUserFromRoom, opts ...http.CallOption) (*SCKickUserFromRoom, error) {
 	var out SCKickUserFromRoom
 	pattern := "/room/kick_user"
 	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationRoomTCPServiceKickUserFromRoom))
+	opts = append(opts, http.Operation(OperationRoomServiceKickUserFromRoom))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {
@@ -386,11 +386,11 @@ func (c *RoomTCPServiceHTTPClientImpl) KickUserFromRoom(ctx context.Context, in 
 	return &out, nil
 }
 
-func (c *RoomTCPServiceHTTPClientImpl) LeaveRoom(ctx context.Context, in *CSLeaveRoom, opts ...http.CallOption) (*SCLeaveRoom, error) {
+func (c *RoomServiceHTTPClientImpl) LeaveRoom(ctx context.Context, in *CSLeaveRoom, opts ...http.CallOption) (*SCLeaveRoom, error) {
 	var out SCLeaveRoom
 	pattern := "/room/leave"
 	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationRoomTCPServiceLeaveRoom))
+	opts = append(opts, http.Operation(OperationRoomServiceLeaveRoom))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {
@@ -399,11 +399,11 @@ func (c *RoomTCPServiceHTTPClientImpl) LeaveRoom(ctx context.Context, in *CSLeav
 	return &out, nil
 }
 
-func (c *RoomTCPServiceHTTPClientImpl) RequestToJoinRoom(ctx context.Context, in *CSRequestToJoinRoom, opts ...http.CallOption) (*SCRequestToJoinRoom, error) {
+func (c *RoomServiceHTTPClientImpl) RequestToJoinRoom(ctx context.Context, in *CSRequestToJoinRoom, opts ...http.CallOption) (*SCRequestToJoinRoom, error) {
 	var out SCRequestToJoinRoom
 	pattern := "/room/request_to_join"
 	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationRoomTCPServiceRequestToJoinRoom))
+	opts = append(opts, http.Operation(OperationRoomServiceRequestToJoinRoom))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {
@@ -412,11 +412,11 @@ func (c *RoomTCPServiceHTTPClientImpl) RequestToJoinRoom(ctx context.Context, in
 	return &out, nil
 }
 
-func (c *RoomTCPServiceHTTPClientImpl) RoomDetail(ctx context.Context, in *CSRoomDetail, opts ...http.CallOption) (*SCRoomDetail, error) {
+func (c *RoomServiceHTTPClientImpl) RoomDetail(ctx context.Context, in *CSRoomDetail, opts ...http.CallOption) (*SCRoomDetail, error) {
 	var out SCRoomDetail
 	pattern := "/room/detail"
 	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationRoomTCPServiceRoomDetail))
+	opts = append(opts, http.Operation(OperationRoomServiceRoomDetail))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {
@@ -425,11 +425,11 @@ func (c *RoomTCPServiceHTTPClientImpl) RoomDetail(ctx context.Context, in *CSRoo
 	return &out, nil
 }
 
-func (c *RoomTCPServiceHTTPClientImpl) RoomList(ctx context.Context, in *CSRoomList, opts ...http.CallOption) (*SCRoomList, error) {
+func (c *RoomServiceHTTPClientImpl) RoomList(ctx context.Context, in *CSRoomList, opts ...http.CallOption) (*SCRoomList, error) {
 	var out SCRoomList
 	pattern := "/room/list"
 	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationRoomTCPServiceRoomList))
+	opts = append(opts, http.Operation(OperationRoomServiceRoomList))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {

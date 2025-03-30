@@ -19,13 +19,13 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationNoticeAdminServiceCreateNotice = "/account.admin.notice.v1.NoticeAdminService/CreateNotice"
-const OperationNoticeAdminServiceDeleteNotice = "/account.admin.notice.v1.NoticeAdminService/DeleteNotice"
-const OperationNoticeAdminServiceGetNoticeById = "/account.admin.notice.v1.NoticeAdminService/GetNoticeById"
-const OperationNoticeAdminServiceGetNoticeList = "/account.admin.notice.v1.NoticeAdminService/GetNoticeList"
-const OperationNoticeAdminServiceUpdateNotice = "/account.admin.notice.v1.NoticeAdminService/UpdateNotice"
+const OperationNoticeAdminCreateNotice = "/account.admin.notice.v1.NoticeAdmin/CreateNotice"
+const OperationNoticeAdminDeleteNotice = "/account.admin.notice.v1.NoticeAdmin/DeleteNotice"
+const OperationNoticeAdminGetNoticeById = "/account.admin.notice.v1.NoticeAdmin/GetNoticeById"
+const OperationNoticeAdminGetNoticeList = "/account.admin.notice.v1.NoticeAdmin/GetNoticeList"
+const OperationNoticeAdminUpdateNotice = "/account.admin.notice.v1.NoticeAdmin/UpdateNotice"
 
-type NoticeAdminServiceHTTPServer interface {
+type NoticeAdminHTTPServer interface {
 	// CreateNotice Create notice
 	CreateNotice(context.Context, *CreateNoticeRequest) (*CreateNoticeResponse, error)
 	// DeleteNotice Delete notice
@@ -38,22 +38,22 @@ type NoticeAdminServiceHTTPServer interface {
 	UpdateNotice(context.Context, *UpdateNoticeRequest) (*UpdateNoticeResponse, error)
 }
 
-func RegisterNoticeAdminServiceHTTPServer(s *http.Server, srv NoticeAdminServiceHTTPServer) {
+func RegisterNoticeAdminHTTPServer(s *http.Server, srv NoticeAdminHTTPServer) {
 	r := s.Route("/")
-	r.GET("/admin/notice/list", _NoticeAdminService_GetNoticeList0_HTTP_Handler(srv))
-	r.GET("/admin/notice/id", _NoticeAdminService_GetNoticeById0_HTTP_Handler(srv))
-	r.POST("/admin/notice/create", _NoticeAdminService_CreateNotice0_HTTP_Handler(srv))
-	r.POST("/admin/notice/update", _NoticeAdminService_UpdateNotice0_HTTP_Handler(srv))
-	r.POST("/admin/notice/delete", _NoticeAdminService_DeleteNotice0_HTTP_Handler(srv))
+	r.GET("/admin/notice/list", _NoticeAdmin_GetNoticeList0_HTTP_Handler(srv))
+	r.GET("/admin/notice/id", _NoticeAdmin_GetNoticeById0_HTTP_Handler(srv))
+	r.POST("/admin/notice/create", _NoticeAdmin_CreateNotice0_HTTP_Handler(srv))
+	r.POST("/admin/notice/update", _NoticeAdmin_UpdateNotice0_HTTP_Handler(srv))
+	r.POST("/admin/notice/delete", _NoticeAdmin_DeleteNotice0_HTTP_Handler(srv))
 }
 
-func _NoticeAdminService_GetNoticeList0_HTTP_Handler(srv NoticeAdminServiceHTTPServer) func(ctx http.Context) error {
+func _NoticeAdmin_GetNoticeList0_HTTP_Handler(srv NoticeAdminHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in GetNoticeListRequest
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationNoticeAdminServiceGetNoticeList)
+		http.SetOperation(ctx, OperationNoticeAdminGetNoticeList)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.GetNoticeList(ctx, req.(*GetNoticeListRequest))
 		})
@@ -66,13 +66,13 @@ func _NoticeAdminService_GetNoticeList0_HTTP_Handler(srv NoticeAdminServiceHTTPS
 	}
 }
 
-func _NoticeAdminService_GetNoticeById0_HTTP_Handler(srv NoticeAdminServiceHTTPServer) func(ctx http.Context) error {
+func _NoticeAdmin_GetNoticeById0_HTTP_Handler(srv NoticeAdminHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in GetNoticeByIdRequest
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationNoticeAdminServiceGetNoticeById)
+		http.SetOperation(ctx, OperationNoticeAdminGetNoticeById)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.GetNoticeById(ctx, req.(*GetNoticeByIdRequest))
 		})
@@ -85,7 +85,7 @@ func _NoticeAdminService_GetNoticeById0_HTTP_Handler(srv NoticeAdminServiceHTTPS
 	}
 }
 
-func _NoticeAdminService_CreateNotice0_HTTP_Handler(srv NoticeAdminServiceHTTPServer) func(ctx http.Context) error {
+func _NoticeAdmin_CreateNotice0_HTTP_Handler(srv NoticeAdminHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in CreateNoticeRequest
 		if err := ctx.Bind(&in); err != nil {
@@ -94,7 +94,7 @@ func _NoticeAdminService_CreateNotice0_HTTP_Handler(srv NoticeAdminServiceHTTPSe
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationNoticeAdminServiceCreateNotice)
+		http.SetOperation(ctx, OperationNoticeAdminCreateNotice)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.CreateNotice(ctx, req.(*CreateNoticeRequest))
 		})
@@ -107,7 +107,7 @@ func _NoticeAdminService_CreateNotice0_HTTP_Handler(srv NoticeAdminServiceHTTPSe
 	}
 }
 
-func _NoticeAdminService_UpdateNotice0_HTTP_Handler(srv NoticeAdminServiceHTTPServer) func(ctx http.Context) error {
+func _NoticeAdmin_UpdateNotice0_HTTP_Handler(srv NoticeAdminHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in UpdateNoticeRequest
 		if err := ctx.Bind(&in); err != nil {
@@ -116,7 +116,7 @@ func _NoticeAdminService_UpdateNotice0_HTTP_Handler(srv NoticeAdminServiceHTTPSe
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationNoticeAdminServiceUpdateNotice)
+		http.SetOperation(ctx, OperationNoticeAdminUpdateNotice)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.UpdateNotice(ctx, req.(*UpdateNoticeRequest))
 		})
@@ -129,7 +129,7 @@ func _NoticeAdminService_UpdateNotice0_HTTP_Handler(srv NoticeAdminServiceHTTPSe
 	}
 }
 
-func _NoticeAdminService_DeleteNotice0_HTTP_Handler(srv NoticeAdminServiceHTTPServer) func(ctx http.Context) error {
+func _NoticeAdmin_DeleteNotice0_HTTP_Handler(srv NoticeAdminHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in DeleteNoticeRequest
 		if err := ctx.Bind(&in); err != nil {
@@ -138,7 +138,7 @@ func _NoticeAdminService_DeleteNotice0_HTTP_Handler(srv NoticeAdminServiceHTTPSe
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, OperationNoticeAdminServiceDeleteNotice)
+		http.SetOperation(ctx, OperationNoticeAdminDeleteNotice)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.DeleteNotice(ctx, req.(*DeleteNoticeRequest))
 		})
@@ -151,7 +151,7 @@ func _NoticeAdminService_DeleteNotice0_HTTP_Handler(srv NoticeAdminServiceHTTPSe
 	}
 }
 
-type NoticeAdminServiceHTTPClient interface {
+type NoticeAdminHTTPClient interface {
 	CreateNotice(ctx context.Context, req *CreateNoticeRequest, opts ...http.CallOption) (rsp *CreateNoticeResponse, err error)
 	DeleteNotice(ctx context.Context, req *DeleteNoticeRequest, opts ...http.CallOption) (rsp *DeleteNoticeResponse, err error)
 	GetNoticeById(ctx context.Context, req *GetNoticeByIdRequest, opts ...http.CallOption) (rsp *GetNoticeByIdResponse, err error)
@@ -159,19 +159,19 @@ type NoticeAdminServiceHTTPClient interface {
 	UpdateNotice(ctx context.Context, req *UpdateNoticeRequest, opts ...http.CallOption) (rsp *UpdateNoticeResponse, err error)
 }
 
-type NoticeAdminServiceHTTPClientImpl struct {
+type NoticeAdminHTTPClientImpl struct {
 	cc *http.Client
 }
 
-func NewNoticeAdminServiceHTTPClient(client *http.Client) NoticeAdminServiceHTTPClient {
-	return &NoticeAdminServiceHTTPClientImpl{client}
+func NewNoticeAdminHTTPClient(client *http.Client) NoticeAdminHTTPClient {
+	return &NoticeAdminHTTPClientImpl{client}
 }
 
-func (c *NoticeAdminServiceHTTPClientImpl) CreateNotice(ctx context.Context, in *CreateNoticeRequest, opts ...http.CallOption) (*CreateNoticeResponse, error) {
+func (c *NoticeAdminHTTPClientImpl) CreateNotice(ctx context.Context, in *CreateNoticeRequest, opts ...http.CallOption) (*CreateNoticeResponse, error) {
 	var out CreateNoticeResponse
 	pattern := "/admin/notice/create"
 	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationNoticeAdminServiceCreateNotice))
+	opts = append(opts, http.Operation(OperationNoticeAdminCreateNotice))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {
@@ -180,11 +180,11 @@ func (c *NoticeAdminServiceHTTPClientImpl) CreateNotice(ctx context.Context, in 
 	return &out, nil
 }
 
-func (c *NoticeAdminServiceHTTPClientImpl) DeleteNotice(ctx context.Context, in *DeleteNoticeRequest, opts ...http.CallOption) (*DeleteNoticeResponse, error) {
+func (c *NoticeAdminHTTPClientImpl) DeleteNotice(ctx context.Context, in *DeleteNoticeRequest, opts ...http.CallOption) (*DeleteNoticeResponse, error) {
 	var out DeleteNoticeResponse
 	pattern := "/admin/notice/delete"
 	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationNoticeAdminServiceDeleteNotice))
+	opts = append(opts, http.Operation(OperationNoticeAdminDeleteNotice))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {
@@ -193,11 +193,11 @@ func (c *NoticeAdminServiceHTTPClientImpl) DeleteNotice(ctx context.Context, in 
 	return &out, nil
 }
 
-func (c *NoticeAdminServiceHTTPClientImpl) GetNoticeById(ctx context.Context, in *GetNoticeByIdRequest, opts ...http.CallOption) (*GetNoticeByIdResponse, error) {
+func (c *NoticeAdminHTTPClientImpl) GetNoticeById(ctx context.Context, in *GetNoticeByIdRequest, opts ...http.CallOption) (*GetNoticeByIdResponse, error) {
 	var out GetNoticeByIdResponse
 	pattern := "/admin/notice/id"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationNoticeAdminServiceGetNoticeById))
+	opts = append(opts, http.Operation(OperationNoticeAdminGetNoticeById))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {
@@ -206,11 +206,11 @@ func (c *NoticeAdminServiceHTTPClientImpl) GetNoticeById(ctx context.Context, in
 	return &out, nil
 }
 
-func (c *NoticeAdminServiceHTTPClientImpl) GetNoticeList(ctx context.Context, in *GetNoticeListRequest, opts ...http.CallOption) (*GetNoticeListResponse, error) {
+func (c *NoticeAdminHTTPClientImpl) GetNoticeList(ctx context.Context, in *GetNoticeListRequest, opts ...http.CallOption) (*GetNoticeListResponse, error) {
 	var out GetNoticeListResponse
 	pattern := "/admin/notice/list"
 	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationNoticeAdminServiceGetNoticeList))
+	opts = append(opts, http.Operation(OperationNoticeAdminGetNoticeList))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {
@@ -219,11 +219,11 @@ func (c *NoticeAdminServiceHTTPClientImpl) GetNoticeList(ctx context.Context, in
 	return &out, nil
 }
 
-func (c *NoticeAdminServiceHTTPClientImpl) UpdateNotice(ctx context.Context, in *UpdateNoticeRequest, opts ...http.CallOption) (*UpdateNoticeResponse, error) {
+func (c *NoticeAdminHTTPClientImpl) UpdateNotice(ctx context.Context, in *UpdateNoticeRequest, opts ...http.CallOption) (*UpdateNoticeResponse, error) {
 	var out UpdateNoticeResponse
 	pattern := "/admin/notice/update"
 	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationNoticeAdminServiceUpdateNotice))
+	opts = append(opts, http.Operation(OperationNoticeAdminUpdateNotice))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {

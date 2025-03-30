@@ -19,21 +19,21 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	NoticeAdminService_GetNoticeList_FullMethodName = "/account.admin.notice.v1.NoticeAdminService/GetNoticeList"
-	NoticeAdminService_GetNoticeById_FullMethodName = "/account.admin.notice.v1.NoticeAdminService/GetNoticeById"
-	NoticeAdminService_CreateNotice_FullMethodName  = "/account.admin.notice.v1.NoticeAdminService/CreateNotice"
-	NoticeAdminService_UpdateNotice_FullMethodName  = "/account.admin.notice.v1.NoticeAdminService/UpdateNotice"
-	NoticeAdminService_DeleteNotice_FullMethodName  = "/account.admin.notice.v1.NoticeAdminService/DeleteNotice"
+	NoticeAdmin_GetNoticeList_FullMethodName = "/account.admin.notice.v1.NoticeAdmin/GetNoticeList"
+	NoticeAdmin_GetNoticeById_FullMethodName = "/account.admin.notice.v1.NoticeAdmin/GetNoticeById"
+	NoticeAdmin_CreateNotice_FullMethodName  = "/account.admin.notice.v1.NoticeAdmin/CreateNotice"
+	NoticeAdmin_UpdateNotice_FullMethodName  = "/account.admin.notice.v1.NoticeAdmin/UpdateNotice"
+	NoticeAdmin_DeleteNotice_FullMethodName  = "/account.admin.notice.v1.NoticeAdmin/DeleteNotice"
 )
 
-// NoticeAdminServiceClient is the client API for NoticeAdminService service.
+// NoticeAdminClient is the client API for NoticeAdmin service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 //
 // Notice admin service
 // Open to the server cluster
 // Provide gRPC interfaces
-type NoticeAdminServiceClient interface {
+type NoticeAdminClient interface {
 	// Query notice page list
 	GetNoticeList(ctx context.Context, in *GetNoticeListRequest, opts ...grpc.CallOption) (*GetNoticeListResponse, error)
 	// Query notice by id
@@ -46,72 +46,72 @@ type NoticeAdminServiceClient interface {
 	DeleteNotice(ctx context.Context, in *DeleteNoticeRequest, opts ...grpc.CallOption) (*DeleteNoticeResponse, error)
 }
 
-type noticeAdminServiceClient struct {
+type noticeAdminClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewNoticeAdminServiceClient(cc grpc.ClientConnInterface) NoticeAdminServiceClient {
-	return &noticeAdminServiceClient{cc}
+func NewNoticeAdminClient(cc grpc.ClientConnInterface) NoticeAdminClient {
+	return &noticeAdminClient{cc}
 }
 
-func (c *noticeAdminServiceClient) GetNoticeList(ctx context.Context, in *GetNoticeListRequest, opts ...grpc.CallOption) (*GetNoticeListResponse, error) {
+func (c *noticeAdminClient) GetNoticeList(ctx context.Context, in *GetNoticeListRequest, opts ...grpc.CallOption) (*GetNoticeListResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetNoticeListResponse)
-	err := c.cc.Invoke(ctx, NoticeAdminService_GetNoticeList_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, NoticeAdmin_GetNoticeList_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *noticeAdminServiceClient) GetNoticeById(ctx context.Context, in *GetNoticeByIdRequest, opts ...grpc.CallOption) (*GetNoticeByIdResponse, error) {
+func (c *noticeAdminClient) GetNoticeById(ctx context.Context, in *GetNoticeByIdRequest, opts ...grpc.CallOption) (*GetNoticeByIdResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetNoticeByIdResponse)
-	err := c.cc.Invoke(ctx, NoticeAdminService_GetNoticeById_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, NoticeAdmin_GetNoticeById_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *noticeAdminServiceClient) CreateNotice(ctx context.Context, in *CreateNoticeRequest, opts ...grpc.CallOption) (*CreateNoticeResponse, error) {
+func (c *noticeAdminClient) CreateNotice(ctx context.Context, in *CreateNoticeRequest, opts ...grpc.CallOption) (*CreateNoticeResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(CreateNoticeResponse)
-	err := c.cc.Invoke(ctx, NoticeAdminService_CreateNotice_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, NoticeAdmin_CreateNotice_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *noticeAdminServiceClient) UpdateNotice(ctx context.Context, in *UpdateNoticeRequest, opts ...grpc.CallOption) (*UpdateNoticeResponse, error) {
+func (c *noticeAdminClient) UpdateNotice(ctx context.Context, in *UpdateNoticeRequest, opts ...grpc.CallOption) (*UpdateNoticeResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(UpdateNoticeResponse)
-	err := c.cc.Invoke(ctx, NoticeAdminService_UpdateNotice_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, NoticeAdmin_UpdateNotice_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *noticeAdminServiceClient) DeleteNotice(ctx context.Context, in *DeleteNoticeRequest, opts ...grpc.CallOption) (*DeleteNoticeResponse, error) {
+func (c *noticeAdminClient) DeleteNotice(ctx context.Context, in *DeleteNoticeRequest, opts ...grpc.CallOption) (*DeleteNoticeResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(DeleteNoticeResponse)
-	err := c.cc.Invoke(ctx, NoticeAdminService_DeleteNotice_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, NoticeAdmin_DeleteNotice_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// NoticeAdminServiceServer is the server API for NoticeAdminService service.
-// All implementations must embed UnimplementedNoticeAdminServiceServer
+// NoticeAdminServer is the server API for NoticeAdmin service.
+// All implementations must embed UnimplementedNoticeAdminServer
 // for forward compatibility.
 //
 // Notice admin service
 // Open to the server cluster
 // Provide gRPC interfaces
-type NoticeAdminServiceServer interface {
+type NoticeAdminServer interface {
 	// Query notice page list
 	GetNoticeList(context.Context, *GetNoticeListRequest) (*GetNoticeListResponse, error)
 	// Query notice by id
@@ -122,168 +122,168 @@ type NoticeAdminServiceServer interface {
 	UpdateNotice(context.Context, *UpdateNoticeRequest) (*UpdateNoticeResponse, error)
 	// Delete notice
 	DeleteNotice(context.Context, *DeleteNoticeRequest) (*DeleteNoticeResponse, error)
-	mustEmbedUnimplementedNoticeAdminServiceServer()
+	mustEmbedUnimplementedNoticeAdminServer()
 }
 
-// UnimplementedNoticeAdminServiceServer must be embedded to have
+// UnimplementedNoticeAdminServer must be embedded to have
 // forward compatible implementations.
 //
 // NOTE: this should be embedded by value instead of pointer to avoid a nil
 // pointer dereference when methods are called.
-type UnimplementedNoticeAdminServiceServer struct{}
+type UnimplementedNoticeAdminServer struct{}
 
-func (UnimplementedNoticeAdminServiceServer) GetNoticeList(context.Context, *GetNoticeListRequest) (*GetNoticeListResponse, error) {
+func (UnimplementedNoticeAdminServer) GetNoticeList(context.Context, *GetNoticeListRequest) (*GetNoticeListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetNoticeList not implemented")
 }
-func (UnimplementedNoticeAdminServiceServer) GetNoticeById(context.Context, *GetNoticeByIdRequest) (*GetNoticeByIdResponse, error) {
+func (UnimplementedNoticeAdminServer) GetNoticeById(context.Context, *GetNoticeByIdRequest) (*GetNoticeByIdResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetNoticeById not implemented")
 }
-func (UnimplementedNoticeAdminServiceServer) CreateNotice(context.Context, *CreateNoticeRequest) (*CreateNoticeResponse, error) {
+func (UnimplementedNoticeAdminServer) CreateNotice(context.Context, *CreateNoticeRequest) (*CreateNoticeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateNotice not implemented")
 }
-func (UnimplementedNoticeAdminServiceServer) UpdateNotice(context.Context, *UpdateNoticeRequest) (*UpdateNoticeResponse, error) {
+func (UnimplementedNoticeAdminServer) UpdateNotice(context.Context, *UpdateNoticeRequest) (*UpdateNoticeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateNotice not implemented")
 }
-func (UnimplementedNoticeAdminServiceServer) DeleteNotice(context.Context, *DeleteNoticeRequest) (*DeleteNoticeResponse, error) {
+func (UnimplementedNoticeAdminServer) DeleteNotice(context.Context, *DeleteNoticeRequest) (*DeleteNoticeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteNotice not implemented")
 }
-func (UnimplementedNoticeAdminServiceServer) mustEmbedUnimplementedNoticeAdminServiceServer() {}
-func (UnimplementedNoticeAdminServiceServer) testEmbeddedByValue()                            {}
+func (UnimplementedNoticeAdminServer) mustEmbedUnimplementedNoticeAdminServer() {}
+func (UnimplementedNoticeAdminServer) testEmbeddedByValue()                     {}
 
-// UnsafeNoticeAdminServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to NoticeAdminServiceServer will
+// UnsafeNoticeAdminServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to NoticeAdminServer will
 // result in compilation errors.
-type UnsafeNoticeAdminServiceServer interface {
-	mustEmbedUnimplementedNoticeAdminServiceServer()
+type UnsafeNoticeAdminServer interface {
+	mustEmbedUnimplementedNoticeAdminServer()
 }
 
-func RegisterNoticeAdminServiceServer(s grpc.ServiceRegistrar, srv NoticeAdminServiceServer) {
-	// If the following call pancis, it indicates UnimplementedNoticeAdminServiceServer was
+func RegisterNoticeAdminServer(s grpc.ServiceRegistrar, srv NoticeAdminServer) {
+	// If the following call pancis, it indicates UnimplementedNoticeAdminServer was
 	// embedded by pointer and is nil.  This will cause panics if an
 	// unimplemented method is ever invoked, so we test this at initialization
 	// time to prevent it from happening at runtime later due to I/O.
 	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
 		t.testEmbeddedByValue()
 	}
-	s.RegisterService(&NoticeAdminService_ServiceDesc, srv)
+	s.RegisterService(&NoticeAdmin_ServiceDesc, srv)
 }
 
-func _NoticeAdminService_GetNoticeList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _NoticeAdmin_GetNoticeList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetNoticeListRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(NoticeAdminServiceServer).GetNoticeList(ctx, in)
+		return srv.(NoticeAdminServer).GetNoticeList(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: NoticeAdminService_GetNoticeList_FullMethodName,
+		FullMethod: NoticeAdmin_GetNoticeList_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NoticeAdminServiceServer).GetNoticeList(ctx, req.(*GetNoticeListRequest))
+		return srv.(NoticeAdminServer).GetNoticeList(ctx, req.(*GetNoticeListRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _NoticeAdminService_GetNoticeById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _NoticeAdmin_GetNoticeById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetNoticeByIdRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(NoticeAdminServiceServer).GetNoticeById(ctx, in)
+		return srv.(NoticeAdminServer).GetNoticeById(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: NoticeAdminService_GetNoticeById_FullMethodName,
+		FullMethod: NoticeAdmin_GetNoticeById_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NoticeAdminServiceServer).GetNoticeById(ctx, req.(*GetNoticeByIdRequest))
+		return srv.(NoticeAdminServer).GetNoticeById(ctx, req.(*GetNoticeByIdRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _NoticeAdminService_CreateNotice_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _NoticeAdmin_CreateNotice_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CreateNoticeRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(NoticeAdminServiceServer).CreateNotice(ctx, in)
+		return srv.(NoticeAdminServer).CreateNotice(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: NoticeAdminService_CreateNotice_FullMethodName,
+		FullMethod: NoticeAdmin_CreateNotice_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NoticeAdminServiceServer).CreateNotice(ctx, req.(*CreateNoticeRequest))
+		return srv.(NoticeAdminServer).CreateNotice(ctx, req.(*CreateNoticeRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _NoticeAdminService_UpdateNotice_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _NoticeAdmin_UpdateNotice_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UpdateNoticeRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(NoticeAdminServiceServer).UpdateNotice(ctx, in)
+		return srv.(NoticeAdminServer).UpdateNotice(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: NoticeAdminService_UpdateNotice_FullMethodName,
+		FullMethod: NoticeAdmin_UpdateNotice_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NoticeAdminServiceServer).UpdateNotice(ctx, req.(*UpdateNoticeRequest))
+		return srv.(NoticeAdminServer).UpdateNotice(ctx, req.(*UpdateNoticeRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _NoticeAdminService_DeleteNotice_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _NoticeAdmin_DeleteNotice_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeleteNoticeRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(NoticeAdminServiceServer).DeleteNotice(ctx, in)
+		return srv.(NoticeAdminServer).DeleteNotice(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: NoticeAdminService_DeleteNotice_FullMethodName,
+		FullMethod: NoticeAdmin_DeleteNotice_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NoticeAdminServiceServer).DeleteNotice(ctx, req.(*DeleteNoticeRequest))
+		return srv.(NoticeAdminServer).DeleteNotice(ctx, req.(*DeleteNoticeRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// NoticeAdminService_ServiceDesc is the grpc.ServiceDesc for NoticeAdminService service.
+// NoticeAdmin_ServiceDesc is the grpc.ServiceDesc for NoticeAdmin service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var NoticeAdminService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "account.admin.notice.v1.NoticeAdminService",
-	HandlerType: (*NoticeAdminServiceServer)(nil),
+var NoticeAdmin_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "account.admin.notice.v1.NoticeAdmin",
+	HandlerType: (*NoticeAdminServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "GetNoticeList",
-			Handler:    _NoticeAdminService_GetNoticeList_Handler,
+			Handler:    _NoticeAdmin_GetNoticeList_Handler,
 		},
 		{
 			MethodName: "GetNoticeById",
-			Handler:    _NoticeAdminService_GetNoticeById_Handler,
+			Handler:    _NoticeAdmin_GetNoticeById_Handler,
 		},
 		{
 			MethodName: "CreateNotice",
-			Handler:    _NoticeAdminService_CreateNotice_Handler,
+			Handler:    _NoticeAdmin_CreateNotice_Handler,
 		},
 		{
 			MethodName: "UpdateNotice",
-			Handler:    _NoticeAdminService_UpdateNotice_Handler,
+			Handler:    _NoticeAdmin_UpdateNotice_Handler,
 		},
 		{
 			MethodName: "DeleteNotice",
-			Handler:    _NoticeAdminService_DeleteNotice_Handler,
+			Handler:    _NoticeAdmin_DeleteNotice_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

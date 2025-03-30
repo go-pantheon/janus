@@ -6,7 +6,7 @@
   },
   "tags": [
     {
-      "name": "AccountAdminService"
+      "name": "AccountAdmin"
     }
   ],
   "consumes": [
@@ -18,7 +18,7 @@
   "paths": {
     "/admin/account/id": {
       "get": {
-        "operationId": "AccountAdminService_GetById",
+        "operationId": "AccountAdmin_GetById",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -43,13 +43,13 @@
           }
         ],
         "tags": [
-          "AccountAdminService"
+          "AccountAdmin"
         ]
       }
     },
     "/admin/account/list": {
       "get": {
-        "operationId": "AccountAdminService_AccountList",
+        "operationId": "AccountAdmin_AccountList",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -99,7 +99,7 @@
           }
         ],
         "tags": [
-          "AccountAdminService"
+          "AccountAdmin"
         ]
       }
     }

@@ -48,21 +48,6 @@
     "v1TunnelResponse": {
       "type": "object",
       "properties": {
-        "mod": {
-          "type": "integer",
-          "format": "int32",
-          "title": "Module ID, globally unique"
-        },
-        "seq": {
-          "type": "integer",
-          "format": "int32",
-          "title": "Module message ID, unique within the module"
-        },
-        "obj": {
-          "type": "string",
-          "format": "int64",
-          "title": "Module object ID, according to the business agreement to pass the corresponding object ID"
-        },
         "data": {
           "type": "string",
           "format": "byte",
@@ -72,6 +57,21 @@
           "type": "string",
           "format": "uint64",
           "title": "Data version number"
+        },
+        "obj": {
+          "type": "string",
+          "format": "int64",
+          "title": "Module object ID, according to the business agreement to pass the corresponding object ID"
+        },
+        "mod": {
+          "type": "integer",
+          "format": "int32",
+          "title": "Module ID, globally unique"
+        },
+        "seq": {
+          "type": "integer",
+          "format": "int32",
+          "title": "Module message ID, unique within the module"
         }
       }
     }
