@@ -74,7 +74,7 @@ func (SCUsePack_Code) EnumDescriptor() ([]byte, []int) {
 	return file_message_storage_service_proto_rawDescGZIP(), []int{2, 0}
 }
 
-// @Push: Item has been updated
+// @push Item has been updated
 type SCPushItemUpdated struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Items         map[int64]uint64       `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty" protobuf_key:"varint,1,opt,name=key" protobuf_val:"varint,2,opt,name=value"` // Items with changed amounts. item DataID -> current amount. value is 0 means the item has been deleted

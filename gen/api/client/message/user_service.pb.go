@@ -178,7 +178,7 @@ func (SCSetGender_Code) EnumDescriptor() ([]byte, []int) {
 	return file_message_user_service_proto_rawDescGZIP(), []int{6, 0}
 }
 
-// @Push: Latest user data
+// @push Latest user data
 // The client receives the data and updates its own data to avoid data inconsistency between the client and the server when GM modifies data or the server restarts
 type SCPushSyncUser struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`

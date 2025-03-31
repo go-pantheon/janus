@@ -569,7 +569,7 @@ func (SCCloseRoom_Code) EnumDescriptor() ([]byte, []int) {
 	return file_message_room_service_proto_rawDescGZIP(), []int{21, 0}
 }
 
-// @Push: Joined room
+// @push Joined room
 type SCPushJoinedRoom struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	RoomId        int64                  `protobuf:"varint,1,opt,name=room_id,json=roomId,proto3" json:"room_id,omitempty"` // Room ID
@@ -622,7 +622,7 @@ func (x *SCPushJoinedRoom) GetMember() *RoomMemberProto {
 	return nil
 }
 
-// @Push: Removed from room. Leave, be kicked or room closed
+// @push Removed from room. Leave, be kicked or room closed
 type SCPushRemovedFromRoom struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	RoomId        int64                  `protobuf:"varint,1,opt,name=room_id,json=roomId,proto3" json:"room_id,omitempty"` // Room ID

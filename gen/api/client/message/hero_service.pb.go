@@ -77,7 +77,7 @@ func (SCHeroLevelUpgrade_Code) EnumDescriptor() ([]byte, []int) {
 	return file_message_hero_service_proto_rawDescGZIP(), []int{2, 0}
 }
 
-// @Push: New Hero unlocked
+// @push New Hero unlocked
 type SCPushHeroUnlock struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Heroes        []*HeroProto           `protobuf:"bytes,1,rep,name=heroes,proto3" json:"heroes,omitempty"`

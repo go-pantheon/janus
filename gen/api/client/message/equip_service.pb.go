@@ -184,7 +184,7 @@ func (SCEquipUpgrade_Code) EnumDescriptor() ([]byte, []int) {
 	return file_message_equip_service_proto_rawDescGZIP(), []int{6, 0}
 }
 
-// @Push: Equipment updated
+// @push Equipment updated
 type SCPushEquipUpdated struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Equips        []*EquipProto          `protobuf:"bytes,1,rep,name=equips,proto3" json:"equips,omitempty"` // Updated equipment list
