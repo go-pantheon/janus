@@ -65,6 +65,12 @@ log:
 # Run tests
 test:
 	go test -v ./... -cover
+
+.PHONY: vet
+# Run go vet
+vet: 
+	go vet ./...
+
 # Show help
 help:
 	@echo ''
