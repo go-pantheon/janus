@@ -3,9 +3,10 @@ package service
 import (
 	"context"
 	"crypto/cipher"
+	"time"
 
 	"github.com/go-kratos/kratos/v2/log"
-	"github.com/go-pantheon/fabrica-net"
+	net "github.com/go-pantheon/fabrica-net"
 	"github.com/go-pantheon/fabrica-util/security/rsa"
 	"github.com/go-pantheon/fabrica-util/xtime"
 	"github.com/go-pantheon/janus/app/gate/internal/pkg/pool"
@@ -110,7 +111,7 @@ func (s *Service) auth(authToken string, sid int64) (key []byte, ss net.Session,
 		block cipher.Block
 	)
 
-	now := xtime.Now()
+	now := time.Now()
 	if token, err = decryptAccountToken(authToken); err != nil {
 		return
 	}
