@@ -1,6 +1,7 @@
 # Janus
 
 Janus is a high-performance gateway service framework based on microservice architecture, developed in Go. This framework aims to provide a scalable and reliable connection layer between clients and backend services, supporting various protocols and efficient request routing. Janus is a core component of the go-pantheon ecosystem, responsible for implementing client connection handling and request forwarding.
+
 For more, please check out: [deepwiki/go-pantheon/janus](https://deepwiki.com/go-pantheon/janus)
 
 ## go-pantheon Ecosystem
