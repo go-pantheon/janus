@@ -42,3 +42,6 @@ app/*/configs
 # generated files
 bin/
 *.log
+
+.specstory/
+.cursor*
