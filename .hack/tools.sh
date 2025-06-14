@@ -16,7 +16,7 @@ PROJECT_HOME=$(
 
 source "${PROJECT_HOME}/.hack/util.sh"
 
-LINTER=${PROJECT_HOME}/bin/golangci-lint
+LINTER=golangci-lint
 LINTER_CONFIG=${PROJECT_HOME}/.golangci.yml
 FAILURE_FILE=${PROJECT_HOME}/.hack/.lintcheck_failures
 IGNORED_FILE=${PROJECT_HOME}/.hack/.test_ignored_files
@@ -32,7 +32,7 @@ while IFS='' read -r line; do ignored_modules+=("$line"); done < <(cat "$IGNORED
 function lint() {
 	for mod in $all_modules; do
 		local in_failing
-		util::array_contains "$mod" "${failing_modules[*]}" && in_failing=$? || in_failing=$?
+		util::array_contains "$mod" "${failing_modules[*]:-}" && in_failing=$? || in_failing=$?
 		if [[ "$in_failing" -ne "0" ]]; then
 			pushd "$mod" >/dev/null &&
 				echo "golangci lint $(sed -n 1p go.mod | cut -d ' ' -f2)" &&
@@ -46,7 +46,7 @@ function lint() {
 function test() {
 	for mod in $all_modules; do
 		local in_failing
-		util::array_contains "$mod" "${ignored_modules[*]}" && in_failing=$? || in_failing=$?
+		util::array_contains "$mod" "${ignored_modules[*]:-}" && in_failing=$? || in_failing=$?
 		if [[ "$in_failing" -ne "0" ]]; then
 			pushd "$mod" >/dev/null &&
 				echo "go test $(sed -n 1p go.mod | cut -d ' ' -f2)" &&
@@ -57,18 +57,18 @@ function test() {
 }
 
 function test_coverage() {
-	echo "" > coverage.txt
+	echo "" >coverage.txt
 	local base
 	base=$(pwd)
 	for mod in $all_modules; do
 		local in_failing
-		util::array_contains "$mod" "${ignored_modules[*]}" && in_failing=$? || in_failing=$?
+		util::array_contains "$mod" "${ignored_modules[*]:-}" && in_failing=$? || in_failing=$?
 		if [[ "$in_failing" -ne "0" ]]; then
 			pushd "$mod" >/dev/null &&
 				echo "go test $(sed -n 1p go.mod | cut -d ' ' -f2)" &&
 				go test -race -coverprofile=profile.out -covermode=atomic ./...
 			if [ -f profile.out ]; then
-				cat profile.out > "${base}/coverage.txt"
+				cat profile.out >"${base}/coverage.txt"
 				rm profile.out
 			fi
 			popd >/dev/null || exit
@@ -80,7 +80,7 @@ function test_coverage() {
 function fix() {
 	for mod in $all_modules; do
 		local in_failing
-		util::array_contains "$mod" "${failing_modules[*]}" && in_failing=$? || in_failing=$?
+		util::array_contains "$mod" "${failing_modules[*]:-}" && in_failing=$? || in_failing=$?
 		if [[ "$in_failing" -ne "0" ]]; then
 			pushd "$mod" >/dev/null &&
 				echo "golangci fix $(sed -n 1p go.mod | cut -d ' ' -f2)" &&

@@ -1,0 +1,5 @@
+./api/client
+./api/server
+./deps/fabrica-util
+./deps/fabrica-net
+./deps/fabrica-kit
