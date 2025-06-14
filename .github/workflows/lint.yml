@@ -30,6 +30,8 @@ jobs:
       matrix: ${{ fromJson(needs.resolve-modules.outputs.matrix) }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: 'true'
       - name: Lint
         uses: golangci/golangci-lint-action@v8
         with:
