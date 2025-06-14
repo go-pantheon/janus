@@ -16,8 +16,7 @@ func (s *Service) Handle(ctx context.Context, ss xnet.Session, th xnet.TunnelMan
 	defer pool.PutPacket(p)
 
 	if err = proto.Unmarshal(in, p); err != nil {
-		err = errors.Wrapf(err, "packet unmarshal failed")
-		return
+		return errors.Wrap(err, "packet unmarshal failed")
 	}
 
 	defer func() {
@@ -29,9 +28,9 @@ func (s *Service) Handle(ctx context.Context, ss xnet.Session, th xnet.TunnelMan
 	if ss.IsCrypto() {
 		index := ss.CSIndex()
 		if index != int64(p.Index) {
-			err = errors.Errorf("csindex validation failed. want=%d give=%d", index, p.Index)
-			return
+			return errors.Errorf("csindex validation failed. want=%d give=%d", index, p.Index)
 		}
+
 		ss.IncreaseCSIndex()
 	}
 
@@ -44,7 +43,7 @@ func (s *Service) Handle(ctx context.Context, ss xnet.Session, th xnet.TunnelMan
 
 	// the p.Obj is 0 when the mod is belong to player tunnel
 	if p.Obj == 0 {
-		p.Obj = int64(ss.UID())
+		p.Obj = ss.UID()
 	}
 
 	ctx = xcontext.SetOID(ctx, p.Obj)

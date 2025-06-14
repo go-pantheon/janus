@@ -97,7 +97,7 @@ The relationship between Janus and other go-pantheon components is illustrated b
     │                 │                 │ Establish gRPC Tunnel │
     │                 │                 │---------------->│
     │                 │                 │                 │
-    │                 │                 │ Tunnel Established      
+    │                 │                 │ Tunnel Established
     │                 │                 │<----------------│
     │                 │                 │                 │
     │ Game Protocol Messages (TCP)      │ Forward as gRPC │
@@ -264,7 +264,7 @@ service_discovery:
   service_prefix: "/services/roma"
   watch_interval: 10s
 
-# gRPC client pool configuration  
+# gRPC client pool configuration
 grpc_client:
   pool_size: 100
   timeout: 5s

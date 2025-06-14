@@ -12,6 +12,8 @@ import (
 )
 
 func TestProfile(t *testing.T) {
+	t.Parallel()
+
 	var memStats runtime.MemStats
 
 	runtime.ReadMemStats(&memStats)

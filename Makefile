@@ -4,6 +4,7 @@ GOBUILD=${GOCMD} build
 .PHONY: init
 # Initialize environment
 init:
+	pre-commit install
 	go install github.com/google/wire/cmd/wire@latest
 	go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
 	go install github.com/envoyproxy/protoc-gen-validate@latest
@@ -68,8 +69,18 @@ test:
 
 .PHONY: vet
 # Run go vet
-vet: 
+vet:
 	go vet ./...
+
+.PHONY: license-check
+# Run license check
+license-check:
+	go-licenses check ./...
+
+.PHONY: lint
+# Run lint
+lint:
+	golangci-lint run ./...
 
 # Show help
 help:

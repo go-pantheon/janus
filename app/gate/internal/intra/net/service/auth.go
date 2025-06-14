@@ -19,13 +19,12 @@ import (
 
 func (s *Service) Auth(ctx context.Context, in []byte) (out []byte, session xnet.Session, err error) {
 	if len(in) == 0 {
-		err = errors.New("proto is empty")
-		return
+		return nil, nil, errors.New("proto is empty")
 	}
 
 	if s.encrypted {
 		if in, err = security.DecryptCSHandshake(in); err != nil {
-			return
+			return nil, nil, err
 		}
 	}
 

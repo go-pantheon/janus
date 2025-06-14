@@ -62,6 +62,7 @@ func NewTunnel(ctx context.Context, pusher xnet.Pusher, app AppTunnel) *Tunnel {
 	}
 
 	t.start(ctx)
+
 	return t
 }
 
@@ -198,8 +199,10 @@ func (t *Tunnel) push(ctx context.Context, sc xnet.ForwardMessage) (err error) {
 }
 
 func (t *Tunnel) close(err error) {
-	t.DoClose(func() {
+	if closeErr := t.DoClose(func() {
 		close(t.csChan)
 		t.app.OnClose(err)
-	})
+	}); closeErr != nil {
+		t.app.Log().Errorf("close tunnel failed. %+v", closeErr)
+	}
 }

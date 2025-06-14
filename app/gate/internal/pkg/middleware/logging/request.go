@@ -25,6 +25,7 @@ func Request(netKind xnet.NetKind) middleware.Middleware {
 			}
 
 			logRequest(ctx, netKind, req)
+
 			return handler(ctx, req)
 		}
 	}
