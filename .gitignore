@@ -45,3 +45,4 @@ bin/
 
 .specstory/
 .cursor*
+.actrc
