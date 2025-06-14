@@ -35,7 +35,7 @@ for mod in $all_modules; do
 	fi
 done
 
-echo "::set-output name=matrix::{\"include\":[${PATHS%?}]}"
+echo "matrix={\"include\":[${PATHS%?}]}" >>$GITHUB_OUTPUT
 
 MODULES=$(find . -name "go.mod" -type f -not -path "*/vendor/*" -not -path "*/\.*/*" | sort | xargs -I{} dirname {})
 JSON='{"include":['

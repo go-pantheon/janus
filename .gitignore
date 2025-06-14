@@ -39,6 +39,10 @@ app/*/configs
 /api/
 /deps/
 
+# go work
+go.work
+go.work.sum
+
 # generated files
 bin/
 *.log
