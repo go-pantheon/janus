@@ -9,15 +9,15 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware"
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-pantheon/fabrica-kit/profile"
-	net "github.com/go-pantheon/fabrica-net"
 	"github.com/go-pantheon/fabrica-net/xcontext"
-	"github.com/go-pantheon/janus/app/gate/internal/pkg/pool"
+	"github.com/go-pantheon/fabrica-net/xnet"
 	climod "github.com/go-pantheon/janus/gen/api/client/module"
+	clipkt "github.com/go-pantheon/janus/gen/api/client/packet"
 	cliseq "github.com/go-pantheon/janus/gen/api/client/sequence"
 	"google.golang.org/protobuf/proto"
 )
 
-func Request(netKind net.NetKind) middleware.Middleware {
+func Request(netKind xnet.NetKind) middleware.Middleware {
 	return func(handler middleware.Handler) middleware.Handler {
 		return func(ctx context.Context, req interface{}) (interface{}, error) {
 			if !profile.IsDev() {
@@ -30,9 +30,8 @@ func Request(netKind net.NetKind) middleware.Middleware {
 	}
 }
 
-func logRequest(ctx context.Context, netKind net.NetKind, req interface{}) {
-	p := pool.GetPacket()
-	defer pool.PutPacket(p)
+func logRequest(ctx context.Context, netKind xnet.NetKind, req any) {
+	p := &clipkt.Packet{}
 
 	if req, ok := req.([]byte); ok {
 		if err := proto.Unmarshal(req, p); err != nil {
@@ -58,13 +57,15 @@ func logRequest(ctx context.Context, netKind net.NetKind, req interface{}) {
 			uid = md.Get(xcontext.CtxUID)
 			sid = md.Get(xcontext.CtxSID)
 		}
+
 		obj = strconv.FormatInt(p.Obj, 10)
 		mod = strconv.FormatInt(int64(p.Mod), 10)
 		seq = strconv.FormatInt(int64(p.Seq), 10)
 		index = strconv.FormatInt(int64(p.Index), 10)
 		size = strconv.FormatInt(int64(len(p.Data)), 10)
 
-		kv := make([]interface{}, 0, 8*2)
+		kv := make([]any, 0, 16)
+
 		kv = append(kv, "kind", "req",
 			"net", netKind,
 			"trace", tracing.TraceID(),

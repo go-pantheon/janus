@@ -13,7 +13,7 @@ type requestPool struct {
 func newRequestPool() *requestPool {
 	return &requestPool{
 		pool: sync.Pool{
-			New: func() interface{} {
+			New: func() any {
 				return new(intrav1.TunnelRequest)
 			},
 		},
@@ -28,6 +28,7 @@ func (p *requestPool) put(msg *intrav1.TunnelRequest) {
 	if msg == nil {
 		return
 	}
+
 	msg.Reset()
 	p.pool.Put(msg)
 }

@@ -9,15 +9,20 @@ import (
 )
 
 const (
-	serviceName = "roma.player.service"
+	serviceName    = "roma.player.service"
+	routeTableName = "player"
 )
+
+func NewClient(conn *Conn) intrav1.TunnelServiceClient {
+	return intrav1.NewTunnelServiceClient(conn.ClientConnInterface)
+}
 
 type Conn struct {
 	*conn.Conn
 }
 
 func NewConn(logger log.Logger, rt *RouteTable, r registry.Discovery) (*Conn, error) {
-	conn, err := conn.NewConn(serviceName, balancer.BalancerTypeMaster, logger, rt, r)
+	conn, err := conn.NewConn(serviceName, balancer.TypeMaster, logger, rt, r)
 	if err != nil {
 		return nil, err
 	}
@@ -25,8 +30,4 @@ func NewConn(logger log.Logger, rt *RouteTable, r registry.Discovery) (*Conn, er
 	return &Conn{
 		Conn: conn,
 	}, nil
-}
-
-func NewClient(conn *Conn) intrav1.TunnelServiceClient {
-	return intrav1.NewTunnelServiceClient(conn.ClientConnInterface)
 }

@@ -24,17 +24,22 @@ func NewHTTPServer(c *conf.Server, logger log.Logger, ps pushv1.PushServiceServe
 				logging.Server(logger),
 			)),
 	}
+
 	if c.Http.Network != "" {
 		opts = append(opts, http.Network(c.Http.Network))
 	}
+
 	if c.Http.Addr != "" {
 		opts = append(opts, http.Address(c.Http.Addr))
 	}
+
 	if c.Http.Timeout != nil {
 		opts = append(opts, http.Timeout(c.Http.Timeout.AsDuration()))
 	}
 
 	svr := http.NewServer(opts...)
+
 	pushv1.RegisterPushServiceHTTPServer(svr, ps)
+
 	return svr
 }

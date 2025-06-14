@@ -1,7 +1,7 @@
 package data
 
 import (
-	"github.com/go-pantheon/fabrica-util/data/cache"
+	cache "github.com/go-pantheon/fabrica-util/data/redis"
 	"github.com/go-pantheon/janus/app/gate/internal/conf"
 	"github.com/google/wire"
 	"github.com/redis/go-redis/v9"
@@ -10,14 +10,14 @@ import (
 var ProviderSet = wire.NewSet(NewData)
 
 type Data struct {
-	Rdb redis.Cmdable
+	Rdb redis.UniversalClient
 }
 
 func NewData(c *conf.Data) (d *Data, cleanup func(), err error) {
-	var rdb redis.Cmdable
+	var rdb redis.UniversalClient
 
 	if c.Redis.Cluster {
-		rdb, cleanup, err = cache.NewRedisCluster(&redis.ClusterOptions{
+		rdb, cleanup, err = cache.NewCluster(&redis.ClusterOptions{
 			Addrs:        []string{c.Redis.Addr},
 			Password:     c.Redis.Password,
 			DialTimeout:  c.Redis.DialTimeout.AsDuration(),
@@ -25,7 +25,7 @@ func NewData(c *conf.Data) (d *Data, cleanup func(), err error) {
 			ReadTimeout:  c.Redis.ReadTimeout.AsDuration(),
 		})
 	} else {
-		rdb, cleanup, err = cache.NewRedis(&redis.Options{
+		rdb, cleanup, err = cache.NewStandalone(&redis.Options{
 			Addr:         c.Redis.Addr,
 			Password:     c.Redis.Password,
 			DialTimeout:  c.Redis.DialTimeout.AsDuration(),
@@ -33,12 +33,12 @@ func NewData(c *conf.Data) (d *Data, cleanup func(), err error) {
 			ReadTimeout:  c.Redis.ReadTimeout.AsDuration(),
 		})
 	}
+
 	if err != nil {
-		return
+		return nil, nil, err
 	}
 
-	d = &Data{
+	return &Data{
 		Rdb: rdb,
-	}
-	return
+	}, cleanup, nil
 }

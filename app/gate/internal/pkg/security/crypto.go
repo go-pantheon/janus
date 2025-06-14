@@ -1,61 +1,68 @@
 package security
 
 import (
-	"crypto/cipher"
 	"crypto/rsa"
 	"crypto/x509"
 	"encoding/base64"
 
+	"github.com/go-pantheon/fabrica-net/xnet"
+	"github.com/go-pantheon/fabrica-util/errors"
 	"github.com/go-pantheon/fabrica-util/security/aes"
 	rrsa "github.com/go-pantheon/fabrica-util/security/rsa"
 	"github.com/go-pantheon/fabrica-util/xrand"
-	"github.com/pkg/errors"
 )
 
 var (
 	handshakePriKey *rsa.PrivateKey
-	tokenAESKey     []byte
-	tokenAESBlock   cipher.Block
+	tokenAESCipher  *aes.Cipher
 )
 
 func Init(aesKey string, priKey string) error {
 	var (
 		priKeyBytes []byte
-		priKeyIface interface{}
+		priKeyIface any
 		err         error
 	)
 
 	if priKeyBytes, err = base64.URLEncoding.DecodeString(priKey); err != nil {
-		return errors.Wrapf(err, "base64 DecodeString failed.")
+		return errors.Wrap(err, "base64 DecodeString failed")
 	}
+
 	if priKeyIface, err = x509.ParsePKCS8PrivateKey(priKeyBytes); err != nil {
-		return errors.Wrapf(err, "x509 ParsePKCS8PrivateKey failed.")
+		return errors.Wrap(err, "x509 ParsePKCS8PrivateKey failed")
 	}
-	handshakePriKey = priKeyIface.(*rsa.PrivateKey)
 
-	tokenAESKey = []byte(aesKey)
+	var ok bool
 
-	var block cipher.Block
-	if block, err = aes.NewBlock(tokenAESKey); err != nil {
-		return errors.Wrapf(err, "aes NewBlock failed.")
+	handshakePriKey, ok = priKeyIface.(*rsa.PrivateKey)
+	if !ok {
+		return errors.New("invalid private key")
 	}
-	tokenAESBlock = block
+
+	tokenAESCipher, err = aes.NewAESCipher([]byte(aesKey))
+	if err != nil {
+		return errors.Wrap(err, "aes NewAESCipher failed")
+	}
 
 	return nil
 }
 
-func InitApiCrypto() (cipher.Block, []byte, error) {
-	str, err := xrand.RandAlphaNumString(32)
-	if err != nil {
-		return nil, nil, errors.Wrapf(err, "xrand RandString failed.")
+func InitApiCrypto(crypto bool) (xnet.Cryptor, error) {
+	if !crypto {
+		return xnet.NewNoCryptor(), nil
 	}
 
-	key := []byte(str)
-	block, err := aes.NewBlock(key)
+	str, err := xrand.RandAlphaNumString(32)
 	if err != nil {
-		return nil, nil, errors.Wrapf(err, "create aes block failed.")
+		return nil, errors.Wrap(err, "xrand RandString failed")
 	}
-	return block, key, nil
+
+	encryptor, err := xnet.NewCryptor(true, []byte(str))
+	if err != nil {
+		return nil, errors.Wrap(err, "net NewEncryptor failed")
+	}
+
+	return encryptor, nil
 }
 
 func DecryptCSHandshake(secret []byte) ([]byte, error) {
@@ -65,12 +72,13 @@ func DecryptCSHandshake(secret []byte) ([]byte, error) {
 func DecryptToken(secret string) ([]byte, error) {
 	ser, err := base64.URLEncoding.DecodeString(secret)
 	if err != nil {
-		return nil, errors.Wrapf(err, "base64 DecodeString failed.")
+		return nil, errors.Wrap(err, "base64 DecodeString failed")
 	}
 
-	origin, err := aes.Decrypt(tokenAESKey, tokenAESBlock, ser)
+	origin, err := tokenAESCipher.Decrypt(ser)
 	if err != nil {
-		return nil, errors.Wrapf(err, "aes Decrypt failed.")
+		return nil, errors.Wrap(err, "aes Decrypt failed")
 	}
+
 	return origin, nil
 }

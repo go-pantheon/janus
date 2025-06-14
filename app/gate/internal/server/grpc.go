@@ -25,15 +25,19 @@ func NewGRPCServer(c *conf.Server, logger log.Logger, ps pushv1.PushServiceServe
 			logging.Server(logger),
 		),
 	}
+
 	if c.Grpc.Network != "" {
 		opts = append(opts, kgrpc.Network(c.Grpc.Network))
 	}
+
 	if c.Grpc.Addr != "" {
 		opts = append(opts, kgrpc.Address(c.Grpc.Addr))
 	}
+
 	if c.Grpc.Timeout != nil {
 		opts = append(opts, kgrpc.Timeout(c.Grpc.Timeout.AsDuration()))
 	}
+
 	opts = append(opts, kgrpc.Options(
 		grpc.InitialConnWindowSize(1<<30),
 		grpc.InitialWindowSize(1<<30),
@@ -41,6 +45,8 @@ func NewGRPCServer(c *conf.Server, logger log.Logger, ps pushv1.PushServiceServe
 	))
 
 	svr := kgrpc.NewServer(opts...)
+
 	pushv1.RegisterPushServiceServer(svr, ps)
+
 	return svr
 }

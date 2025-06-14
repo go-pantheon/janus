@@ -9,4 +9,5 @@ const (
 	FightTunnelType
 	ChatTunnelType
 	MailTunnelType
+	GuildTunnelType
 )

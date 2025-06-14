@@ -16,8 +16,9 @@ import (
 	"github.com/go-pantheon/fabrica-kit/profile"
 	"github.com/go-pantheon/fabrica-kit/trace"
 	"github.com/go-pantheon/fabrica-kit/xlog"
-	"github.com/go-pantheon/fabrica-net/health"
+	"github.com/go-pantheon/fabrica-net/http/health"
 	tcp "github.com/go-pantheon/fabrica-net/tcp/server"
+	"github.com/go-pantheon/fabrica-util/compress"
 	"github.com/go-pantheon/fabrica-util/xtime"
 	"github.com/go-pantheon/janus/app/gate/internal/conf"
 	"github.com/go-pantheon/janus/app/gate/internal/pkg/security"
@@ -35,10 +36,10 @@ func newApp(logger log.Logger, ts *tcp.Server, hs *http.Server, gs *grpc.Server,
 	label *conf.Label, rr registry.Registrar,
 ) *kratos.App {
 	md := map[string]string{
-		profile.SERVICE: label.Service,
-		profile.PROFILE: label.Profile,
-		profile.VERSION: label.Version,
-		profile.COLOR:   label.Color,
+		profile.ServiceKey: label.Service,
+		profile.ProfileKey: label.Profile,
+		profile.VersionKey: label.Version,
+		profile.ColorKey:   label.Color,
 	}
 
 	url, err := gs.Endpoint()
@@ -68,7 +69,7 @@ func main() {
 
 	c := config.New(
 		config.WithSource(
-			env.NewSource(profile.ORG_PREFIX),
+			env.NewSource(profile.OrgPrefix),
 			file.NewSource(flagConf),
 		),
 	)
@@ -77,21 +78,27 @@ func main() {
 	}
 
 	var bc conf.Bootstrap
+
 	if err := c.Scan(&bc); err != nil {
 		panic(err)
 	}
 
-	xtime.Init(bc.Label.Language)
+	if err := xtime.InitSimple(bc.Label.Language); err != nil {
+		panic(err)
+	}
 
 	var rc conf.Registry
+
 	if err := c.Scan(&rc); err != nil {
 		panic(err)
 	}
 
 	var sc conf.Secret
+
 	if err := c.Scan(&sc); err != nil {
 		panic(err)
 	}
+
 	if err := security.Init(sc.AesKey, sc.PrivateKey); err != nil {
 		panic(err)
 	}
@@ -100,8 +107,10 @@ func main() {
 		panic(err)
 	}
 
-	logger := xlog.Init(bc.Log.Type, bc.Log.Level, bc.Label.Profile, bc.Label.Color, bc.Label.Service, bc.Label.Version, bc.Label.Node)
 	metrics.Init(bc.Label.Service)
+	compress.Init(bc.Compress.Weak, bc.Compress.Strong)
+
+	logger := xlog.Init(bc.Log.Type, bc.Log.Level, bc.Label.Profile, bc.Label.Color, bc.Label.Service, bc.Label.Version, bc.Label.Node)
 
 	app, cleanup, err := initApp(bc.Server, bc.Label, &rc, bc.Data, logger, health.NewServer(bc.Server.Health))
 	if err != nil {

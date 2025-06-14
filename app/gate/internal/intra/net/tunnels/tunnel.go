@@ -6,9 +6,8 @@ import (
 	"time"
 
 	"github.com/go-kratos/kratos/v2/log"
-	"github.com/go-pantheon/fabrica-kit/tunnel"
 	"github.com/go-pantheon/fabrica-kit/xerrors"
-	net "github.com/go-pantheon/fabrica-net"
+	"github.com/go-pantheon/fabrica-net/xnet"
 	"github.com/go-pantheon/fabrica-util/compress"
 	"github.com/go-pantheon/fabrica-util/xsync"
 	"github.com/go-pantheon/janus/app/gate/internal/pkg/pool"
@@ -21,11 +20,10 @@ import (
 type AppTunnel interface {
 	AppTunnelBase
 
-	CSHandle(msg tunnel.ForwardMessage) error
-	SCHandle() (tunnel.ForwardMessage, error)
-	TransformMessage(from *clipkt.Packet) (to tunnel.ForwardMessage)
-	OnStop()
-	OnGroupStop(ctx context.Context, err error)
+	CSHandle(msg xnet.ForwardMessage) error
+	SCHandle() (xnet.ForwardMessage, error)
+	TransformMessage(from *clipkt.Packet) (to xnet.ForwardMessage)
+	OnClose(err error)
 }
 
 type AppTunnelBase interface {
@@ -34,26 +32,33 @@ type AppTunnelBase interface {
 	UID() int64
 	Color() string
 	OID() int64
-	Session() net.Session
+	Session() xnet.Session
 }
 
-var _ tunnel.Tunnel = (*Tunnel)(nil)
+const (
+	recordPushErrStartAt = time.Second * 10
+	recordPushErrCount   = 10
+)
+
+var _ xnet.Tunnel = (*Tunnel)(nil)
 
 type Tunnel struct {
-	xsync.Stoppable
-	tunnel.Pusher
+	xsync.Closable
+	xnet.Pusher
 
-	app AppTunnel
+	app    AppTunnel
+	csChan chan xnet.ForwardMessage
 
-	csChan chan tunnel.ForwardMessage
+	recordPushErrStartAt time.Time // the start time of the last 10 seconds
+	recordPushErrCount   int       // the count of continuous push error in the last 10 seconds
 }
 
-func NewTunnel(ctx context.Context, pusher tunnel.Pusher, app AppTunnel) *Tunnel {
+func NewTunnel(ctx context.Context, pusher xnet.Pusher, app AppTunnel) *Tunnel {
 	t := &Tunnel{
-		Stoppable: xsync.NewStopper(time.Second * 10),
-		app:       app,
-		Pusher:    pusher,
-		csChan:    make(chan tunnel.ForwardMessage, 1024),
+		Closable: xsync.NewClosure(time.Second * 10),
+		app:      app,
+		Pusher:   pusher,
+		csChan:   make(chan xnet.ForwardMessage, 1024),
 	}
 
 	t.start(ctx)
@@ -64,27 +69,23 @@ func (t *Tunnel) Type() int32 {
 	return t.app.Type()
 }
 
-func (t *Tunnel) Forward(ctx context.Context, p tunnel.ForwardMessage) error {
-	if t.IsStopping() {
+func (t *Tunnel) Forward(ctx context.Context, p xnet.ForwardMessage) error {
+	if t.OnClosing() {
 		return xerrors.ErrTunnelStopped
 	}
 
-	msg, err := t.transform(p)
-	if err != nil {
-		return err
-	}
+	t.csChan <- p
 
-	t.csChan <- msg
 	return nil
 }
 
-func (t *Tunnel) transform(from tunnel.ForwardMessage) (to tunnel.ForwardMessage, err error) {
+func (t *Tunnel) TransformMessage(from xnet.PacketMessage) (to xnet.ForwardMessage, err error) {
 	p, ok := from.(*clipkt.Packet)
 	if !ok {
 		return nil, errors.New("invalid packet type")
 	}
-	to = t.app.TransformMessage(p)
-	return
+
+	return t.app.TransformMessage(p), nil
 }
 
 func (t *Tunnel) Push(ctx context.Context, pack []byte) error {
@@ -97,16 +98,16 @@ func (t *Tunnel) start(ctx context.Context) {
 	})
 }
 
-func (t *Tunnel) run(ctx context.Context) error {
-	defer t.stop()
+func (t *Tunnel) run(ctx context.Context) (err error) {
+	defer t.close(err)
 
 	eg, ctx := errgroup.WithContext(ctx)
 	eg.Go(func() error {
 		select {
 		case <-ctx.Done():
 			return ctx.Err()
-		case <-t.StopTriggered():
-			return xsync.GroupStopping
+		case <-t.CloseTriggered():
+			return xsync.ErrGroupIsClosing
 		}
 	})
 	eg.Go(func() error {
@@ -119,10 +120,8 @@ func (t *Tunnel) run(ctx context.Context) error {
 			return t.scLoop(ctx)
 		})
 	})
-	if err := eg.Wait(); err != nil {
-		t.app.OnGroupStop(ctx, err)
-	}
-	return nil
+
+	return eg.Wait()
 }
 
 func (t *Tunnel) csLoop(ctx context.Context) error {
@@ -130,8 +129,8 @@ func (t *Tunnel) csLoop(ctx context.Context) error {
 		select {
 		case <-ctx.Done():
 			return ctx.Err()
-		case <-t.StopTriggered():
-			return xsync.GroupStopping
+		case <-t.CloseTriggered():
+			return xsync.ErrGroupIsClosing
 		case cs := <-t.csChan:
 			if err := t.app.CSHandle(cs); err != nil {
 				return err
@@ -148,32 +147,49 @@ func (t *Tunnel) scLoop(ctx context.Context) error {
 		}
 
 		if err = t.push(ctx, msg); err != nil {
-			t.app.Log().WithContext(ctx).Errorf("[gate.Tunnel] uid=%d color=%s oid=%d push failed. %+v", t.app.UID(), t.app.Color(), t.app.OID(), err)
+			if t.recordPushErr(ctx, err) {
+				return err
+			}
+		} else {
+			t.recordPushErrCount = 0 // reset the count when push success
 		}
 	}
 }
 
-func (t *Tunnel) push(ctx context.Context, sc tunnel.ForwardMessage) error {
+func (t *Tunnel) recordPushErr(ctx context.Context, err error) (overload bool) {
+	t.app.Log().WithContext(ctx).Errorf("push failed uid=%d sid=%d color=%s status=%d oid=%d. %+v", t.app.UID(), t.app.Session().SID(), t.app.Color(), t.app.Session().Status(), t.app.OID(), err)
+
+	now := time.Now()
+
+	if now.Sub(t.recordPushErrStartAt) > recordPushErrStartAt {
+		t.recordPushErrStartAt = now
+		t.recordPushErrCount = 0
+	}
+
+	t.recordPushErrCount++
+
+	return t.recordPushErrCount > recordPushErrCount
+}
+
+func (t *Tunnel) push(ctx context.Context, sc xnet.ForwardMessage) (err error) {
 	p := pool.GetPacket()
 	defer pool.PutPacket(p)
 
 	p.Mod = sc.GetMod()
 	p.Seq = sc.GetSeq()
 	p.Obj = sc.GetObj()
+	p.Index = sc.GetIndex()
 
-	if newData, compressed, err := compress.Compress(p.Data); err != nil {
+	p.Data, p.Compress, err = compress.Compress(sc.GetData())
+	if err != nil {
 		return err
-	} else {
-		p.Data = newData
-		p.Compress = compressed
 	}
-
-	p.Index = int32(t.app.Session().IncreaseSCIndex())
 
 	bytes, err := proto.Marshal(p)
 	if err != nil {
 		return errors.Wrapf(err, "packet marshal failed")
 	}
+
 	if err = t.Push(ctx, bytes); err != nil {
 		return err
 	}
@@ -181,9 +197,9 @@ func (t *Tunnel) push(ctx context.Context, sc tunnel.ForwardMessage) error {
 	return nil
 }
 
-func (t *Tunnel) stop() {
-	t.DoStop(func() {
+func (t *Tunnel) close(err error) {
+	t.DoClose(func() {
 		close(t.csChan)
-		t.app.OnStop()
+		t.app.OnClose(err)
 	})
 }

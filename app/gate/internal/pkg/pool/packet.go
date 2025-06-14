@@ -13,7 +13,7 @@ type packetPool struct {
 func newPacketPool() *packetPool {
 	return &packetPool{
 		pool: sync.Pool{
-			New: func() interface{} {
+			New: func() any {
 				return new(clipkt.Packet)
 			},
 		},
@@ -28,6 +28,7 @@ func (p *packetPool) put(packet *clipkt.Packet) {
 	if packet == nil {
 		return
 	}
+
 	packet.Reset()
 	p.pool.Put(packet)
 }

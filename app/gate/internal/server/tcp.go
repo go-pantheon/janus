@@ -8,18 +8,28 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-pantheon/fabrica-kit/metrics"
-	"github.com/go-pantheon/fabrica-kit/router/routetable"
-	"github.com/go-pantheon/fabrica-net"
+	tcpconf "github.com/go-pantheon/fabrica-net/conf"
 	tcp "github.com/go-pantheon/fabrica-net/tcp/server"
+	"github.com/go-pantheon/fabrica-net/xnet"
+	"github.com/go-pantheon/fabrica-util/errors"
 	"github.com/go-pantheon/janus/app/gate/internal/conf"
 	"github.com/go-pantheon/janus/app/gate/internal/intra/net/service"
 	"github.com/go-pantheon/janus/app/gate/internal/pkg/middleware/logging"
 	"github.com/go-pantheon/janus/app/gate/internal/pkg/middleware/metadata"
 	"github.com/go-pantheon/janus/app/gate/internal/router"
-	"github.com/pkg/errors"
 )
 
 func NewTCPServer(c *conf.Server, logger log.Logger, rt *router.RouteTable, svc *service.Service) (*tcp.Server, error) {
+	tcpconf.Init()
+
+	if rt == nil {
+		return nil, errors.New("route table is nil")
+	}
+
+	if svc == nil {
+		return nil, errors.New("service is nil")
+	}
+
 	var opts = []tcp.Option{
 		tcp.ReadFilter(
 			middleware.Chain(
@@ -27,12 +37,12 @@ func NewTCPServer(c *conf.Server, logger log.Logger, rt *router.RouteTable, svc 
 				metadata.Server(),
 				tracing.Server(),
 				metrics.Server(),
-				logging.Request(net.NetKindTCP),
+				logging.Request(xnet.NetKindTCP),
 			),
 		),
 		tcp.WriteFilter(
 			middleware.Chain(
-				logging.Reply(net.NetKindTCP),
+				logging.Reply(xnet.NetKindTCP),
 			),
 		),
 	}
@@ -40,32 +50,30 @@ func NewTCPServer(c *conf.Server, logger log.Logger, rt *router.RouteTable, svc 
 	if c.Tcp.Addr != "" {
 		opts = append(opts, tcp.Bind(c.Tcp.Addr))
 	}
+
 	if logger != nil {
 		opts = append(opts, tcp.Logger(logger))
 	}
-	if rt != nil {
-		opts = append(opts, tcp.AfterConnectFunc(afterConnectFunc(rt)))
-		opts = append(opts, tcp.AfterDisconnectFunc(afterDisconnectFunc(rt)))
-	}
+
+	opts = append(opts, tcp.AfterConnectFunc(afterConnectFunc(rt)))
+	opts = append(opts, tcp.AfterDisconnectFunc(afterDisconnectFunc(rt)))
 
 	s, err := tcp.NewServer(svc, opts...)
 	if err != nil {
-		return nil, errors.Wrapf(err, "create tcp server failed. %+v", c)
+		return nil, errors.Wrap(err, "create tcp server failed")
 	}
+
 	return s, nil
 }
 
-func afterConnectFunc(rt routetable.RouteTable) func(ctx context.Context, color string, uid int64) error {
-	grt := rt.(*router.RouteTable)
-	return func(ctx context.Context, color string, uid int64) error {
-		return router.AddRouteTable(ctx, grt, color, uid)
+func afterConnectFunc(rt *router.RouteTable) tcp.WrapperFunc {
+	return func(ctx context.Context, uid int64, color string) error {
+		return router.AddRouteTable(ctx, rt, color, uid)
 	}
 }
 
-func afterDisconnectFunc(rt routetable.RouteTable) func(ctx context.Context, color string, uid int64) error {
-	grt := rt.(*router.RouteTable)
-	return func(ctx context.Context, color string, uid int64) error {
-		_ = router.DelRouteTable(ctx, grt, color, uid)
-		return nil
+func afterDisconnectFunc(rt *router.RouteTable) tcp.WrapperFunc {
+	return func(ctx context.Context, uid int64, color string) error {
+		return router.DelRouteTable(ctx, rt, color, uid)
 	}
 }

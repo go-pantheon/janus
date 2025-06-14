@@ -9,7 +9,6 @@ import (
 	"github.com/go-pantheon/fabrica-kit/router/routetable"
 	"github.com/go-pantheon/fabrica-kit/router/routetable/redis"
 	"github.com/go-pantheon/janus/app/gate/internal/data"
-	"github.com/pkg/errors"
 )
 
 type RouteTable struct {
@@ -18,21 +17,23 @@ type RouteTable struct {
 
 func NewRouteTable(d *data.Data) *RouteTable {
 	return &RouteTable{
-		RouteTable: routetable.NewRouteTable("gate", redis.NewRedisRouteTable(d.Rdb)),
+		RouteTable: routetable.NewRouteTable("gate", redis.New(d.Rdb)),
 	}
 }
 
-func AddRouteTable(ctx context.Context, rt *RouteTable, color string, oid int64) error {
+func AddRouteTable(ctx context.Context, rt *RouteTable, color string, uid int64) error {
 	ctx, cancel := context.WithTimeout(ctx, 2*time.Second)
 	defer cancel()
 
-	oldAddr, err := rt.GetSet(ctx, color, oid, profile.GRPCEndpoint())
+	oldAddr, err := rt.GetSet(ctx, color, uid, profile.GRPCEndpoint())
 	if err != nil {
-		return errors.WithMessagef(err, "add route table failed. color=%s oid=%d", color, oid)
+		return err
 	}
-	if len(oldAddr) > 0 {
-		log.Debugf("[gate.RouteTable] found old route table on add. color=%s oid=%d addr=%s", color, oid, oldAddr)
+
+	if len(oldAddr) > 0 && oldAddr != profile.GRPCEndpoint() {
+		log.Warnf("[gate.RouteTable] found old route table on add. uid=%d color=%s addr=%s", uid, color, oldAddr)
 	}
+
 	return nil
 }
 
@@ -40,9 +41,5 @@ func DelRouteTable(ctx context.Context, rt *RouteTable, color string, uid int64)
 	ctx, cancel := context.WithTimeout(ctx, 2*time.Second)
 	defer cancel()
 
-	err := rt.DelIfSame(ctx, color, uid, profile.GRPCEndpoint())
-	if err != nil && !errors.Is(err, context.Canceled) {
-		log.Errorf("[gate.RouteTable] del route table failed. color=%s oid=%d %+v", color, uid, err)
-	}
-	return nil
+	return rt.DelIfSame(ctx, color, uid, profile.GRPCEndpoint())
 }

@@ -8,7 +8,7 @@ package main
 import (
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"
-	"github.com/go-pantheon/fabrica-net/health"
+	"github.com/go-pantheon/fabrica-net/http/health"
 	"github.com/go-pantheon/janus/app/gate/internal/client"
 	"github.com/go-pantheon/janus/app/gate/internal/conf"
 	"github.com/go-pantheon/janus/app/gate/internal/data"
