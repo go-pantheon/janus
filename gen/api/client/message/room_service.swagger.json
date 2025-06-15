@@ -550,7 +550,7 @@
       "type": "string",
       "enum": [
         "ErrUnspecified",
-        "Success",
+        "Succeeded",
         "ErrNotInRoom",
         "ErrUnauthorized",
         "ErrUserNotFound",
@@ -558,7 +558,7 @@
         "ErrUserNotInvited"
       ],
       "default": "ErrUnspecified",
-      "title": "- ErrUnspecified: Please try again later\n - Success: Success\n - ErrNotInRoom: Not in room\n - ErrUnauthorized: Unauthorized\n - ErrUserNotFound: User not found\n - ErrUserAlreadyInRoom: User already in room\n - ErrUserNotInvited: User not invited"
+      "title": "- ErrUnspecified: Please try again later\n - Succeeded: Succeeded\n - ErrNotInRoom: Not in room\n - ErrUnauthorized: Unauthorized\n - ErrUserNotFound: User not found\n - ErrUserAlreadyInRoom: User already in room\n - ErrUserNotInvited: User not invited"
     },
     "messageSCApproveRequestToJoinRoom": {
       "type": "object",
@@ -574,7 +574,7 @@
       "type": "string",
       "enum": [
         "ErrUnspecified",
-        "Success",
+        "Succeeded",
         "ErrNotInRoom",
         "ErrUnauthorized",
         "ErrUserNotFound",
@@ -582,7 +582,7 @@
         "ErrUserNotRequested"
       ],
       "default": "ErrUnspecified",
-      "title": "- ErrUnspecified: Please try again later\n - Success: Success\n - ErrNotInRoom: Not in room\n - ErrUnauthorized: Unauthorized\n - ErrUserNotFound: User not found\n - ErrUserAlreadyInRoom: User already in room\n - ErrUserNotRequested: User not requested"
+      "title": "- ErrUnspecified: Please try again later\n - Succeeded: Succeeded\n - ErrNotInRoom: Not in room\n - ErrUnauthorized: Unauthorized\n - ErrUserNotFound: User not found\n - ErrUserAlreadyInRoom: User already in room\n - ErrUserNotRequested: User not requested"
     },
     "messageSCCloseRoom": {
       "type": "object",
@@ -598,12 +598,12 @@
       "type": "string",
       "enum": [
         "ErrUnspecified",
-        "Success",
+        "Succeeded",
         "ErrNotInRoom",
         "ErrUnauthorized"
       ],
       "default": "ErrUnspecified",
-      "title": "- ErrUnspecified: Please try again later\n - Success: Success\n - ErrNotInRoom: Not in room\n - ErrUnauthorized: Unauthorized"
+      "title": "- ErrUnspecified: Please try again later\n - Succeeded: Succeeded\n - ErrNotInRoom: Not in room\n - ErrUnauthorized: Unauthorized"
     },
     "messageSCCreateRoom": {
       "type": "object",
@@ -623,12 +623,12 @@
       "type": "string",
       "enum": [
         "ErrUnspecified",
-        "Success",
+        "Succeeded",
         "ErrRoomTypeInvalid",
         "ErrAlreadyInRoom"
       ],
       "default": "ErrUnspecified",
-      "title": "- ErrUnspecified: Please try again later\n - Success: Success\n - ErrRoomTypeInvalid: Room type invalid\n - ErrAlreadyInRoom: Already in room"
+      "title": "- ErrUnspecified: Please try again later\n - Succeeded: Succeeded\n - ErrRoomTypeInvalid: Room type invalid\n - ErrAlreadyInRoom: Already in room"
     },
     "messageSCInviteToJoinRoom": {
       "type": "object",
@@ -644,7 +644,7 @@
       "type": "string",
       "enum": [
         "ErrUnspecified",
-        "Success",
+        "Succeeded",
         "ErrNotInRoom",
         "ErrUnauthorized",
         "ErrUserNotFound",
@@ -652,7 +652,7 @@
         "ErrUserAlreadyInvited"
       ],
       "default": "ErrUnspecified",
-      "title": "- ErrUnspecified: Please try again later\n - Success: Success\n - ErrNotInRoom: Not in room\n - ErrUnauthorized: Unauthorized\n - ErrUserNotFound: User not found\n - ErrUserAlreadyInRoom: User already in room\n - ErrUserAlreadyInvited: User already invited"
+      "title": "- ErrUnspecified: Please try again later\n - Succeeded: Succeeded\n - ErrNotInRoom: Not in room\n - ErrUnauthorized: Unauthorized\n - ErrUserNotFound: User not found\n - ErrUserAlreadyInRoom: User already in room\n - ErrUserAlreadyInvited: User already invited"
     },
     "messageSCKickUserFromRoom": {
       "type": "object",
@@ -668,14 +668,14 @@
       "type": "string",
       "enum": [
         "ErrUnspecified",
-        "Success",
+        "Succeeded",
         "ErrNotInRoom",
         "ErrUnauthorized",
         "ErrUserNotFound",
         "ErrUserNotInRoom"
       ],
       "default": "ErrUnspecified",
-      "title": "- ErrUnspecified: Please try again later\n - Success: Success\n - ErrNotInRoom: Not in room\n - ErrUnauthorized: Unauthorized\n - ErrUserNotFound: User not found\n - ErrUserNotInRoom: User not in room"
+      "title": "- ErrUnspecified: Please try again later\n - Succeeded: Succeeded\n - ErrNotInRoom: Not in room\n - ErrUnauthorized: Unauthorized\n - ErrUserNotFound: User not found\n - ErrUserNotInRoom: User not in room"
     },
     "messageSCLeaveRoom": {
       "type": "object",
@@ -691,12 +691,12 @@
       "type": "string",
       "enum": [
         "ErrUnspecified",
-        "Success",
+        "Succeeded",
         "ErrNotInRoom",
         "ErrIsCreator"
       ],
       "default": "ErrUnspecified",
-      "title": "- ErrUnspecified: Please try again later\n - Success: Success\n - ErrNotInRoom: Not in room\n - ErrIsCreator: Is creator"
+      "title": "- ErrUnspecified: Please try again later\n - Succeeded: Succeeded\n - ErrNotInRoom: Not in room\n - ErrIsCreator: Is creator"
     },
     "messageSCRequestToJoinRoom": {
       "type": "object",
@@ -712,13 +712,13 @@
       "type": "string",
       "enum": [
         "ErrUnspecified",
-        "Success",
+        "Succeeded",
         "ErrAlreadyInRoom",
         "ErrRoomNotFound",
         "ErrAlreadyRequested"
       ],
       "default": "ErrUnspecified",
-      "title": "- ErrUnspecified: Please try again later\n - Success: Success\n - ErrAlreadyInRoom: Already in room\n - ErrRoomNotFound: Room not found\n - ErrAlreadyRequested: Already requested"
+      "title": "- ErrUnspecified: Please try again later\n - Succeeded: Succeeded\n - ErrAlreadyInRoom: Already in room\n - ErrRoomNotFound: Room not found\n - ErrAlreadyRequested: Already requested"
     },
     "messageSCRoomDetail": {
       "type": "object",
@@ -738,11 +738,11 @@
       "type": "string",
       "enum": [
         "ErrUnspecified",
-        "Success",
+        "Succeeded",
         "ErrRoomNotFound"
       ],
       "default": "ErrUnspecified",
-      "title": "- ErrUnspecified: Please try again later\n - Success: Success\n - ErrRoomNotFound: Room not found"
+      "title": "- ErrUnspecified: Please try again later\n - Succeeded: Succeeded\n - ErrRoomNotFound: Room not found"
     },
     "messageSCRoomList": {
       "type": "object",
@@ -766,10 +766,10 @@
       "type": "string",
       "enum": [
         "ErrUnspecified",
-        "Success"
+        "Succeeded"
       ],
       "default": "ErrUnspecified",
-      "title": "- ErrUnspecified: Please try again later\n - Success: Success"
+      "title": "- ErrUnspecified: Please try again later\n - Succeeded: Succeeded"
     },
     "messageUserBasicProto": {
       "type": "object",
@@ -786,6 +786,11 @@
           "type": "integer",
           "format": "int32",
           "title": "Gender. 0:default 1:male 2:female"
+        },
+        "rechargeAmounts": {
+          "type": "number",
+          "format": "float",
+          "title": "Recharge amount"
         }
       },
       "title": "Basic information"

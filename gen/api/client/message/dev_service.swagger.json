@@ -166,7 +166,7 @@
       "type": "string",
       "enum": [
         "ErrUnspecified",
-        "Success",
+        "Succeeded",
         "ErrModNotExist",
         "ErrNameNotExist",
         "ErrArgNotExist",
@@ -174,7 +174,7 @@
         "ErrArgFormat"
       ],
       "default": "ErrUnspecified",
-      "title": "- ErrUnspecified: Please try again later\n - Success: Success\n - ErrModNotExist: Command module does not exist\n - ErrNameNotExist: Command name does not exist\n - ErrArgNotExist: Parameter does not exist\n - ErrArgIllegal: Parameter error\n - ErrArgFormat: Parameter format error"
+      "title": "- ErrUnspecified: Please try again later\n - Succeeded: Succeeded\n - ErrModNotExist: Command module does not exist\n - ErrNameNotExist: Command name does not exist\n - ErrArgNotExist: Parameter does not exist\n - ErrArgIllegal: Parameter error\n - ErrArgFormat: Parameter format error"
     },
     "messageSCDevList": {
       "type": "object",
@@ -197,10 +197,10 @@
       "type": "string",
       "enum": [
         "ErrUnspecified",
-        "Success"
+        "Succeeded"
       ],
       "default": "ErrUnspecified",
-      "title": "- ErrUnspecified: Please try again later\n - Success: Success"
+      "title": "- ErrUnspecified: Please try again later\n - Succeeded: Succeeded"
     },
     "protobufAny": {
       "type": "object",

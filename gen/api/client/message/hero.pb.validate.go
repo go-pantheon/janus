@@ -211,6 +211,8 @@ func (m *HeroProto) validate(all bool) error {
 
 	// no validation rules for Level
 
+	// no validation rules for Skills
+
 	if len(errors) > 0 {
 		return HeroProtoMultiError(errors)
 	}

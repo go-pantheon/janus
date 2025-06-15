@@ -30,9 +30,9 @@ const (
 	SystemSeq_Handshake SystemSeq = 1
 	// Heartbeat
 	SystemSeq_Heartbeat SystemSeq = 2
-	// @Push: Server unexpected error
+	// @push Server unexpected error
 	SystemSeq_ServerUnexpectedErr SystemSeq = 3
-	// @Push: Server trigger logout
+	// @push Server trigger logout
 	SystemSeq_ServerLogout SystemSeq = 4
 )
 

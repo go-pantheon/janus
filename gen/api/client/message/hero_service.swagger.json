@@ -77,8 +77,16 @@
         },
         "level": {
           "type": "string",
-          "format": "uint64",
+          "format": "int64",
           "title": "Hero level"
+        },
+        "skills": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "format": "int64"
+          },
+          "title": "Skill ID -\u003e Skill Level"
         },
         "equips": {
           "type": "array",
@@ -117,13 +125,13 @@
       "type": "string",
       "enum": [
         "ErrUnspecified",
-        "Success",
+        "Succeeded",
         "ErrHeroNotExist",
         "ErrMaxLevel",
         "ErrCostNotEnough"
       ],
       "default": "ErrUnspecified",
-      "title": "- ErrUnspecified: Please try again later\n - Success: Success\n - ErrHeroNotExist: Hero does not exist\n - ErrMaxLevel: Already max level\n - ErrCostNotEnough: Cost not enough"
+      "title": "- ErrUnspecified: Please try again later\n - Succeeded: Succeeded\n - ErrHeroNotExist: Hero does not exist\n - ErrMaxLevel: Already max level\n - ErrCostNotEnough: Cost not enough"
     },
     "protobufAny": {
       "type": "object",

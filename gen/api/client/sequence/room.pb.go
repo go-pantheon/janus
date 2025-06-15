@@ -40,7 +40,7 @@ const (
 	RoomSeq_RequestToJoinRoom RoomSeq = 6
 	// Approve request to join room
 	RoomSeq_ApproveRequestToJoinRoom RoomSeq = 7
-	// @Push: joined room
+	// @push joined room
 	RoomSeq_PushJoinedRoom RoomSeq = 8
 	// Kick user from room
 	RoomSeq_KickUserFromRoom RoomSeq = 9
@@ -48,7 +48,7 @@ const (
 	RoomSeq_CloseRoom RoomSeq = 10
 	// Leave room
 	RoomSeq_LeaveRoom RoomSeq = 11
-	// @Push: Removed from room. Leave, be kicked or room closed
+	// @push Removed from room. Leave, be kicked or room closed
 	RoomSeq_PushRemovedFromRoom RoomSeq = 12
 )
 

@@ -63,6 +63,8 @@ func (m *UserBasicProto) validate(all bool) error {
 
 	// no validation rules for Gender
 
+	// no validation rules for RechargeAmounts
+
 	if len(errors) > 0 {
 		return UserBasicProtoMultiError(errors)
 	}

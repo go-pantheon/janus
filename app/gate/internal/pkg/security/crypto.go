@@ -1,84 +1,68 @@
 package security
 
 import (
-	"crypto/rsa"
-	"crypto/x509"
-	"encoding/base64"
+	"crypto/ed25519"
+	"sync"
+	"sync/atomic"
 
-	"github.com/go-pantheon/fabrica-net/xnet"
-	"github.com/go-pantheon/fabrica-util/errors"
 	"github.com/go-pantheon/fabrica-util/security/aes"
-	rrsa "github.com/go-pantheon/fabrica-util/security/rsa"
-	"github.com/go-pantheon/fabrica-util/xrand"
+	"github.com/go-pantheon/fabrica-util/security/certificate"
+	"github.com/go-pantheon/janus/app/gate/internal/conf"
 )
 
 var (
-	handshakePriKey *rsa.PrivateKey
-	tokenAESCipher  *aes.Cipher
+	once    sync.Once
+	manager = &CryptoManager{}
 )
 
-func Init(aesKey string, priKey string) error {
-	var (
-		priKeyBytes []byte
-		priKeyIface any
-		err         error
-	)
+type CryptoManager struct {
+	mu          sync.RWMutex
+	initialized atomic.Bool
+	svrCertPri  ed25519.PrivateKey
+	cliCertPub  ed25519.PublicKey
+	tokenAES    *aes.Cipher
+}
 
-	if priKeyBytes, err = base64.URLEncoding.DecodeString(priKey); err != nil {
-		return errors.Wrap(err, "base64 DecodeString failed")
-	}
+func Init(config *conf.Secret) (err error) {
+	once.Do(func() {
+		err = initCryptoManager(config)
+	})
 
-	if priKeyIface, err = x509.ParsePKCS8PrivateKey(priKeyBytes); err != nil {
-		return errors.Wrap(err, "x509 ParsePKCS8PrivateKey failed")
-	}
+	return err
+}
 
-	var ok bool
+func initCryptoManager(c *conf.Secret) (err error) {
+	manager.mu.Lock()
+	defer manager.mu.Unlock()
 
-	handshakePriKey, ok = priKeyIface.(*rsa.PrivateKey)
-	if !ok {
-		return errors.New("invalid private key")
-	}
-
-	tokenAESCipher, err = aes.NewAESCipher([]byte(aesKey))
+	aesCipher, err := aes.NewAESCipher([]byte(c.AccountAesKey))
 	if err != nil {
-		return errors.Wrap(err, "aes NewAESCipher failed")
+		return err
 	}
+
+	svrPri, err := certificate.ImportPriFromPEM([]byte(c.ServerCertPrivateKey))
+	if err != nil {
+		return err
+	}
+
+	clientCert, err := certificate.ImportCertFromPEM([]byte(c.ClientCert))
+	if err != nil {
+		return err
+	}
+
+	if err := certificate.VerifyCert(clientCert); err != nil {
+		return err
+	}
+
+	cliPub, err := certificate.ExportPubFromCert(clientCert)
+	if err != nil {
+		return err
+	}
+
+	manager.tokenAES = aesCipher
+	manager.svrCertPri = svrPri
+	manager.cliCertPub = cliPub
+	manager.initialized.Store(true)
 
 	return nil
-}
-
-func InitApiCrypto(crypto bool) (xnet.Cryptor, error) {
-	if !crypto {
-		return xnet.NewNoCryptor(), nil
-	}
-
-	str, err := xrand.RandAlphaNumString(32)
-	if err != nil {
-		return nil, errors.Wrap(err, "xrand RandString failed")
-	}
-
-	encryptor, err := xnet.NewCryptor(true, []byte(str))
-	if err != nil {
-		return nil, errors.Wrap(err, "net NewEncryptor failed")
-	}
-
-	return encryptor, nil
-}
-
-func DecryptCSHandshake(secret []byte) ([]byte, error) {
-	return rrsa.Decrypt(handshakePriKey, secret)
-}
-
-func DecryptToken(secret string) ([]byte, error) {
-	ser, err := base64.URLEncoding.DecodeString(secret)
-	if err != nil {
-		return nil, errors.Wrap(err, "base64 DecodeString failed")
-	}
-
-	origin, err := tokenAESCipher.Decrypt(ser)
-	if err != nil {
-		return nil, errors.Wrap(err, "aes Decrypt failed")
-	}
-
-	return origin, nil
 }

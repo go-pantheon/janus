@@ -61,6 +61,7 @@ Some packages may only be included on certain architectures or operating systems
  - [go.opentelemetry.io/proto/otlp](https://pkg.go.dev/go.opentelemetry.io/proto/otlp) ([Apache-2.0](https://github.com/open-telemetry/opentelemetry-proto-go/blob/otlp/v1.7.0/otlp/LICENSE))
  - [go.uber.org/multierr](https://pkg.go.dev/go.uber.org/multierr) ([MIT](https://github.com/uber-go/multierr/blob/v1.11.0/LICENSE.txt))
  - [go.uber.org/zap](https://pkg.go.dev/go.uber.org/zap) ([MIT](https://github.com/uber-go/zap/blob/v1.27.0/LICENSE))
+ - [golang.org/x/crypto/curve25519](https://pkg.go.dev/golang.org/x/crypto/curve25519) ([BSD-3-Clause](https://cs.opensource.google/go/x/crypto/+/v0.39.0:LICENSE))
  - [golang.org/x/net](https://pkg.go.dev/golang.org/x/net) ([BSD-3-Clause](https://cs.opensource.google/go/x/net/+/v0.41.0:LICENSE))
  - [golang.org/x/sync/errgroup](https://pkg.go.dev/golang.org/x/sync/errgroup) ([BSD-3-Clause](https://cs.opensource.google/go/x/sync/+/v0.15.0:LICENSE))
  - [golang.org/x/sys/unix](https://pkg.go.dev/golang.org/x/sys/unix) ([BSD-3-Clause](https://cs.opensource.google/go/x/sys/+/v0.33.0:LICENSE))

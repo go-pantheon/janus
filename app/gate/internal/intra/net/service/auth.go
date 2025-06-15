@@ -4,10 +4,9 @@ import (
 	"context"
 	"time"
 
-	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-pantheon/fabrica-net/xnet"
 	"github.com/go-pantheon/fabrica-util/errors"
-	"github.com/go-pantheon/fabrica-util/security/rsa"
+	"github.com/go-pantheon/fabrica-util/security/ecdh"
 	"github.com/go-pantheon/fabrica-util/xtime"
 	"github.com/go-pantheon/janus/app/gate/internal/pkg/pool"
 	"github.com/go-pantheon/janus/app/gate/internal/pkg/security"
@@ -22,18 +21,12 @@ func (s *Service) Auth(ctx context.Context, in []byte) (out []byte, session xnet
 		return nil, nil, errors.New("proto is empty")
 	}
 
-	if s.encrypted {
-		if in, err = security.DecryptCSHandshake(in); err != nil {
-			return nil, nil, err
-		}
-	}
-
 	var (
 		cs = &climsg.CSHandshake{}
 		sc = &climsg.SCHandshake{}
 
-		data []byte
-		pub  []byte
+		svrSign []byte
+		scData  []byte
 	)
 
 	inp := pool.GetPacket()
@@ -51,14 +44,15 @@ func (s *Service) Auth(ctx context.Context, in []byte) (out []byte, session xnet
 		return nil, nil, errors.Wrapf(err, "CSHandshake decode failed. len=%d", len(inp.Data))
 	}
 
-	if pub, session, err = s.auth(cs.Token, cs.ServerId); err != nil {
+	if session, svrSign, err = s.auth(cs); err != nil {
 		return nil, nil, err
 	}
 
 	sc.StartIndex = int32(session.IncreaseCSIndex())
-	sc.Pub = pub
+	sc.Pub = session.ServerPublicKey()
+	sc.Sign = svrSign
 
-	if data, err = proto.Marshal(sc); err != nil {
+	if scData, err = proto.Marshal(sc); err != nil {
 		return nil, nil, errors.Wrap(err, "SCHandshake encode failed")
 	}
 
@@ -67,38 +61,24 @@ func (s *Service) Auth(ctx context.Context, in []byte) (out []byte, session xnet
 
 	oup.Mod = inp.Mod
 	oup.Seq = inp.Seq
-	oup.Data = data
+	oup.Data = scData
 
 	if out, err = proto.Marshal(oup); err != nil {
 		return nil, nil, errors.Wrap(err, "Packet encode failed")
 	}
 
-	if s.encrypted {
-		pub, err := rsa.ParsePublicKey(cs.Pub)
-		if err != nil {
-			return nil, nil, errors.Wrap(err, "public key decode failed")
-		}
-
-		if out, err = rsa.Encrypt(pub, out); err != nil {
-			return nil, nil, errors.WithMessage(err, "Packet encrypt failed")
-		}
-	}
-
 	return out, session, nil
 }
 
-func (s *Service) auth(authToken string, sid int64) (key []byte, ss xnet.Session, err error) {
-	if len(authToken) == 0 {
+func (s *Service) auth(cs *climsg.CSHandshake) (xnet.Session, []byte, error) {
+	if len(cs.Token) == 0 {
 		return nil, nil, errors.New("[net.auth] token is empty")
 	}
 
-	var (
-		now     = time.Now()
-		token   *intrav1.AuthToken
-		cryptor xnet.Cryptor
-	)
+	now := time.Now()
 
-	if token, err = decryptAccountToken(authToken); err != nil {
+	token, err := decryptAccountToken(cs.Token)
+	if err != nil {
 		return nil, nil, err
 	}
 
@@ -106,13 +86,63 @@ func (s *Service) auth(authToken string, sid int64) (key []byte, ss xnet.Session
 		return nil, nil, errors.Errorf("token timeout. timeout=%d now=%d", token.Timeout, now.Unix())
 	}
 
-	if cryptor, err = security.InitApiCrypto(s.encrypted); err != nil {
+	ecdhInfo, scPubSign, err := s.newECDHInfo(cs.Pub, cs.Sign)
+	if err != nil {
 		return nil, nil, err
 	}
 
-	ss = xnet.NewSession(token.AccountId, sid, now.Unix(), cryptor, token.Color, int64(token.Status))
+	cryptor, err := s.newCryptor(ecdhInfo.SharedKey())
+	if err != nil {
+		return nil, nil, err
+	}
 
-	return cryptor.Key(), ss, nil
+	sid := cs.ServerId
+	if sid == 0 {
+		sid = token.ServerId
+	}
+
+	ss := xnet.NewSession(token.AccountId, sid, now.Unix(), cryptor, ecdhInfo, token.Color, int64(token.Status))
+
+	return ss, scPubSign, nil
+}
+
+func (s *Service) newECDHInfo(csPub []byte, csSign []byte) (ecdhInfo xnet.ECDHable, scPubSign []byte, err error) {
+	if !s.encrypted {
+		return xnet.NewUnECDH(), nil, nil
+	}
+
+	if err := security.VerifyECDHCliPubKey(csPub, csSign); err != nil {
+		return nil, nil, err
+	}
+
+	csPubBytes, err := ecdh.ParseKey(csPub)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	ecdhInfo, err = xnet.NewECDHInfo(csPubBytes)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	scPubSign, err = security.SignECDHSvrPubKey(ecdhInfo.ServerPublicKey())
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return ecdhInfo, scPubSign, nil
+}
+
+func (s *Service) newCryptor(sharedKey []byte) (cryptor xnet.Cryptor, err error) {
+	if !s.encrypted {
+		return xnet.NewUnCryptor(), nil
+	}
+
+	if cryptor, err = xnet.NewCryptor(sharedKey); err != nil {
+		return nil, err
+	}
+
+	return cryptor, nil
 }
 
 func decryptAccountToken(token string) (auth *intrav1.AuthToken, err error) {
@@ -122,7 +152,7 @@ func decryptAccountToken(token string) (auth *intrav1.AuthToken, err error) {
 
 	auth = &intrav1.AuthToken{}
 
-	bytes, err := security.DecryptToken(token)
+	bytes, err := security.DecryptAccountToken(token)
 	if err != nil {
 		return nil, errors.Wrap(err, "token decrypt failed")
 	}
@@ -132,14 +162,4 @@ func decryptAccountToken(token string) (auth *intrav1.AuthToken, err error) {
 	}
 
 	return auth, nil
-}
-
-func (s *Service) OnConnected(ctx context.Context, ss xnet.Session) (err error) {
-	log.Debugf("client connected. uid=%d sid=%d color=%s status=%d ip=%s", ss.UID(), ss.SID(), ss.Color(), ss.Status(), ss.ClientIP())
-	return nil
-}
-
-func (s *Service) OnDisconnect(ctx context.Context, ss xnet.Session) (err error) {
-	log.Debugf("client disconnected. uid=%d sid=%d color=%s status=%d ip=%s", ss.UID(), ss.SID(), ss.Color(), ss.Status(), ss.ClientIP())
-	return nil
 }

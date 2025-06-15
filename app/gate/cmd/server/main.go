@@ -99,7 +99,7 @@ func main() {
 		panic(err)
 	}
 
-	if err := security.Init(sc.AesKey, sc.PrivateKey); err != nil {
+	if err := security.Init(&sc); err != nil {
 		panic(err)
 	}
 

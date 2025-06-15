@@ -26,7 +26,7 @@ type HeroSeq int32
 
 const (
 	HeroSeq_HeroUnspecified HeroSeq = 0
-	// @Push: Hero unlock
+	// @push Hero unlock
 	HeroSeq_PushHeroUnlock HeroSeq = 1
 	// Hero level upgrade
 	HeroSeq_HeroLevelUpgrade HeroSeq = 2

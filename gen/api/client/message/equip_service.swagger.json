@@ -202,12 +202,12 @@
       "type": "string",
       "enum": [
         "ErrUnspecified",
-        "Success",
+        "Succeeded",
         "ErrEquipNotExist",
         "ErrNotWearing"
       ],
       "default": "ErrUnspecified",
-      "title": "- ErrUnspecified: Please try again later\n - Success: Success\n - ErrEquipNotExist: Equipment does not exist\n - ErrNotWearing: Not wearing"
+      "title": "- ErrUnspecified: Please try again later\n - Succeeded: Succeeded\n - ErrEquipNotExist: Equipment does not exist\n - ErrNotWearing: Not wearing"
     },
     "messageSCEquipUpgrade": {
       "type": "object",
@@ -234,13 +234,13 @@
       "type": "string",
       "enum": [
         "ErrUnspecified",
-        "Success",
+        "Succeeded",
         "ErrEquipNotExist",
         "ErrMaxLevel",
         "ErrCostNotEnough"
       ],
       "default": "ErrUnspecified",
-      "title": "- ErrUnspecified: Please try again later\n - Success: Success\n - ErrEquipNotExist: Equipment does not exist\n - ErrMaxLevel: Already max level\n - ErrCostNotEnough: Cost not enough"
+      "title": "- ErrUnspecified: Please try again later\n - Succeeded: Succeeded\n - ErrEquipNotExist: Equipment does not exist\n - ErrMaxLevel: Already max level\n - ErrCostNotEnough: Cost not enough"
     },
     "messageSCEquipWear": {
       "type": "object",
@@ -260,13 +260,13 @@
       "type": "string",
       "enum": [
         "ErrUnspecified",
-        "Success",
+        "Succeeded",
         "ErrEquipNotExist",
         "ErrHeroNotExist",
         "ErrAlreadyWorn"
       ],
       "default": "ErrUnspecified",
-      "title": "- ErrUnspecified: Please try again later\n - Success: Success\n - ErrEquipNotExist: Equipment does not exist\n - ErrHeroNotExist: Hero does not exist\n - ErrAlreadyWorn: Already worn"
+      "title": "- ErrUnspecified: Please try again later\n - Succeeded: Succeeded\n - ErrEquipNotExist: Equipment does not exist\n - ErrHeroNotExist: Hero does not exist\n - ErrAlreadyWorn: Already worn"
     },
     "protobufAny": {
       "type": "object",

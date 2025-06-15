@@ -26,7 +26,7 @@ type StorageSeq int32
 
 const (
 	StorageSeq_StorageUnspecified StorageSeq = 0
-	// @Push item updated
+	// @push item updated
 	StorageSeq_PushItemUpdated StorageSeq = 1
 	// Use pack
 	StorageSeq_UsePack StorageSeq = 2

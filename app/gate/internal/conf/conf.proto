@@ -84,6 +84,9 @@ message Etcd {
 }
 
 message Secret {
-  string private_key = 1;
-  string aes_key = 2;
+  string account_aes_key = 1;
+  int32 server_cert_version = 2;
+  string server_cert_private_key = 3;
+  int32 client_cert_version = 4;
+  string client_cert = 5;
 }

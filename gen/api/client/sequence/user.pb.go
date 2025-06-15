@@ -28,7 +28,7 @@ const (
 	UserSeq_UserUnspecified UserSeq = 0
 	// Login
 	UserSeq_Login UserSeq = 1
-	// @Push: latest user data. The client receives the data and updates its own data to avoid data inconsistency between the client and the server when GM modifies data or the server restarts
+	// @push latest user data. The client receives the data and updates its own data to avoid data inconsistency between the client and the server when GM modifies data or the server restarts
 	UserSeq_PushSyncUser UserSeq = 2
 	// Update name
 	UserSeq_UpdateName UserSeq = 3

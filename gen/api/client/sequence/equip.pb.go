@@ -26,7 +26,7 @@ type EquipSeq int32
 
 const (
 	EquipSeq_EquipUnspecified EquipSeq = 0
-	// @Push equipment updated
+	// @push equipment updated
 	EquipSeq_PushEquipUpdated EquipSeq = 1
 	// Wear equipment
 	EquipSeq_EquipWear EquipSeq = 2

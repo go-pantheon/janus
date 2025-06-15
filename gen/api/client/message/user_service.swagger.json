@@ -163,8 +163,16 @@
         },
         "level": {
           "type": "string",
-          "format": "uint64",
+          "format": "int64",
           "title": "Hero level"
+        },
+        "skills": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "format": "int64"
+          },
+          "title": "Skill ID -\u003e Skill Level"
         },
         "equips": {
           "type": "array",
@@ -230,12 +238,12 @@
       "type": "string",
       "enum": [
         "ErrUnspecified",
-        "Success",
+        "Succeeded",
         "ErrAccountIdNotExist",
         "ErrAccountBanned"
       ],
       "default": "ErrUnspecified",
-      "title": "- ErrUnspecified: Please try again later\n - Success: Success\n - ErrAccountIdNotExist: Account does not exist\n - ErrAccountBanned: Account banned"
+      "title": "- ErrUnspecified: Please try again later\n - Succeeded: Succeeded\n - ErrAccountIdNotExist: Account does not exist\n - ErrAccountBanned: Account banned"
     },
     "messageSCSetGender": {
       "type": "object",
@@ -251,12 +259,12 @@
       "type": "string",
       "enum": [
         "ErrUnspecified",
-        "Success",
+        "Succeeded",
         "ErrGenderIllegal",
         "ErrGenderSet"
       ],
       "default": "ErrUnspecified",
-      "title": "- ErrUnspecified: Please try again later\n - Success: Success\n - ErrGenderIllegal: Gender is illegal\n - ErrGenderSet: Gender has been set"
+      "title": "- ErrUnspecified: Please try again later\n - Succeeded: Succeeded\n - ErrGenderIllegal: Gender is illegal\n - ErrGenderSet: Gender has been set"
     },
     "messageSCUpdateName": {
       "type": "object",
@@ -275,12 +283,12 @@
       "type": "string",
       "enum": [
         "ErrUnspecified",
-        "Success",
+        "Succeeded",
         "ErrNameIllegal",
         "ErrNameNotChanged"
       ],
       "default": "ErrUnspecified",
-      "title": "- ErrUnspecified: Please try again later\n - Success: Success\n - ErrNameIllegal: Name is illegal\n - ErrNameNotChanged: Name not changed"
+      "title": "- ErrUnspecified: Please try again later\n - Succeeded: Succeeded\n - ErrNameIllegal: Name is illegal\n - ErrNameNotChanged: Name not changed"
     },
     "messageUserBasicProto": {
       "type": "object",
@@ -297,6 +305,11 @@
           "type": "integer",
           "format": "int32",
           "title": "Gender. 0:default 1:male 2:female"
+        },
+        "rechargeAmounts": {
+          "type": "number",
+          "format": "float",
+          "title": "Recharge amount"
         }
       },
       "title": "Basic information"

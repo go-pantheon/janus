@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 
+	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-pantheon/fabrica-kit/xcontext"
 	"github.com/go-pantheon/fabrica-net/xnet"
 	"github.com/go-pantheon/fabrica-util/compress"
@@ -63,5 +64,15 @@ func (s *Service) Handle(ctx context.Context, ss xnet.Session, th xnet.TunnelMan
 
 func (s *Service) Tick(ctx context.Context, ss xnet.Session) (err error) {
 	// TODO: check black list
+	return nil
+}
+
+func (s *Service) OnConnected(ctx context.Context, ss xnet.Session) (err error) {
+	log.Debugf("client connected. uid=%d sid=%d color=%s status=%d ip=%s", ss.UID(), ss.SID(), ss.Color(), ss.Status(), ss.ClientIP())
+	return nil
+}
+
+func (s *Service) OnDisconnect(ctx context.Context, ss xnet.Session) (err error) {
+	log.Debugf("client disconnected. uid=%d sid=%d color=%s status=%d ip=%s", ss.UID(), ss.SID(), ss.Color(), ss.Status(), ss.ClientIP())
 	return nil
 }
