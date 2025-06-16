@@ -89,7 +89,7 @@ func (t *Tunnel) TransformMessage(from xnet.PacketMessage) (to xnet.ForwardMessa
 	return t.app.TransformMessage(p), nil
 }
 
-func (t *Tunnel) Push(ctx context.Context, pack []byte) error {
+func (t *Tunnel) Push(ctx context.Context, pack xnet.Pack) error {
 	return t.Pusher.Push(ctx, pack)
 }
 

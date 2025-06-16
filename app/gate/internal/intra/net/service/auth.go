@@ -16,7 +16,7 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
-func (s *Service) Auth(ctx context.Context, in []byte) (out []byte, session xnet.Session, err error) {
+func (s *Service) Auth(ctx context.Context, in xnet.Pack) (out xnet.Pack, session xnet.Session, err error) {
 	if len(in) == 0 {
 		return nil, nil, errors.New("proto is empty")
 	}

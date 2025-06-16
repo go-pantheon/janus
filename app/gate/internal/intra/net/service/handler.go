@@ -12,7 +12,7 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
-func (s *Service) Handle(ctx context.Context, ss xnet.Session, th xnet.TunnelManager, in []byte) (err error) {
+func (s *Service) Handle(ctx context.Context, ss xnet.Session, th xnet.TunnelManager, in xnet.Pack) (err error) {
 	p := pool.GetPacket()
 	defer pool.PutPacket(p)
 
