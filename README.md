@@ -325,7 +325,7 @@ Complete message format: `4-byte packet length (big-endian) + encrypted data (AE
 ```mermaid
 sequenceDiagram
     participant C as 🎮 Client
-    participant J as � Janus
+    participant J as 🔰 Janus
 
     Note over C,J: Ed25519 Certificate-Signed ECDH Key Exchange
 
