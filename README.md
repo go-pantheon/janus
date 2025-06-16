@@ -83,7 +83,7 @@ Janus supports the following game business modules:
 graph TB
     Client["🎮 Game Client"]
     Lares["🔐 Lares<br/>(Auth Service)"]
-    Janus["🚪 Janus<br/>(Gateway Service)"]
+    Janus["🔰 Janus<br/>(Gateway Service)"]
     Roma["⚙️ Roma<br/>(Game Service)"]
     Senate["📊 Senate<br/>(Management Service)"]
 
@@ -116,7 +116,7 @@ graph TB
         Client["Game Client<br/>TCP/KCP/WebSocket Connection"]
     end
 
-    subgraph "🚪 Janus Gateway Layer"
+    subgraph "🔰 Janus Gateway Layer"
         direction TB
         TCP["Network Server"] --> Auth["Authentication Module"]
         Auth --> Crypto["Encryption Module"]
@@ -177,7 +177,7 @@ graph TB
 sequenceDiagram
     participant C as 🎮 Client
     participant L as 🔐 Lares
-    participant J as 🚪 Janus
+    participant J as 🔰 Janus
     participant R as ⚙️ Roma
 
     Note over C,R: Authentication and Security Handshake Flow
@@ -325,7 +325,7 @@ Complete message format: `4-byte packet length (big-endian) + encrypted data (AE
 ```mermaid
 sequenceDiagram
     participant C as 🎮 Client
-    participant J as 🚪 Janus
+    participant J as � Janus
 
     Note over C,J: Ed25519 Certificate-Signed ECDH Key Exchange
 

@@ -83,7 +83,7 @@ Janus 支持以下游戏业务模块：
 graph TB
     Client["🎮 游戏客户端"]
     Lares["🔐 Lares<br/>(认证服务)"]
-    Janus["🚪 Janus<br/>(网关服务)"]
+    Janus["🔰 Janus<br/>(网关服务)"]
     Roma["⚙️ Roma<br/>(游戏服务)"]
     Senate["📊 Senate<br/>(管理服务)"]
 
@@ -116,7 +116,7 @@ graph TB
         Client["游戏客户端<br/>TCP/KCP/WebSocket 连接"]
     end
 
-    subgraph "🚪 Janus 网关层"
+    subgraph "🔰 Janus 网关层"
         direction TB
         TCP["网络服务器"] --> Auth["认证模块"]
         Auth --> Crypto["加密模块"]
@@ -177,7 +177,7 @@ graph TB
 sequenceDiagram
     participant C as 🎮 客户端
     participant L as 🔐 Lares
-    participant J as 🚪 Janus
+    participant J as 🔰 Janus
     participant R as ⚙️ Roma
 
     Note over C,R: 认证和安全握手流程
@@ -325,7 +325,7 @@ message Packet {
 ```mermaid
 sequenceDiagram
     participant C as 🎮 客户端
-    participant J as 🚪 Janus
+    participant J as 🔰 Janus
 
     Note over C,J: Ed25519 证书签名的 ECDH 密钥交换
 
