@@ -1,4 +1,4 @@
-# go-pantheon janus dependencies
+# go-pantheon/janus dependencies
 
 The following open source dependencies are used to build the [go-pantheon/janus][].
 

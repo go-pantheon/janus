@@ -1,13 +1,35 @@
 name: Lint
-permissions:
-  contents: read
-  pull-requests: write
+
 on:
   push:
+    branches:
+      - main
+      - develop
+    paths:
+      - "**/*.go"
+      - "go.mod"
+      - "go.sum"
+      - ".golangci.yml"
+      - ".github/workflows/lint.yml"
   pull_request:
     branches:
       - main
+      - develop
+    paths:
+      - "**/*.go"
+      - "go.mod"
+      - "go.sum"
+      - ".golangci.yml"
+      - ".github/workflows/lint.yml"
   workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   resolve-modules:
@@ -18,8 +40,6 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
-        with:
-          submodules: recursive
 
       - id: set-matrix
         run: ./.hack/resolve-modules.sh
@@ -31,15 +51,10 @@ jobs:
     strategy:
       matrix: ${{ fromJson(needs.resolve-modules.outputs.matrix) }}
     steps:
-      - name: checkout
+      - name: Checkout Code
         uses: actions/checkout@v4
         with:
-          submodules: recursive
-
-      - name: Setup Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: '1.23'
+          fetch-depth: 0
 
       - name: Lint
         uses: golangci/golangci-lint-action@v8
