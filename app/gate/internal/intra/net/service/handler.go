@@ -54,12 +54,7 @@ func (s *Service) Handle(ctx context.Context, ss xnet.Session, th xnet.TunnelMan
 		return err
 	}
 
-	msg, err := t.TransformMessage(p)
-	if err != nil {
-		return err
-	}
-
-	return t.Forward(ctx, msg)
+	return t.Forward(ctx, t.PacketToTunnelMsg(p))
 }
 
 func (s *Service) Tick(ctx context.Context, ss xnet.Session) (err error) {

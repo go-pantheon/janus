@@ -1,16 +1,21 @@
 package base
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-pantheon/fabrica-net/xnet"
+	"github.com/go-pantheon/fabrica-util/compress"
+	"github.com/go-pantheon/fabrica-util/errors"
 	"github.com/go-pantheon/janus/app/gate/internal/intra/net/tunnels"
+	"github.com/go-pantheon/janus/app/gate/internal/pkg/pool"
+	"google.golang.org/protobuf/proto"
 )
 
-var _ tunnels.AppTunnelBase = (*Tunnel)(nil)
+var _ xnet.AppBaseTunnel = (*BaseTunnel)(nil)
 
-type Tunnel struct {
+type BaseTunnel struct {
 	log *log.Helper
 
 	tunnelType tunnels.TunnelType
@@ -18,8 +23,8 @@ type Tunnel struct {
 	oid        int64
 }
 
-func NewTunnel(tp tunnels.TunnelType, oid int64, ss xnet.Session, logger log.Logger) *Tunnel {
-	t := &Tunnel{
+func New(tp tunnels.TunnelType, oid int64, ss xnet.Session, logger log.Logger) *BaseTunnel {
+	t := &BaseTunnel{
 		log:        log.NewHelper(log.With(logger, "module", fmt.Sprintf("gate/tunnel/%d", tp))),
 		tunnelType: tp,
 		session:    ss,
@@ -29,26 +34,48 @@ func NewTunnel(tp tunnels.TunnelType, oid int64, ss xnet.Session, logger log.Log
 	return t
 }
 
-func (t *Tunnel) Type() int32 {
+func (t *BaseTunnel) TunnelMsgToPack(ctx context.Context, msg xnet.TunnelMessage) (pack xnet.Pack, err error) {
+	p := pool.GetPacket()
+	defer pool.PutPacket(p)
+
+	p.Mod = msg.GetMod()
+	p.Seq = msg.GetSeq()
+	p.Obj = msg.GetObj()
+	p.Index = msg.GetIndex()
+
+	p.Data, p.Compress, err = compress.Compress(msg.GetData())
+	if err != nil {
+		return nil, errors.Wrapf(err, "compress data failed")
+	}
+
+	pack, err = proto.Marshal(p)
+	if err != nil {
+		return nil, errors.Wrapf(err, "packet marshal failed")
+	}
+
+	return pack, nil
+}
+
+func (t *BaseTunnel) Type() int32 {
 	return int32(t.tunnelType)
 }
 
-func (t *Tunnel) Log() *log.Helper {
+func (t *BaseTunnel) Log() *log.Helper {
 	return t.log
 }
 
-func (t *Tunnel) UID() int64 {
+func (t *BaseTunnel) UID() int64 {
 	return t.session.UID()
 }
 
-func (t *Tunnel) OID() int64 {
+func (t *BaseTunnel) OID() int64 {
 	return t.oid
 }
 
-func (t *Tunnel) Color() string {
+func (t *BaseTunnel) Color() string {
 	return t.session.Color()
 }
 
-func (t *Tunnel) Session() xnet.Session {
+func (t *BaseTunnel) Session() xnet.Session {
 	return t.session
 }

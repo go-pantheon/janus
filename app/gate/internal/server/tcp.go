@@ -8,7 +8,6 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-pantheon/fabrica-kit/metrics"
-	tcpconf "github.com/go-pantheon/fabrica-net/conf"
 	tcp "github.com/go-pantheon/fabrica-net/tcp/server"
 	"github.com/go-pantheon/fabrica-net/xnet"
 	"github.com/go-pantheon/fabrica-util/errors"
@@ -20,8 +19,6 @@ import (
 )
 
 func NewTCPServer(c *conf.Server, logger log.Logger, rt *router.RouteTable, svc *service.Service) (*tcp.Server, error) {
-	tcpconf.Init()
-
 	if rt == nil {
 		return nil, errors.New("route table is nil")
 	}
@@ -47,10 +44,6 @@ func NewTCPServer(c *conf.Server, logger log.Logger, rt *router.RouteTable, svc 
 		),
 	}
 
-	if c.Tcp.Addr != "" {
-		opts = append(opts, tcp.Bind(c.Tcp.Addr))
-	}
-
 	if logger != nil {
 		opts = append(opts, tcp.Logger(logger))
 	}
@@ -58,7 +51,7 @@ func NewTCPServer(c *conf.Server, logger log.Logger, rt *router.RouteTable, svc 
 	opts = append(opts, tcp.AfterConnectFunc(afterConnectFunc(rt)))
 	opts = append(opts, tcp.AfterDisconnectFunc(afterDisconnectFunc(rt)))
 
-	s, err := tcp.NewServer(svc, opts...)
+	s, err := tcp.NewServer(c.Tcp.Addr, svc, opts...)
 	if err != nil {
 		return nil, errors.Wrap(err, "create tcp server failed")
 	}

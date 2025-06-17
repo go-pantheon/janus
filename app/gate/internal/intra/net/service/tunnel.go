@@ -27,16 +27,7 @@ func (s *Service) TunnelType(mod int32) (t int32, initCapacity int, err error) {
 	}
 }
 
-func (s *Service) CreateTunnel(ctx context.Context, ss xnet.Session, tp int32, oid int64, worker xnet.Worker) (xnet.Tunnel, error) {
-	tunnel, err := s.createAppTunnel(ctx, ss, tp, oid, worker)
-	if err != nil {
-		return nil, err
-	}
-
-	return tunnels.NewTunnel(ctx, worker, tunnel), nil
-}
-
-func (s *Service) createAppTunnel(ctx context.Context, ss xnet.Session, tp int32, oid int64, worker xnet.Worker) (tunnels.AppTunnel, error) {
+func (s *Service) CreateAppTunnel(ctx context.Context, ss xnet.Session, tp int32, oid int64, worker xnet.Worker) (xnet.AppTunnel, error) {
 	switch tunnels.TunnelType(tp) {
 	case tunnels.PlayerTunnelType:
 		return player.NewTunnel(ctx, s.playerClient, ss, s.logger, worker)

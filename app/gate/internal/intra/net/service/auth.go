@@ -33,7 +33,7 @@ func (s *Service) Auth(ctx context.Context, in xnet.Pack) (out xnet.Pack, sessio
 	defer pool.PutPacket(inp)
 
 	if err = proto.Unmarshal(in, inp); err != nil {
-		return nil, nil, err
+		return nil, nil, errors.Wrap(err, "packet unmarshal failed")
 	}
 
 	if inp.Seq != int32(cliseq.SystemSeq_Handshake) {
@@ -86,14 +86,25 @@ func (s *Service) auth(cs *climsg.CSHandshake) (xnet.Session, []byte, error) {
 		return nil, nil, errors.Errorf("token timeout. timeout=%d now=%d", token.Timeout, now.Unix())
 	}
 
-	ecdhInfo, scPubSign, err := s.newECDHInfo(cs.Pub, cs.Sign)
-	if err != nil {
-		return nil, nil, err
-	}
+	var (
+		ecdhInfo  xnet.ECDHable
+		scPubSign []byte
+		cryptor   xnet.Cryptor
+	)
 
-	cryptor, err := s.newCryptor(ecdhInfo.SharedKey())
-	if err != nil {
-		return nil, nil, err
+	if !s.encrypted {
+		ecdhInfo = xnet.NewUnECDH()
+		cryptor = xnet.NewUnCryptor()
+	} else {
+		ecdhInfo, scPubSign, err = newECDHInfo(cs.Pub, cs.Sign)
+		if err != nil {
+			return nil, nil, err
+		}
+
+		cryptor, err = xnet.NewCryptor(ecdhInfo.SharedKey())
+		if err != nil {
+			return nil, nil, err
+		}
 	}
 
 	sid := cs.ServerId
@@ -101,16 +112,17 @@ func (s *Service) auth(cs *climsg.CSHandshake) (xnet.Session, []byte, error) {
 		sid = token.ServerId
 	}
 
-	ss := xnet.NewSession(token.AccountId, sid, now.Unix(), cryptor, ecdhInfo, token.Color, int64(token.Status))
+	ss := xnet.NewSession(token.AccountId, token.Color, int64(token.Status),
+		xnet.WithSID(sid),
+		xnet.WithEncryptor(cryptor),
+		xnet.WithECDH(ecdhInfo),
+		xnet.WithStartTime(now.Unix()),
+	)
 
 	return ss, scPubSign, nil
 }
 
-func (s *Service) newECDHInfo(csPub []byte, csSign []byte) (ecdhInfo xnet.ECDHable, scPubSign []byte, err error) {
-	if !s.encrypted {
-		return xnet.NewUnECDH(), nil, nil
-	}
-
+func newECDHInfo(csPub []byte, csSign []byte) (ecdhInfo xnet.ECDHable, scPubSign []byte, err error) {
 	if err := security.VerifyECDHCliPubKey(csPub, csSign); err != nil {
 		return nil, nil, err
 	}
@@ -131,18 +143,6 @@ func (s *Service) newECDHInfo(csPub []byte, csSign []byte) (ecdhInfo xnet.ECDHab
 	}
 
 	return ecdhInfo, scPubSign, nil
-}
-
-func (s *Service) newCryptor(sharedKey []byte) (cryptor xnet.Cryptor, err error) {
-	if !s.encrypted {
-		return xnet.NewUnCryptor(), nil
-	}
-
-	if cryptor, err = xnet.NewCryptor(sharedKey); err != nil {
-		return nil, err
-	}
-
-	return cryptor, nil
 }
 
 func decryptAccountToken(token string) (auth *intrav1.AuthToken, err error) {
