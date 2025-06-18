@@ -75,7 +75,7 @@ func (t *Tunnel) SCHandle() (xnet.TunnelMessage, error) {
 
 // OnClose is called when the player tunnel is closed
 // it will delete the player route table and close the stream
-func (t *Tunnel) OnStop(erreason error) (err error) {
+func (t *Tunnel) OnStop(ctx context.Context, erreason error) (err error) {
 	if streamErr := t.stream.CloseSend(); streamErr != nil {
 		err = errors.Join(err, streamErr)
 	}

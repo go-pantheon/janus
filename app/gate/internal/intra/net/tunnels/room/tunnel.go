@@ -69,7 +69,7 @@ func (t *Tunnel) SCHandle() (xnet.TunnelMessage, error) {
 	return out, nil
 }
 
-func (t *Tunnel) OnStop(erreason error) (err error) {
+func (t *Tunnel) OnStop(ctx context.Context, erreason error) (err error) {
 	if streamErr := t.stream.CloseSend(); streamErr != nil {
 		err = errors.Join(err, streamErr)
 	}
