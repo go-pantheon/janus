@@ -214,7 +214,7 @@ Janus uses the following core technologies:
 
 | Technology/Component | Purpose                             | Version |
 | -------------------- | ----------------------------------- | ------- |
-| Go                   | Primary development language        | 1.23+   |
+| Go                   | Primary development language        | 1.24+   |
 | Kratos               | Microservice framework              | v2.8.4  |
 | gRPC                 | Backend service communication       | v1.73.0 |
 | Protobuf             | Data serialization                  | v1.36.6 |
@@ -392,7 +392,7 @@ sequenceDiagram
 
 ## Environment Requirements
 
-- Go 1.23+
+- Go 1.24+
 - Protocol Buffers compiler
 - etcd service (service discovery)
 - Redis service (routing table)
