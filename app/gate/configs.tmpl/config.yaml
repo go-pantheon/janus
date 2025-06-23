@@ -23,6 +23,8 @@ server:
     addr: 0.0.0.0:9100
     timeout: 0.5s
 data:
+  gateway_route_table_alive_duration: 10m
+  app_route_table_alive_duration: 10m
   redis:
     addr: localhost:6379
     password: ${REDIS_PASSWORD}

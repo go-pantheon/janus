@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"time"
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-pantheon/fabrica-kit/profile"
@@ -59,12 +60,16 @@ func (s *Service) Handle(ctx context.Context, ss xnet.Session, th xnet.TunnelMan
 }
 
 func (s *Service) Tick(ctx context.Context, ss xnet.Session) (err error) {
-	if err := s.gateRT.RenewSelf(ctx, ss.Color(), ss.UID(), profile.GRPCEndpoint()); err != nil {
-		return err
+	if time.Now().After(s.nextRTRenewTime) {
+		s.nextRTRenewTime = time.Now().Add(s.gateRT.TTL() / 2)
+
+		if renewErr := s.gateRT.RenewSelf(ctx, ss.Color(), ss.UID(), profile.GRPCEndpoint()); renewErr != nil {
+			err = errors.Join(err, renewErr)
+		}
 	}
 
 	// TODO: check black list
-	return nil
+	return err
 }
 
 func (s *Service) OnConnected(ctx context.Context, ss xnet.Session) (err error) {
