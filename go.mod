@@ -6,8 +6,8 @@ require (
 	github.com/go-kratos/kratos/contrib/registry/etcd/v2 v2.0.0-20250527152916-d6f5f00cf562
 	github.com/go-kratos/kratos/v2 v2.8.4
 	github.com/go-pantheon/fabrica-kit v0.0.14
-	github.com/go-pantheon/fabrica-net v0.0.17
-	github.com/go-pantheon/fabrica-util v0.0.25
+	github.com/go-pantheon/fabrica-net v0.0.18
+	github.com/go-pantheon/fabrica-util v0.0.26
 	github.com/google/wire v0.6.0
 	github.com/pkg/errors v0.9.1
 	github.com/redis/go-redis/v9 v9.10.0
@@ -74,9 +74,3 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	gorm.io/gorm v1.30.0 // indirect
 )
-
-replace github.com/go-pantheon/fabrica-kit => ./deps/fabrica-kit
-
-replace github.com/go-pantheon/fabrica-net => ./deps/fabrica-net
-
-replace github.com/go-pantheon/fabrica-util => ./deps/fabrica-util

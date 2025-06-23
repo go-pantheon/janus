@@ -31,6 +31,7 @@ Thumbs.db
 .vscode/
 .idea/
 *.swp
+*.swo
 
 # private config
 app/*/configs
