@@ -26,5 +26,6 @@ repos:
         description: Ensures all dependencies use approved licenses
         entry: ./.hack/pre-commit-license-check
         language: script
+        files: ^go\.(mod|sum)$
         pass_filenames: false
         stages: [commit]
