@@ -48,7 +48,7 @@ func initApp(confServer *conf.Server, label *conf.Label, registry *conf.Registry
 		return nil, nil, err
 	}
 	intrav1TunnelServiceClient := room.NewClient(roomConn)
-	serviceService := service.NewTCPService(logger, label, playerRouteTable, tunnelServiceClient, roomRouteTable, intrav1TunnelServiceClient)
+	serviceService := service.NewTCPService(logger, label, routeTable, playerRouteTable, tunnelServiceClient, roomRouteTable, intrav1TunnelServiceClient)
 	tcpServer, err := server.NewTCPServer(confServer, logger, routeTable, serviceService)
 	if err != nil {
 		cleanup()

@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/go-kratos/kratos/v2/log"
+	"github.com/go-pantheon/fabrica-kit/profile"
 	"github.com/go-pantheon/fabrica-kit/xcontext"
 	"github.com/go-pantheon/fabrica-net/xnet"
 	"github.com/go-pantheon/fabrica-util/compress"
@@ -58,6 +59,10 @@ func (s *Service) Handle(ctx context.Context, ss xnet.Session, th xnet.TunnelMan
 }
 
 func (s *Service) Tick(ctx context.Context, ss xnet.Session) (err error) {
+	if err := s.gateRT.RenewSelf(ctx, ss.Color(), ss.UID(), profile.GRPCEndpoint()); err != nil {
+		return err
+	}
+
 	// TODO: check black list
 	return nil
 }

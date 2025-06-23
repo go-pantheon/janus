@@ -49,4 +49,8 @@ bin/
 
 .specstory/
 .cursor*
+
+.CLAUDE*
+.claude*
+
 .actrc

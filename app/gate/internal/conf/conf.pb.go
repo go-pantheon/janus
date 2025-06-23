@@ -431,10 +431,12 @@ func (x *Server) GetHealth() string {
 }
 
 type Data struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Redis         *Data_Redis            `protobuf:"bytes,1,opt,name=redis,proto3" json:"redis,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state                          protoimpl.MessageState `protogen:"open.v1"`
+	Redis                          *Data_Redis            `protobuf:"bytes,1,opt,name=redis,proto3" json:"redis,omitempty"`
+	GatewayRouteTableAliveDuration *durationpb.Duration   `protobuf:"bytes,2,opt,name=gateway_route_table_alive_duration,json=gatewayRouteTableAliveDuration,proto3" json:"gateway_route_table_alive_duration,omitempty"`
+	AppRouteTableAliveDuration     *durationpb.Duration   `protobuf:"bytes,3,opt,name=app_route_table_alive_duration,json=appRouteTableAliveDuration,proto3" json:"app_route_table_alive_duration,omitempty"`
+	unknownFields                  protoimpl.UnknownFields
+	sizeCache                      protoimpl.SizeCache
 }
 
 func (x *Data) Reset() {
@@ -470,6 +472,20 @@ func (*Data) Descriptor() ([]byte, []int) {
 func (x *Data) GetRedis() *Data_Redis {
 	if x != nil {
 		return x.Redis
+	}
+	return nil
+}
+
+func (x *Data) GetGatewayRouteTableAliveDuration() *durationpb.Duration {
+	if x != nil {
+		return x.GatewayRouteTableAliveDuration
+	}
+	return nil
+}
+
+func (x *Data) GetAppRouteTableAliveDuration() *durationpb.Duration {
+	if x != nil {
+		return x.AppRouteTableAliveDuration
 	}
 	return nil
 }
@@ -946,9 +962,11 @@ const file_gate_internal_conf_conf_proto_rawDesc = "" +
 	"\x04GRPC\x12\x18\n" +
 	"\anetwork\x18\x01 \x01(\tR\anetwork\x12\x12\n" +
 	"\x04addr\x18\x02 \x01(\tR\x04addr\x123\n" +
-	"\atimeout\x18\x03 \x01(\v2\x19.google.protobuf.DurationR\atimeout\"\xcc\x02\n" +
+	"\atimeout\x18\x03 \x01(\v2\x19.google.protobuf.DurationR\atimeout\"\x92\x04\n" +
 	"\x04Data\x124\n" +
-	"\x05redis\x18\x01 \x01(\v2\x1e.gate.internal.conf.Data.RedisR\x05redis\x1a\x8d\x02\n" +
+	"\x05redis\x18\x01 \x01(\v2\x1e.gate.internal.conf.Data.RedisR\x05redis\x12e\n" +
+	"\"gateway_route_table_alive_duration\x18\x02 \x01(\v2\x19.google.protobuf.DurationR\x1egatewayRouteTableAliveDuration\x12]\n" +
+	"\x1eapp_route_table_alive_duration\x18\x03 \x01(\v2\x19.google.protobuf.DurationR\x1aappRouteTableAliveDuration\x1a\x8d\x02\n" +
 	"\x05Redis\x12\x12\n" +
 	"\x04addr\x18\x01 \x01(\tR\x04addr\x12\x1a\n" +
 	"\bpassword\x18\x02 \x01(\tR\bpassword\x12\x18\n" +
@@ -1012,17 +1030,19 @@ var file_gate_internal_conf_conf_proto_depIdxs = []int32{
 	11, // 8: gate.internal.conf.Server.http:type_name -> gate.internal.conf.Server.HTTP
 	12, // 9: gate.internal.conf.Server.grpc:type_name -> gate.internal.conf.Server.GRPC
 	13, // 10: gate.internal.conf.Data.redis:type_name -> gate.internal.conf.Data.Redis
-	8,  // 11: gate.internal.conf.Registry.etcd:type_name -> gate.internal.conf.Etcd
-	14, // 12: gate.internal.conf.Server.HTTP.timeout:type_name -> google.protobuf.Duration
-	14, // 13: gate.internal.conf.Server.GRPC.timeout:type_name -> google.protobuf.Duration
-	14, // 14: gate.internal.conf.Data.Redis.dial_timeout:type_name -> google.protobuf.Duration
-	14, // 15: gate.internal.conf.Data.Redis.read_timeout:type_name -> google.protobuf.Duration
-	14, // 16: gate.internal.conf.Data.Redis.write_timeout:type_name -> google.protobuf.Duration
-	17, // [17:17] is the sub-list for method output_type
-	17, // [17:17] is the sub-list for method input_type
-	17, // [17:17] is the sub-list for extension type_name
-	17, // [17:17] is the sub-list for extension extendee
-	0,  // [0:17] is the sub-list for field type_name
+	14, // 11: gate.internal.conf.Data.gateway_route_table_alive_duration:type_name -> google.protobuf.Duration
+	14, // 12: gate.internal.conf.Data.app_route_table_alive_duration:type_name -> google.protobuf.Duration
+	8,  // 13: gate.internal.conf.Registry.etcd:type_name -> gate.internal.conf.Etcd
+	14, // 14: gate.internal.conf.Server.HTTP.timeout:type_name -> google.protobuf.Duration
+	14, // 15: gate.internal.conf.Server.GRPC.timeout:type_name -> google.protobuf.Duration
+	14, // 16: gate.internal.conf.Data.Redis.dial_timeout:type_name -> google.protobuf.Duration
+	14, // 17: gate.internal.conf.Data.Redis.read_timeout:type_name -> google.protobuf.Duration
+	14, // 18: gate.internal.conf.Data.Redis.write_timeout:type_name -> google.protobuf.Duration
+	19, // [19:19] is the sub-list for method output_type
+	19, // [19:19] is the sub-list for method input_type
+	19, // [19:19] is the sub-list for extension type_name
+	19, // [19:19] is the sub-list for extension extendee
+	0,  // [0:19] is the sub-list for field type_name
 }
 
 func init() { file_gate_internal_conf_conf_proto_init() }

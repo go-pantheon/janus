@@ -71,6 +71,8 @@ message Data {
 	  google.protobuf.Duration write_timeout = 6;
   }
   Redis redis = 1;
+  google.protobuf.Duration gateway_route_table_alive_duration = 2;
+  google.protobuf.Duration app_route_table_alive_duration = 3;
 }
 
 message Registry {

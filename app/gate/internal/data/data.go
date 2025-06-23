@@ -1,6 +1,8 @@
 package data
 
 import (
+	"time"
+
 	cache "github.com/go-pantheon/fabrica-util/data/redis"
 	"github.com/go-pantheon/janus/app/gate/internal/conf"
 	"github.com/google/wire"
@@ -10,7 +12,9 @@ import (
 var ProviderSet = wire.NewSet(NewData)
 
 type Data struct {
-	Rdb redis.UniversalClient
+	Rdb                            redis.UniversalClient
+	GatewayRouteTableAliveDuration time.Duration
+	AppRouteTableAliveDuration     time.Duration
 }
 
 func NewData(c *conf.Data) (d *Data, cleanup func(), err error) {
@@ -39,6 +43,8 @@ func NewData(c *conf.Data) (d *Data, cleanup func(), err error) {
 	}
 
 	return &Data{
-		Rdb: rdb,
+		Rdb:                            rdb,
+		GatewayRouteTableAliveDuration: c.GatewayRouteTableAliveDuration.AsDuration(),
+		AppRouteTableAliveDuration:     c.AppRouteTableAliveDuration.AsDuration(),
 	}, cleanup, nil
 }

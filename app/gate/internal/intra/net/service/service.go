@@ -6,6 +6,7 @@ import (
 	"github.com/go-pantheon/janus/app/gate/internal/client/player"
 	"github.com/go-pantheon/janus/app/gate/internal/client/room"
 	"github.com/go-pantheon/janus/app/gate/internal/conf"
+	"github.com/go-pantheon/janus/app/gate/internal/router"
 	playerv1 "github.com/go-pantheon/janus/gen/api/server/player/intra/v1"
 	roomv1 "github.com/go-pantheon/janus/gen/api/server/room/intra/v1"
 	"github.com/google/wire"
@@ -19,6 +20,8 @@ type Service struct {
 	logger    log.Logger
 	encrypted bool
 
+	gateRT *router.RouteTable
+
 	playerClient playerv1.TunnelServiceClient
 	playerRT     *player.RouteTable
 
@@ -27,12 +30,14 @@ type Service struct {
 }
 
 func NewTCPService(logger log.Logger, label *conf.Label,
+	gateRT *router.RouteTable,
 	playerRT *player.RouteTable, playerClient playerv1.TunnelServiceClient,
 	roomRT *room.RouteTable, roomClient roomv1.TunnelServiceClient,
 ) *Service {
 	return &Service{
 		logger:       logger,
 		encrypted:    label.Encrypted,
+		gateRT:       gateRT,
 		playerClient: playerClient,
 		playerRT:     playerRT,
 		roomClient:   roomClient,

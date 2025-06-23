@@ -49,7 +49,6 @@ func NewTCPServer(c *conf.Server, logger log.Logger, rt *router.RouteTable, svc 
 	}
 
 	opts = append(opts, tcp.AfterConnectFunc(afterConnectFunc(rt)))
-	opts = append(opts, tcp.AfterDisconnectFunc(afterDisconnectFunc(rt)))
 
 	s, err := tcp.NewServer(c.Tcp.Addr, svc, opts...)
 	if err != nil {
@@ -62,11 +61,5 @@ func NewTCPServer(c *conf.Server, logger log.Logger, rt *router.RouteTable, svc 
 func afterConnectFunc(rt *router.RouteTable) tcp.WrapperFunc {
 	return func(ctx context.Context, uid int64, color string) error {
 		return router.AddRouteTable(ctx, rt, color, uid)
-	}
-}
-
-func afterDisconnectFunc(rt *router.RouteTable) tcp.WrapperFunc {
-	return func(ctx context.Context, uid int64, color string) error {
-		return router.DelRouteTable(ctx, rt, color, uid)
 	}
 }
