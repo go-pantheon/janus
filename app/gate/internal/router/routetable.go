@@ -16,7 +16,7 @@ type RouteTable struct {
 
 func NewRouteTable(d *data.Data) *RouteTable {
 	return &RouteTable{
-		RouteTable: routetable.NewRouteTable("gate", redis.New(d.Rdb), routetable.WithTTL(d.GatewayRouteTableAliveDuration)),
+		RouteTable: routetable.NewMasterRouteTable(redis.New(d.Rdb), profile.ServiceName(), routetable.WithTTL(d.GatewayRouteTableAliveDuration)),
 	}
 }
 

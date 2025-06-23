@@ -47,7 +47,7 @@ func newApp(logger log.Logger, ts *tcp.Server, hs *http.Server, gs *grpc.Server,
 		panic(err)
 	}
 
-	profile.Init(label.Profile, label.Color, label.Zone, label.Version, label.Node, url)
+	profile.Init(label.Service, label.Profile, label.Color, label.Zone, label.Version, label.Node, url)
 
 	return kratos.New(
 		kratos.Name(label.Service),

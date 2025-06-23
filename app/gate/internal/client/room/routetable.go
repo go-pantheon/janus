@@ -7,11 +7,11 @@ import (
 )
 
 type RouteTable struct {
-	routetable.RouteTable
+	routetable.MasterRouteTable
 }
 
 func NewRouteTable(d *data.Data) *RouteTable {
 	return &RouteTable{
-		RouteTable: routetable.NewRouteTable(routeTableName, redis.New(d.Rdb), routetable.WithTTL(d.AppRouteTableAliveDuration)),
+		MasterRouteTable: routetable.NewMasterRouteTable(redis.New(d.Rdb), serviceName, routetable.WithTTL(d.AppRouteTableAliveDuration)),
 	}
 }

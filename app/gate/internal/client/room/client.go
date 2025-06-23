@@ -9,8 +9,7 @@ import (
 )
 
 const (
-	serviceName    = "roma.room.service"
-	routeTableName = "room"
+	serviceName = "roma.room.service"
 )
 
 func NewClient(conn *Conn) intrav1.TunnelServiceClient {
