@@ -49,7 +49,7 @@ func (s *Service) Auth(ctx context.Context, in xnet.Pack) (out xnet.Pack, sessio
 	}
 
 	sc.StartIndex = int32(session.IncreaseCSIndex())
-	sc.Pub = session.ServerPublicKey()
+	sc.Pub = session.SelfPublicKey()
 	sc.Sign = svrSign
 
 	if scData, err = proto.Marshal(sc); err != nil {
@@ -132,12 +132,12 @@ func newECDHInfo(csPub []byte, csSign []byte) (ecdhInfo xnet.ECDHable, scPubSign
 		return nil, nil, err
 	}
 
-	ecdhInfo, err = xnet.NewECDHInfo(csPubBytes)
+	ecdhInfo, err = xnet.NewECDHInfoWithGenSelfPair(csPubBytes)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	scPubSign, err = security.SignECDHSvrPubKey(ecdhInfo.ServerPublicKey())
+	scPubSign, err = security.SignECDHSvrPubKey(ecdhInfo.SelfPublicKey())
 	if err != nil {
 		return nil, nil, err
 	}
