@@ -30,7 +30,7 @@ func (s *Service) Handle(ctx context.Context, ss xnet.Session, th xnet.TunnelMan
 
 	if ss.IsCrypto() {
 		index := ss.CSIndex()
-		if index != int64(p.Index) {
+		if index != p.Index {
 			return errors.Errorf("csindex validation failed. want=%d give=%d", index, p.Index)
 		}
 
@@ -60,15 +60,32 @@ func (s *Service) Handle(ctx context.Context, ss xnet.Session, th xnet.TunnelMan
 }
 
 func (s *Service) Tick(ctx context.Context, ss xnet.Session) (err error) {
-	if time.Now().After(s.nextRTRenewTime) {
-		s.nextRTRenewTime = time.Now().Add(s.gateRT.TTL() / 2)
-
-		if renewErr := s.gateRT.RenewSelf(ctx, ss.Color(), ss.UID(), profile.GRPCEndpoint()); renewErr != nil {
-			err = errors.Join(err, renewErr)
-		}
+	if renewErr := s.renewRouteTable(ctx, ss); renewErr != nil {
+		err = errors.Join(err, renewErr)
 	}
 
 	// TODO: check black list
+
+	return err
+}
+
+func (s *Service) renewRouteTable(ctx context.Context, ss xnet.Session) (err error) {
+	nt := ss.NextRenewTime()
+	if nt.IsZero() {
+		ss.UpdateNextRenewTime(time.Now().Add(s.gateRT.TTL() / 2))
+		return nil
+	}
+
+	if time.Now().Before(nt) {
+		return nil
+	}
+
+	ss.UpdateNextRenewTime(time.Now().Add(s.gateRT.TTL() / 2))
+
+	if renewErr := s.gateRT.RenewSelf(ctx, ss.Color(), ss.UID(), profile.GRPCEndpoint()); renewErr != nil {
+		err = errors.Join(err, renewErr)
+	}
+
 	return err
 }
 

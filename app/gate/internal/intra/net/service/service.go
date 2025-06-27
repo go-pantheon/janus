@@ -1,8 +1,6 @@
 package service
 
 import (
-	"time"
-
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-pantheon/fabrica-net/xnet"
 	"github.com/go-pantheon/janus/app/gate/internal/client/player"
@@ -22,9 +20,7 @@ type Service struct {
 	logger    log.Logger
 	encrypted bool
 
-	gateRT          *router.RouteTable
-	nextRTRenewTime time.Time
-
+	gateRT       *router.RouteTable
 	playerClient playerv1.TunnelServiceClient
 	playerRT     *player.RouteTable
 
