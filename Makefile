@@ -5,6 +5,7 @@ GOBUILD=${GOCMD} build
 # Initialize environment
 init:
 	pre-commit install
+	go install github.com/google/go-licenses@latest
 	go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.1.6
 	go install github.com/google/wire/cmd/wire@latest
 	go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
@@ -16,7 +17,7 @@ init:
 
 .PHONY: generate
 # Generate all
-generate: proto api
+generate: proto api wire
 
 .PHONY: version
 # Show the generated version
@@ -29,57 +30,69 @@ wire:
 	@find app -type d -depth 1 -print | xargs -L 1 bash -c 'echo "wire: $$0" && cd "$$0" && $(MAKE) wire'
 
 .PHONY: proto
-# Generate internal proto struct
+# Generate internal proto pb.go files.
 proto:
 	buf generate
 
 .PHONY: api
-# Generate API
+# Generate api/client and api/server pb.go files.
 api:
 	buf generate --template=buf.gen.client.yaml
 	buf generate --template=buf.gen.server.yaml
 
 .PHONY: build
-# Build executable file
+# Build app execute file. Use app=app_name to build specific service.
 build:
-	@find app -type d -depth 1 -print | xargs -L 1 bash -c 'echo "build: $$0" && cd "$$0" && $(MAKE) build'
+	@if [ -z "$(app)" ]; then \
+		find app -type d -depth 1 -print | xargs -L 1 bash -c 'echo "build: $$0" && cd "$$0" && $(MAKE) build'; \
+	else \
+		echo "build: app/$(app)" && cd app/$(app) && $(MAKE) build; \
+	fi
 
 .PHONY: run
-# Start all project services
+# Start all project services and tail log.
 run: start log
 
 .PHONY: start
-# Start all project services
+# Start all app services. Use app=app_name to start specific service.
 start: stop build
-	@find app -type d -depth 1 -print | xargs -L 1 bash -c 'echo "start: $$0" && cd "$$0" && $(MAKE) start'
+	@if [ -z "$(app)" ]; then \
+		find app -type d -depth 1 -print | xargs -L 1 bash -c 'echo "start: $$0" && cd "$$0" && $(MAKE) start'; \
+	else \
+		echo "start: app/$(app)" && cd app/$(app) && $(MAKE) start; \
+	fi
 
 .PHONY: stop
-# Stop running project services
+# Stop all app services. Use app=app_name to stop specific service.
 stop:
-	@find app -type d -depth 1 -print | xargs -L 1 bash -c 'echo "stop: $$0" && cd "$$0" && $(MAKE) stop'
+	@if [ -z "$(app)" ]; then \
+		find app -type d -depth 1 -print | xargs -L 1 bash -c 'echo "stop: $$0" && cd "$$0" && $(MAKE) stop'; \
+	else \
+		echo "stop: app/$(app)" && cd app/$(app) && $(MAKE) stop; \
+	fi
 
 .PHONY: log
-# tail -f app/gate/bin/debug.log
+# Tail app service log file
 log:
-	@find app -type d -depth 1 -print | xargs -L 1 bash -c 'echo "log: $$0" && cd "$$0" && tail -f bin/debug.log'
+	echo "log: app/gate" && cd app/gate && tail -20f bin/debug.log
 
 .PHONY: test
-# Run tests
+# Run tests and show coverage.
 test:
 	go test -v ./... -cover
 
 .PHONY: vet
-# Run go vet
+# Run go vet.
 vet:
 	go vet ./...
 
 .PHONY: license-check
-# Run license check
+# Run license check.
 license-check:
 	go-licenses check ./...
 
 .PHONY: lint
-# Run lint
+# Run lint.
 lint:
 	golangci-lint run ./...
 
