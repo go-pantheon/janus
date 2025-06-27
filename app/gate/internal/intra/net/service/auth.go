@@ -53,7 +53,7 @@ func (s *Service) Auth(ctx context.Context, in xnet.Pack) (out xnet.Pack, sessio
 	sc.Pub = session.SelfPublicKey()
 	sc.Sign = svrSign
 	sc.Timestamp = time.Now().Unix()
-	sc.StartIndex = int32(session.IncreaseCSIndex())
+	sc.StartIndex = session.IncreaseCSIndex()
 
 	if scData, err = proto.Marshal(sc); err != nil {
 		return nil, nil, errors.Wrap(err, "SCHandshake encode failed")
