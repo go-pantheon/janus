@@ -16,6 +16,8 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
+const HandshakeTimeLimit = 5 * time.Second
+
 func (s *Service) Auth(ctx context.Context, in xnet.Pack) (out xnet.Pack, session xnet.Session, err error) {
 	if len(in) == 0 {
 		return nil, nil, errors.New("proto is empty")
@@ -48,9 +50,10 @@ func (s *Service) Auth(ctx context.Context, in xnet.Pack) (out xnet.Pack, sessio
 		return nil, nil, err
 	}
 
-	sc.StartIndex = int32(session.IncreaseCSIndex())
 	sc.Pub = session.SelfPublicKey()
 	sc.Sign = svrSign
+	sc.Timestamp = time.Now().Unix()
+	sc.StartIndex = int32(session.IncreaseCSIndex())
 
 	if scData, err = proto.Marshal(sc); err != nil {
 		return nil, nil, errors.Wrap(err, "SCHandshake encode failed")
@@ -76,6 +79,12 @@ func (s *Service) auth(cs *climsg.CSHandshake) (xnet.Session, []byte, error) {
 	}
 
 	now := time.Now()
+	before := now.Add(-HandshakeTimeLimit)
+	after := now.Add(HandshakeTimeLimit)
+
+	if xtime.Time(cs.Timestamp).Before(before) || xtime.Time(cs.Timestamp).After(after) {
+		return nil, nil, errors.Errorf("handshake timestamp not match. timestamp=%d now=%d", cs.Timestamp, now.Unix())
+	}
 
 	token, err := decryptAccountToken(cs.Token)
 	if err != nil {
