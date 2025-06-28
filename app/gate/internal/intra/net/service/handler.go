@@ -72,21 +72,19 @@ func (s *Service) Tick(ctx context.Context, ss xnet.Session) (err error) {
 func (s *Service) renewRouteTable(ctx context.Context, ss xnet.Session) (err error) {
 	nt := ss.NextRenewTime()
 	if nt.IsZero() {
-		ss.UpdateNextRenewTime(time.Now().Add(s.gateRT.TTL() / 2))
+		ss.UpdateNextRenewTime(time.Now().Add(s.gateRT.TTL() / time.Duration(2)))
 		return nil
 	}
 
-	if time.Now().Before(nt) {
+	now := time.Now()
+
+	if now.Before(nt) {
 		return nil
 	}
 
-	ss.UpdateNextRenewTime(time.Now().Add(s.gateRT.TTL() / 2))
+	ss.UpdateNextRenewTime(now.Add(s.gateRT.TTL() / time.Duration(2)))
 
-	if renewErr := s.gateRT.RenewSelf(ctx, ss.Color(), ss.UID(), profile.GRPCEndpoint()); renewErr != nil {
-		err = errors.Join(err, renewErr)
-	}
-
-	return err
+	return s.gateRT.RenewSelf(ctx, ss.Color(), ss.UID(), profile.GRPCEndpoint())
 }
 
 func (s *Service) OnConnected(ctx context.Context, ss xnet.Session) (err error) {
