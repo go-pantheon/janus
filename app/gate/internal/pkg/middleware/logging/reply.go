@@ -9,7 +9,7 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware"
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-pantheon/fabrica-kit/profile"
-	"github.com/go-pantheon/fabrica-net/xcontext"
+	"github.com/go-pantheon/fabrica-kit/xcontext"
 	"github.com/go-pantheon/fabrica-net/xnet"
 	climod "github.com/go-pantheon/janus/gen/api/client/module"
 	clipkt "github.com/go-pantheon/janus/gen/api/client/packet"
@@ -34,7 +34,7 @@ func Reply(netKind xnet.NetKind) middleware.Middleware {
 func logReply(ctx context.Context, netKind xnet.NetKind, reply any) {
 	p := &clipkt.Packet{}
 
-	if err := proto.Unmarshal(reply.([]byte), p); err != nil {
+	if err := proto.Unmarshal(reply.(xnet.Pack), p); err != nil {
 		log.Debugf("logReply: proto.Unmarshal failed: %v", err)
 		return
 	}

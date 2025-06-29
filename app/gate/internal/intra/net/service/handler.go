@@ -88,11 +88,11 @@ func (s *Service) renewRouteTable(ctx context.Context, ss xnet.Session) (err err
 }
 
 func (s *Service) OnConnected(ctx context.Context, ss xnet.Session) (err error) {
-	log.Debugf("client connected. uid=%d sid=%d color=%s status=%d ip=%s", ss.UID(), ss.SID(), ss.Color(), ss.Status(), ss.ClientIP())
+	log.Debugf("client connected. %s", ss.LogInfo())
 	return nil
 }
 
 func (s *Service) OnDisconnect(ctx context.Context, ss xnet.Session) (err error) {
-	log.Debugf("client disconnected. uid=%d sid=%d color=%s status=%d ip=%s", ss.UID(), ss.SID(), ss.Color(), ss.Status(), ss.ClientIP())
+	log.Debugf("client disconnected. %s", ss.LogInfo())
 	return nil
 }

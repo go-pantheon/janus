@@ -22,14 +22,14 @@ type Tunnel struct {
 	stream intrav1.TunnelService_TunnelClient
 }
 
-func NewTunnel(ctx context.Context, cli intrav1.TunnelServiceClient, ss xnet.Session, log log.Logger, worker xnet.Worker) (*Tunnel, error) {
+func NewTunnel(ctx context.Context, cli intrav1.TunnelServiceClient, ss xnet.Session, logger log.Logger, worker xnet.Worker) (*Tunnel, error) {
 	stream, err := cli.Tunnel(ctx)
 	if err != nil {
 		return nil, errors.Wrap(err, "get tunnel stream failed")
 	}
 
 	t := &Tunnel{
-		BaseTunnel: base.New(tunnels.PlayerTunnelType, ss.UID(), ss, log),
+		BaseTunnel: base.New(tunnels.PlayerTunnelType, ss.UID(), ss, logger),
 		worker:     worker,
 		stream:     stream,
 	}

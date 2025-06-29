@@ -9,7 +9,7 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware"
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-pantheon/fabrica-kit/profile"
-	"github.com/go-pantheon/fabrica-net/xcontext"
+	"github.com/go-pantheon/fabrica-kit/xcontext"
 	"github.com/go-pantheon/fabrica-net/xnet"
 	climod "github.com/go-pantheon/janus/gen/api/client/module"
 	clipkt "github.com/go-pantheon/janus/gen/api/client/packet"
@@ -19,7 +19,7 @@ import (
 
 func Request(netKind xnet.NetKind) middleware.Middleware {
 	return func(handler middleware.Handler) middleware.Handler {
-		return func(ctx context.Context, req interface{}) (interface{}, error) {
+		return func(ctx context.Context, req any) (any, error) {
 			if !profile.IsDev() {
 				return handler(ctx, req)
 			}
@@ -34,7 +34,7 @@ func Request(netKind xnet.NetKind) middleware.Middleware {
 func logRequest(ctx context.Context, netKind xnet.NetKind, req any) {
 	p := &clipkt.Packet{}
 
-	if req, ok := req.([]byte); ok {
+	if req, ok := req.(xnet.Pack); ok {
 		if err := proto.Unmarshal(req, p); err != nil {
 			log.Errorf("log request packet unmarshal failed. %s", err.Error())
 			return

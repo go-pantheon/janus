@@ -2,7 +2,10 @@ package service
 
 import (
 	"context"
+	"fmt"
 
+	"github.com/go-pantheon/fabrica-kit/profile"
+	"github.com/go-pantheon/fabrica-kit/xcontext"
 	"github.com/go-pantheon/fabrica-net/xnet"
 	"github.com/go-pantheon/janus/app/gate/internal/intra/net/tunnels"
 	"github.com/go-pantheon/janus/app/gate/internal/intra/net/tunnels/player"
@@ -28,6 +31,14 @@ func (s *Service) TunnelType(mod int32) (t int32, initCapacity int, err error) {
 }
 
 func (s *Service) CreateAppTunnel(ctx context.Context, ss xnet.Session, tp int32, oid int64, worker xnet.Worker) (xnet.AppTunnel, error) {
+	ctx = xcontext.AppendToOutgoingContext(ctx,
+		xcontext.CtxUID, fmt.Sprintf("%d", ss.UID()),
+		xcontext.CtxSID, fmt.Sprintf("%d", ss.SID()),
+		xcontext.CtxStatus, fmt.Sprintf("%d", ss.Status()),
+		xcontext.CtxColor, ss.Color(),
+		xcontext.CtxGateReferer, fmt.Sprintf("%s#%d", profile.GRPCEndpoint(), worker.WID()),
+	)
+
 	switch tunnels.TunnelType(tp) {
 	case tunnels.PlayerTunnelType:
 		return player.NewTunnel(ctx, s.playerClient, ss, s.logger, worker)
