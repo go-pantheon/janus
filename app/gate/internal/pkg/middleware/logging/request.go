@@ -7,13 +7,13 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/metadata"
 	"github.com/go-kratos/kratos/v2/middleware"
-	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-pantheon/fabrica-kit/profile"
 	"github.com/go-pantheon/fabrica-kit/xcontext"
 	"github.com/go-pantheon/fabrica-net/xnet"
 	climod "github.com/go-pantheon/janus/gen/api/client/module"
 	clipkt "github.com/go-pantheon/janus/gen/api/client/packet"
 	cliseq "github.com/go-pantheon/janus/gen/api/client/sequence"
+	"go.opentelemetry.io/otel/trace"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -67,10 +67,12 @@ func logRequest(ctx context.Context, netKind xnet.NetKind, req any) {
 
 		kv := make([]any, 0, 16)
 
+		traceID, spanID := getTrace(ctx)
+
 		kv = append(kv, "kind", "req",
 			"net", netKind,
-			"trace", tracing.TraceID(),
-			"span", tracing.SpanID(),
+			"trace", traceID,
+			"span", spanID,
 			"uid", uid,
 			"sid", sid,
 			"obj", obj,
@@ -82,4 +84,13 @@ func logRequest(ctx context.Context, netKind xnet.NetKind, req any) {
 
 		log.Debugw(kv...)
 	}
+}
+
+func getTrace(ctx context.Context) (string, string) {
+	span := trace.SpanFromContext(ctx)
+	if span == nil {
+		return "", ""
+	}
+
+	return span.SpanContext().TraceID().String(), span.SpanContext().SpanID().String()
 }

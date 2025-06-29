@@ -7,7 +7,6 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/metadata"
 	"github.com/go-kratos/kratos/v2/middleware"
-	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-pantheon/fabrica-kit/profile"
 	"github.com/go-pantheon/fabrica-kit/xcontext"
 	"github.com/go-pantheon/fabrica-net/xnet"
@@ -68,10 +67,12 @@ func logReply(ctx context.Context, netKind xnet.NetKind, reply any) {
 
 	kv := make([]any, 0, 16)
 
+	traceID, spanID := getTrace(ctx)
+
 	kv = append(kv, "kind", "reply",
 		"net", netKind,
-		"trace", tracing.TraceID(),
-		"span", tracing.SpanID(),
+		"trace", traceID,
+		"span", spanID,
 		"uid", uid,
 		"sid", sid,
 		"obj", obj,
