@@ -37,8 +37,6 @@ Some packages may only be included on certain architectures or operating systems
  - [github.com/google/wire](https://pkg.go.dev/github.com/google/wire) ([Apache-2.0](https://github.com/google/wire/blob/v0.6.0/LICENSE))
  - [github.com/gorilla/mux](https://pkg.go.dev/github.com/gorilla/mux) ([BSD-3-Clause](https://github.com/gorilla/mux/blob/v1.8.1/LICENSE))
  - [github.com/grpc-ecosystem/grpc-gateway/v2](https://pkg.go.dev/github.com/grpc-ecosystem/grpc-gateway/v2) ([BSD-3-Clause](https://github.com/grpc-ecosystem/grpc-gateway/blob/v2.27.1/LICENSE))
- - [github.com/jinzhu/inflection](https://pkg.go.dev/github.com/jinzhu/inflection) ([MIT](https://github.com/jinzhu/inflection/blob/v1.0.0/LICENSE))
- - [github.com/jinzhu/now](https://pkg.go.dev/github.com/jinzhu/now) ([MIT](https://github.com/jinzhu/now/blob/v1.1.5/License))
  - [github.com/munnerz/goautoneg](https://pkg.go.dev/github.com/munnerz/goautoneg) ([BSD-3-Clause](https://github.com/munnerz/goautoneg/blob/a7dc8b61c822/LICENSE))
  - [github.com/pkg/errors](https://pkg.go.dev/github.com/pkg/errors) ([BSD-2-Clause](https://github.com/pkg/errors/blob/v0.9.1/LICENSE))
  - [github.com/prometheus/client_golang/internal/github.com/golang/gddo/httputil](https://pkg.go.dev/github.com/prometheus/client_golang/internal/github.com/golang/gddo/httputil) ([BSD-3-Clause](https://github.com/prometheus/client_golang/blob/v1.22.0/internal/github.com/golang/gddo/LICENSE))
@@ -72,6 +70,5 @@ Some packages may only be included on certain architectures or operating systems
  - [google.golang.org/protobuf](https://pkg.go.dev/google.golang.org/protobuf) ([BSD-3-Clause](https://github.com/protocolbuffers/protobuf-go/blob/v1.36.6/LICENSE))
  - [gopkg.in/yaml.v2](https://pkg.go.dev/gopkg.in/yaml.v2) ([Apache-2.0](https://github.com/go-yaml/yaml/blob/v2.4.0/LICENSE))
  - [gopkg.in/yaml.v3](https://pkg.go.dev/gopkg.in/yaml.v3) ([MIT](https://github.com/go-yaml/yaml/blob/v3.0.1/LICENSE))
- - [gorm.io/gorm](https://pkg.go.dev/gorm.io/gorm) ([MIT](https://github.com/go-gorm/gorm/blob/v1.30.0/LICENSE))
 
 [go-pantheon/janus]: https://github.com/go-pantheon/janus
