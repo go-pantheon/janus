@@ -4,8 +4,9 @@
 </div>
 
 <p align="center">
-<a href="https://github.com/go-pantheon/janus/actions/workflows/test.yml"><img src="https://github.com/go-pantheon/janus/workflows/Test/badge.svg" alt="Test Status"></a>
+<a href="https://github.com/go-pantheon/janus/actions"><img src="https://github.com/go-pantheon/janus/workflows/Go/badge.svg" alt="Build Status"></a>
 <a href="https://github.com/go-pantheon/janus/releases"><img src="https://img.shields.io/github/v/release/go-pantheon/janus" alt="Latest Release"></a>
+<a href="https://github.com/go-kratos/kratos"><img src="https://img.shields.io/badge/Kratos-v2.8.4-blue" alt="Kratos"></a>
 <a href="https://pkg.go.dev/github.com/go-pantheon/janus"><img src="https://pkg.go.dev/badge/github.com/go-pantheon/janus" alt="GoDoc"></a>
 <a href="https://goreportcard.com/report/github.com/go-pantheon/janus"><img src="https://goreportcard.com/badge/github.com/go-pantheon/janus" alt="Go Report Card"></a>
 <a href="https://github.com/go-pantheon/janus/blob/main/LICENSE"><img src="https://img.shields.io/github/license/go-pantheon/janus" alt="License"></a>
