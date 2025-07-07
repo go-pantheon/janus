@@ -5,9 +5,9 @@ go 1.24.4
 require (
 	github.com/go-kratos/kratos/contrib/registry/etcd/v2 v2.0.0-20250527152916-d6f5f00cf562
 	github.com/go-kratos/kratos/v2 v2.8.4
-	github.com/go-pantheon/fabrica-kit v0.0.21
+	github.com/go-pantheon/fabrica-kit v0.0.22
 	github.com/go-pantheon/fabrica-net v0.0.22
-	github.com/go-pantheon/fabrica-util v0.0.29
+	github.com/go-pantheon/fabrica-util v0.0.30
 	github.com/google/wire v0.6.0
 	github.com/pkg/errors v0.9.1
 	github.com/redis/go-redis/v9 v9.11.0
