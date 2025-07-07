@@ -109,8 +109,8 @@ github.com/go-pantheon/fabrica-kit v0.0.21 h1:nMj7ozHMOHL+cr/FM13mibZ6LQM6QDAfDO
 github.com/go-pantheon/fabrica-kit v0.0.21/go.mod h1:92Y/uIN3hD5OGlwRSTG0XYk31U6pDp7zR1nFdXH7zPg=
 github.com/go-pantheon/fabrica-net v0.0.22 h1:uJVu4d+7pyyb1xIKBAmzA8RYj5iMJR6LNLwwohyT1ek=
 github.com/go-pantheon/fabrica-net v0.0.22/go.mod h1:i3+kvDlegZFggiFg/unHM0CRdjTz9uxW00Ni13tChfM=
-github.com/go-pantheon/fabrica-util v0.0.29 h1:rvppAIdjF63LxbDLtc59UCbMBBD9TgZwFVWoa++bGzE=
-github.com/go-pantheon/fabrica-util v0.0.29/go.mod h1:wP3zUXTh30r2z9NxiXh2iE8ZJjaPfYWsnUkCTx61qU0=
+github.com/go-pantheon/fabrica-util v0.0.31 h1:B0QovtDQsADU9jBJ+fj1VFocJO79yQzO1GmmhGWSNkk=
+github.com/go-pantheon/fabrica-util v0.0.31/go.mod h1:wP3zUXTh30r2z9NxiXh2iE8ZJjaPfYWsnUkCTx61qU0=
 github.com/go-playground/assert/v2 v2.0.1 h1:MsBgLAaY856+nPRTKrp3/OZK38U/wa0CcBYNjji3q3A=
 github.com/go-playground/assert/v2 v2.0.1/go.mod h1:VDjEfimB/XKnb+ZQfWdccd7VUvScMdVu0Titje2rxJ4=
 github.com/go-playground/form/v4 v4.2.0/go.mod h1:q1a2BY+AQUUzhl6xA/6hBetay6dEIhMHjgvJiGo6K7U=
