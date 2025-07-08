@@ -79,7 +79,7 @@ log:
 .PHONY: test
 # Run tests and show coverage.
 test:
-	go test -v ./... -cover
+	go test -race -cover ./...
 
 .PHONY: vet
 # Run go vet.
