@@ -8,6 +8,7 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-pantheon/fabrica-kit/metrics"
+	"github.com/go-pantheon/fabrica-net/server"
 	tcp "github.com/go-pantheon/fabrica-net/tcp/server"
 	"github.com/go-pantheon/fabrica-net/xnet"
 	"github.com/go-pantheon/fabrica-util/errors"
@@ -27,8 +28,8 @@ func NewTCPServer(c *conf.Server, logger log.Logger, rt *router.RouteTable, svc 
 		return nil, errors.New("service is nil")
 	}
 
-	var opts = []tcp.Option{
-		tcp.ReadFilter(
+	var opts = []server.Option{
+		server.WithReadFilter(
 			middleware.Chain(
 				recovery.Recovery(),
 				metadata.Server(),
@@ -37,7 +38,7 @@ func NewTCPServer(c *conf.Server, logger log.Logger, rt *router.RouteTable, svc 
 				logging.Request(xnet.NetKindTCP),
 			),
 		),
-		tcp.WriteFilter(
+		server.WithWriteFilter(
 			middleware.Chain(
 				logging.Reply(xnet.NetKindTCP),
 			),
@@ -45,10 +46,10 @@ func NewTCPServer(c *conf.Server, logger log.Logger, rt *router.RouteTable, svc 
 	}
 
 	if logger != nil {
-		opts = append(opts, tcp.Logger(logger))
+		opts = append(opts, server.WithLogger(logger))
 	}
 
-	opts = append(opts, tcp.AfterConnectFunc(afterConnectFunc(rt)))
+	opts = append(opts, server.WithAfterConnect(afterConnect(rt)))
 
 	s, err := tcp.NewServer(c.Tcp.Addr, svc, opts...)
 	if err != nil {
@@ -58,8 +59,10 @@ func NewTCPServer(c *conf.Server, logger log.Logger, rt *router.RouteTable, svc 
 	return s, nil
 }
 
-func afterConnectFunc(rt *router.RouteTable) tcp.WrapperFunc {
-	return func(ctx context.Context, uid int64, color string) error {
-		return router.AddRouteTable(ctx, rt, color, uid)
+func afterConnect(rt *router.RouteTable) server.Inspector {
+	return func(f server.InspectorFunc) server.InspectorFunc {
+		return func(ctx context.Context, w xnet.Worker) error {
+			return router.AddRouteTable(ctx, rt, w.Session().Color(), w.Session().UID())
+		}
 	}
 }
