@@ -17,7 +17,9 @@ import (
 	"github.com/go-pantheon/fabrica-kit/trace"
 	"github.com/go-pantheon/fabrica-kit/xlog"
 	"github.com/go-pantheon/fabrica-net/http/health"
+	kcp "github.com/go-pantheon/fabrica-net/kcp/server"
 	tcp "github.com/go-pantheon/fabrica-net/tcp/server"
+	ws "github.com/go-pantheon/fabrica-net/websocket/server"
 	"github.com/go-pantheon/fabrica-util/compress"
 	"github.com/go-pantheon/fabrica-util/xtime"
 	"github.com/go-pantheon/janus/app/gate/internal/conf"
@@ -32,7 +34,7 @@ func init() {
 	flag.StringVar(&flagConf, "conf", "app/gate/configs", "config path, eg: -conf config.yaml")
 }
 
-func newApp(logger log.Logger, ts *tcp.Server, hs *http.Server, gs *grpc.Server, health *health.Server,
+func newApp(logger log.Logger, ts *tcp.Server, ws *ws.Server, ks *kcp.Server, hs *http.Server, gs *grpc.Server, health *health.Server,
 	label *conf.Label, rr registry.Registrar,
 ) *kratos.App {
 	md := map[string]string{
@@ -54,7 +56,7 @@ func newApp(logger log.Logger, ts *tcp.Server, hs *http.Server, gs *grpc.Server,
 		kratos.Version(label.Version),
 		kratos.Metadata(md),
 		kratos.Logger(logger),
-		kratos.Server(health, ts, hs, gs),
+		kratos.Server(health, ts, ws, ks, hs, gs),
 		kratos.Registrar(rr),
 	)
 }

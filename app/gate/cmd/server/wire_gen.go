@@ -54,6 +54,16 @@ func initApp(confServer *conf.Server, label *conf.Label, registry *conf.Registry
 		cleanup()
 		return nil, nil, err
 	}
+	websocketServer, err := server.NewWebSocketServer(confServer, logger, routeTable, serviceService)
+	if err != nil {
+		cleanup()
+		return nil, nil, err
+	}
+	serverServer, err := server.NewKCPServer(confServer, logger, routeTable, serviceService)
+	if err != nil {
+		cleanup()
+		return nil, nil, err
+	}
 	pushServiceServer := v1.NewPushService(logger, tcpServer)
 	httpServer := server.NewHTTPServer(confServer, logger, pushServiceServer)
 	grpcServer := server.NewGRPCServer(confServer, logger, pushServiceServer)
@@ -62,7 +72,7 @@ func initApp(confServer *conf.Server, label *conf.Label, registry *conf.Registry
 		cleanup()
 		return nil, nil, err
 	}
-	app := newApp(logger, tcpServer, httpServer, grpcServer, healthServer, label, registrar)
+	app := newApp(logger, tcpServer, websocketServer, serverServer, httpServer, grpcServer, healthServer, label, registrar)
 	return app, func() {
 		cleanup()
 	}, nil

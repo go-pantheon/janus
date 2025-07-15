@@ -16,6 +16,11 @@ compress:
 server:
   tcp:
     addr: 0.0.0.0:7001
+  ws:
+    addr: 0.0.0.0:7002
+    path: /ws
+  kcp:
+    addr: 0.0.0.0:7003
   http:
     addr: 0.0.0.0:8100
     timeout: 0.5s

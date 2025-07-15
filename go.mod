@@ -44,6 +44,8 @@ require (
 	github.com/gorilla/mux v1.8.1 // indirect
 	github.com/gorilla/websocket v1.5.3 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.1 // indirect
+	github.com/klauspost/cpuid/v2 v2.2.11 // indirect
+	github.com/klauspost/reedsolomon v1.12.4 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/prometheus/client_golang v1.22.0 // indirect
@@ -51,6 +53,11 @@ require (
 	github.com/prometheus/common v0.65.0 // indirect
 	github.com/prometheus/procfs v0.17.0 // indirect
 	github.com/rakyll/statik v0.1.7 // indirect
+	github.com/templexxx/cpu v0.1.1 // indirect
+	github.com/templexxx/xorsimd v0.4.3 // indirect
+	github.com/tjfoc/gmsm v1.4.1 // indirect
+	github.com/xtaci/kcp-go/v5 v5.6.22 // indirect
+	github.com/xtaci/smux v1.5.34 // indirect
 	go.etcd.io/etcd/api/v3 v3.6.2 // indirect
 	go.etcd.io/etcd/client/pkg/v3 v3.6.2 // indirect
 	go.opentelemetry.io/auto/sdk v1.1.0 // indirect

@@ -365,9 +365,11 @@ func (x *Compress) GetStrong() int64 {
 type Server struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Tcp           *Server_TCP            `protobuf:"bytes,1,opt,name=tcp,proto3" json:"tcp,omitempty"`
-	Http          *Server_HTTP           `protobuf:"bytes,2,opt,name=http,proto3" json:"http,omitempty"`
-	Grpc          *Server_GRPC           `protobuf:"bytes,3,opt,name=grpc,proto3" json:"grpc,omitempty"`
-	Health        string                 `protobuf:"bytes,4,opt,name=health,proto3" json:"health,omitempty"`
+	Ws            *Server_WebSocket      `protobuf:"bytes,2,opt,name=ws,proto3" json:"ws,omitempty"`
+	Kcp           *Server_KCP            `protobuf:"bytes,3,opt,name=kcp,proto3" json:"kcp,omitempty"`
+	Http          *Server_HTTP           `protobuf:"bytes,4,opt,name=http,proto3" json:"http,omitempty"`
+	Grpc          *Server_GRPC           `protobuf:"bytes,5,opt,name=grpc,proto3" json:"grpc,omitempty"`
+	Health        string                 `protobuf:"bytes,6,opt,name=health,proto3" json:"health,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -405,6 +407,20 @@ func (*Server) Descriptor() ([]byte, []int) {
 func (x *Server) GetTcp() *Server_TCP {
 	if x != nil {
 		return x.Tcp
+	}
+	return nil
+}
+
+func (x *Server) GetWs() *Server_WebSocket {
+	if x != nil {
+		return x.Ws
+	}
+	return nil
+}
+
+func (x *Server) GetKcp() *Server_KCP {
+	if x != nil {
+		return x.Kcp
 	}
 	return nil
 }
@@ -714,6 +730,102 @@ func (x *Server_TCP) GetAddr() string {
 	return ""
 }
 
+type Server_WebSocket struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Addr          string                 `protobuf:"bytes,1,opt,name=addr,proto3" json:"addr,omitempty"`
+	Path          string                 `protobuf:"bytes,2,opt,name=path,proto3" json:"path,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Server_WebSocket) Reset() {
+	*x = Server_WebSocket{}
+	mi := &file_gate_internal_conf_conf_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Server_WebSocket) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Server_WebSocket) ProtoMessage() {}
+
+func (x *Server_WebSocket) ProtoReflect() protoreflect.Message {
+	mi := &file_gate_internal_conf_conf_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Server_WebSocket.ProtoReflect.Descriptor instead.
+func (*Server_WebSocket) Descriptor() ([]byte, []int) {
+	return file_gate_internal_conf_conf_proto_rawDescGZIP(), []int{5, 1}
+}
+
+func (x *Server_WebSocket) GetAddr() string {
+	if x != nil {
+		return x.Addr
+	}
+	return ""
+}
+
+func (x *Server_WebSocket) GetPath() string {
+	if x != nil {
+		return x.Path
+	}
+	return ""
+}
+
+type Server_KCP struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Addr          string                 `protobuf:"bytes,1,opt,name=addr,proto3" json:"addr,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Server_KCP) Reset() {
+	*x = Server_KCP{}
+	mi := &file_gate_internal_conf_conf_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Server_KCP) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Server_KCP) ProtoMessage() {}
+
+func (x *Server_KCP) ProtoReflect() protoreflect.Message {
+	mi := &file_gate_internal_conf_conf_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Server_KCP.ProtoReflect.Descriptor instead.
+func (*Server_KCP) Descriptor() ([]byte, []int) {
+	return file_gate_internal_conf_conf_proto_rawDescGZIP(), []int{5, 2}
+}
+
+func (x *Server_KCP) GetAddr() string {
+	if x != nil {
+		return x.Addr
+	}
+	return ""
+}
+
 type Server_HTTP struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Network       string                 `protobuf:"bytes,1,opt,name=network,proto3" json:"network,omitempty"`
@@ -725,7 +837,7 @@ type Server_HTTP struct {
 
 func (x *Server_HTTP) Reset() {
 	*x = Server_HTTP{}
-	mi := &file_gate_internal_conf_conf_proto_msgTypes[11]
+	mi := &file_gate_internal_conf_conf_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -737,7 +849,7 @@ func (x *Server_HTTP) String() string {
 func (*Server_HTTP) ProtoMessage() {}
 
 func (x *Server_HTTP) ProtoReflect() protoreflect.Message {
-	mi := &file_gate_internal_conf_conf_proto_msgTypes[11]
+	mi := &file_gate_internal_conf_conf_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -750,7 +862,7 @@ func (x *Server_HTTP) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Server_HTTP.ProtoReflect.Descriptor instead.
 func (*Server_HTTP) Descriptor() ([]byte, []int) {
-	return file_gate_internal_conf_conf_proto_rawDescGZIP(), []int{5, 1}
+	return file_gate_internal_conf_conf_proto_rawDescGZIP(), []int{5, 3}
 }
 
 func (x *Server_HTTP) GetNetwork() string {
@@ -785,7 +897,7 @@ type Server_GRPC struct {
 
 func (x *Server_GRPC) Reset() {
 	*x = Server_GRPC{}
-	mi := &file_gate_internal_conf_conf_proto_msgTypes[12]
+	mi := &file_gate_internal_conf_conf_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -797,7 +909,7 @@ func (x *Server_GRPC) String() string {
 func (*Server_GRPC) ProtoMessage() {}
 
 func (x *Server_GRPC) ProtoReflect() protoreflect.Message {
-	mi := &file_gate_internal_conf_conf_proto_msgTypes[12]
+	mi := &file_gate_internal_conf_conf_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -810,7 +922,7 @@ func (x *Server_GRPC) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Server_GRPC.ProtoReflect.Descriptor instead.
 func (*Server_GRPC) Descriptor() ([]byte, []int) {
-	return file_gate_internal_conf_conf_proto_rawDescGZIP(), []int{5, 2}
+	return file_gate_internal_conf_conf_proto_rawDescGZIP(), []int{5, 4}
 }
 
 func (x *Server_GRPC) GetNetwork() string {
@@ -848,7 +960,7 @@ type Data_Redis struct {
 
 func (x *Data_Redis) Reset() {
 	*x = Data_Redis{}
-	mi := &file_gate_internal_conf_conf_proto_msgTypes[13]
+	mi := &file_gate_internal_conf_conf_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -860,7 +972,7 @@ func (x *Data_Redis) String() string {
 func (*Data_Redis) ProtoMessage() {}
 
 func (x *Data_Redis) ProtoReflect() protoreflect.Message {
-	mi := &file_gate_internal_conf_conf_proto_msgTypes[13]
+	mi := &file_gate_internal_conf_conf_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -947,13 +1059,20 @@ const file_gate_internal_conf_conf_proto_rawDesc = "" +
 	"\x05level\x18\x02 \x01(\tR\x05level\"6\n" +
 	"\bCompress\x12\x12\n" +
 	"\x04weak\x18\x01 \x01(\x03R\x04weak\x12\x16\n" +
-	"\x06strong\x18\x02 \x01(\x03R\x06strong\"\xad\x03\n" +
+	"\x06strong\x18\x02 \x01(\x03R\x06strong\"\xe5\x04\n" +
 	"\x06Server\x120\n" +
-	"\x03tcp\x18\x01 \x01(\v2\x1e.gate.internal.conf.Server.TCPR\x03tcp\x123\n" +
-	"\x04http\x18\x02 \x01(\v2\x1f.gate.internal.conf.Server.HTTPR\x04http\x123\n" +
-	"\x04grpc\x18\x03 \x01(\v2\x1f.gate.internal.conf.Server.GRPCR\x04grpc\x12\x16\n" +
-	"\x06health\x18\x04 \x01(\tR\x06health\x1a\x19\n" +
+	"\x03tcp\x18\x01 \x01(\v2\x1e.gate.internal.conf.Server.TCPR\x03tcp\x124\n" +
+	"\x02ws\x18\x02 \x01(\v2$.gate.internal.conf.Server.WebSocketR\x02ws\x120\n" +
+	"\x03kcp\x18\x03 \x01(\v2\x1e.gate.internal.conf.Server.KCPR\x03kcp\x123\n" +
+	"\x04http\x18\x04 \x01(\v2\x1f.gate.internal.conf.Server.HTTPR\x04http\x123\n" +
+	"\x04grpc\x18\x05 \x01(\v2\x1f.gate.internal.conf.Server.GRPCR\x04grpc\x12\x16\n" +
+	"\x06health\x18\x06 \x01(\tR\x06health\x1a\x19\n" +
 	"\x03TCP\x12\x12\n" +
+	"\x04addr\x18\x01 \x01(\tR\x04addr\x1a3\n" +
+	"\tWebSocket\x12\x12\n" +
+	"\x04addr\x18\x01 \x01(\tR\x04addr\x12\x12\n" +
+	"\x04path\x18\x02 \x01(\tR\x04path\x1a\x19\n" +
+	"\x03KCP\x12\x12\n" +
 	"\x04addr\x18\x01 \x01(\tR\x04addr\x1ai\n" +
 	"\x04HTTP\x12\x18\n" +
 	"\anetwork\x18\x01 \x01(\tR\anetwork\x12\x12\n" +
@@ -1000,7 +1119,7 @@ func file_gate_internal_conf_conf_proto_rawDescGZIP() []byte {
 	return file_gate_internal_conf_conf_proto_rawDescData
 }
 
-var file_gate_internal_conf_conf_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
+var file_gate_internal_conf_conf_proto_msgTypes = make([]protoimpl.MessageInfo, 16)
 var file_gate_internal_conf_conf_proto_goTypes = []any{
 	(*Bootstrap)(nil),           // 0: gate.internal.conf.Bootstrap
 	(*Label)(nil),               // 1: gate.internal.conf.Label
@@ -1013,10 +1132,12 @@ var file_gate_internal_conf_conf_proto_goTypes = []any{
 	(*Etcd)(nil),                // 8: gate.internal.conf.Etcd
 	(*Secret)(nil),              // 9: gate.internal.conf.Secret
 	(*Server_TCP)(nil),          // 10: gate.internal.conf.Server.TCP
-	(*Server_HTTP)(nil),         // 11: gate.internal.conf.Server.HTTP
-	(*Server_GRPC)(nil),         // 12: gate.internal.conf.Server.GRPC
-	(*Data_Redis)(nil),          // 13: gate.internal.conf.Data.Redis
-	(*durationpb.Duration)(nil), // 14: google.protobuf.Duration
+	(*Server_WebSocket)(nil),    // 11: gate.internal.conf.Server.WebSocket
+	(*Server_KCP)(nil),          // 12: gate.internal.conf.Server.KCP
+	(*Server_HTTP)(nil),         // 13: gate.internal.conf.Server.HTTP
+	(*Server_GRPC)(nil),         // 14: gate.internal.conf.Server.GRPC
+	(*Data_Redis)(nil),          // 15: gate.internal.conf.Data.Redis
+	(*durationpb.Duration)(nil), // 16: google.protobuf.Duration
 }
 var file_gate_internal_conf_conf_proto_depIdxs = []int32{
 	1,  // 0: gate.internal.conf.Bootstrap.label:type_name -> gate.internal.conf.Label
@@ -1027,22 +1148,24 @@ var file_gate_internal_conf_conf_proto_depIdxs = []int32{
 	9,  // 5: gate.internal.conf.Bootstrap.secret:type_name -> gate.internal.conf.Secret
 	4,  // 6: gate.internal.conf.Bootstrap.compress:type_name -> gate.internal.conf.Compress
 	10, // 7: gate.internal.conf.Server.tcp:type_name -> gate.internal.conf.Server.TCP
-	11, // 8: gate.internal.conf.Server.http:type_name -> gate.internal.conf.Server.HTTP
-	12, // 9: gate.internal.conf.Server.grpc:type_name -> gate.internal.conf.Server.GRPC
-	13, // 10: gate.internal.conf.Data.redis:type_name -> gate.internal.conf.Data.Redis
-	14, // 11: gate.internal.conf.Data.gateway_route_table_alive_duration:type_name -> google.protobuf.Duration
-	14, // 12: gate.internal.conf.Data.app_route_table_alive_duration:type_name -> google.protobuf.Duration
-	8,  // 13: gate.internal.conf.Registry.etcd:type_name -> gate.internal.conf.Etcd
-	14, // 14: gate.internal.conf.Server.HTTP.timeout:type_name -> google.protobuf.Duration
-	14, // 15: gate.internal.conf.Server.GRPC.timeout:type_name -> google.protobuf.Duration
-	14, // 16: gate.internal.conf.Data.Redis.dial_timeout:type_name -> google.protobuf.Duration
-	14, // 17: gate.internal.conf.Data.Redis.read_timeout:type_name -> google.protobuf.Duration
-	14, // 18: gate.internal.conf.Data.Redis.write_timeout:type_name -> google.protobuf.Duration
-	19, // [19:19] is the sub-list for method output_type
-	19, // [19:19] is the sub-list for method input_type
-	19, // [19:19] is the sub-list for extension type_name
-	19, // [19:19] is the sub-list for extension extendee
-	0,  // [0:19] is the sub-list for field type_name
+	11, // 8: gate.internal.conf.Server.ws:type_name -> gate.internal.conf.Server.WebSocket
+	12, // 9: gate.internal.conf.Server.kcp:type_name -> gate.internal.conf.Server.KCP
+	13, // 10: gate.internal.conf.Server.http:type_name -> gate.internal.conf.Server.HTTP
+	14, // 11: gate.internal.conf.Server.grpc:type_name -> gate.internal.conf.Server.GRPC
+	15, // 12: gate.internal.conf.Data.redis:type_name -> gate.internal.conf.Data.Redis
+	16, // 13: gate.internal.conf.Data.gateway_route_table_alive_duration:type_name -> google.protobuf.Duration
+	16, // 14: gate.internal.conf.Data.app_route_table_alive_duration:type_name -> google.protobuf.Duration
+	8,  // 15: gate.internal.conf.Registry.etcd:type_name -> gate.internal.conf.Etcd
+	16, // 16: gate.internal.conf.Server.HTTP.timeout:type_name -> google.protobuf.Duration
+	16, // 17: gate.internal.conf.Server.GRPC.timeout:type_name -> google.protobuf.Duration
+	16, // 18: gate.internal.conf.Data.Redis.dial_timeout:type_name -> google.protobuf.Duration
+	16, // 19: gate.internal.conf.Data.Redis.read_timeout:type_name -> google.protobuf.Duration
+	16, // 20: gate.internal.conf.Data.Redis.write_timeout:type_name -> google.protobuf.Duration
+	21, // [21:21] is the sub-list for method output_type
+	21, // [21:21] is the sub-list for method input_type
+	21, // [21:21] is the sub-list for extension type_name
+	21, // [21:21] is the sub-list for extension extendee
+	0,  // [0:21] is the sub-list for field type_name
 }
 
 func init() { file_gate_internal_conf_conf_proto_init() }
@@ -1056,7 +1179,7 @@ func file_gate_internal_conf_conf_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_gate_internal_conf_conf_proto_rawDesc), len(file_gate_internal_conf_conf_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   14,
+			NumMessages:   16,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

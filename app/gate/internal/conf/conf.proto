@@ -45,6 +45,13 @@ message Server {
   message TCP {
 	  string addr = 1;
   }
+  message WebSocket {
+    string addr = 1;
+    string path = 2;
+  }
+  message KCP {
+    string addr = 1;
+  }
   message HTTP {
     string network = 1;
     string addr = 2;
@@ -56,9 +63,11 @@ message Server {
 	  google.protobuf.Duration timeout = 3;
   }
   TCP tcp = 1;
-  HTTP http = 2;
-  GRPC grpc = 3;
-  string health = 4;
+  WebSocket ws = 2;
+  KCP kcp = 3;
+  HTTP http = 4;
+  GRPC grpc = 5;
+  string health = 6;
 }
 
 message Data {
