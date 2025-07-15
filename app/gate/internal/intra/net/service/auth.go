@@ -11,6 +11,7 @@ import (
 	"github.com/go-pantheon/janus/app/gate/internal/pkg/pool"
 	"github.com/go-pantheon/janus/app/gate/internal/pkg/security"
 	climsg "github.com/go-pantheon/janus/gen/api/client/message"
+	clipkt "github.com/go-pantheon/janus/gen/api/client/packet"
 	cliseq "github.com/go-pantheon/janus/gen/api/client/sequence"
 	intrav1 "github.com/go-pantheon/janus/gen/api/server/gate/intra/v1"
 	"google.golang.org/protobuf/proto"
@@ -46,7 +47,7 @@ func (s *Service) Auth(ctx context.Context, in xnet.Pack) (out xnet.Pack, sessio
 		return nil, nil, errors.Wrapf(err, "CSHandshake decode failed. len=%d", len(inp.Data))
 	}
 
-	if session, svrSign, err = s.auth(cs); err != nil {
+	if session, svrSign, err = s.auth(inp, cs); err != nil {
 		return nil, nil, err
 	}
 
@@ -73,7 +74,7 @@ func (s *Service) Auth(ctx context.Context, in xnet.Pack) (out xnet.Pack, sessio
 	return out, session, nil
 }
 
-func (s *Service) auth(cs *climsg.CSHandshake) (xnet.Session, []byte, error) {
+func (s *Service) auth(inp *clipkt.Packet, cs *climsg.CSHandshake) (xnet.Session, []byte, error) {
 	if len(cs.Token) == 0 {
 		return nil, nil, errors.New("[net.auth] token is empty")
 	}
@@ -123,6 +124,7 @@ func (s *Service) auth(cs *climsg.CSHandshake) (xnet.Session, []byte, error) {
 
 	ss := xnet.NewSession(token.AccountId, token.Color, int64(token.Status),
 		xnet.WithSID(sid),
+		xnet.WithConnID(inp.ConnId),
 		xnet.WithEncryptor(cryptor),
 		xnet.WithECDH(ecdhInfo),
 		xnet.WithStartTime(now.Unix()),

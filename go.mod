@@ -3,11 +3,11 @@ module github.com/go-pantheon/janus
 go 1.24.4
 
 require (
-	github.com/go-kratos/kratos/contrib/registry/etcd/v2 v2.0.0-20250527152916-d6f5f00cf562
+	github.com/go-kratos/kratos/contrib/registry/etcd/v2 v2.0.0-20250714144425-0bf7c1ad32dd
 	github.com/go-kratos/kratos/v2 v2.8.4
 	github.com/go-pantheon/fabrica-kit v0.0.24
-	github.com/go-pantheon/fabrica-net v0.0.25
-	github.com/go-pantheon/fabrica-util v0.0.34
+	github.com/go-pantheon/fabrica-net v0.0.26
+	github.com/go-pantheon/fabrica-util v0.0.35
 	github.com/google/wire v0.6.0
 	github.com/pkg/errors v0.9.1
 	github.com/redis/go-redis/v9 v9.11.0
@@ -32,7 +32,7 @@ require (
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/go-kratos/aegis v0.2.0 // indirect
 	github.com/go-kratos/grpc-gateway/v2 v2.5.1-0.20210811062259-c92d36e434b1 // indirect
-	github.com/go-kratos/kratos/contrib/log/zap/v2 v2.0.0-20250527152916-d6f5f00cf562 // indirect
+	github.com/go-kratos/kratos/contrib/log/zap/v2 v2.0.0-20250714144425-0bf7c1ad32dd // indirect
 	github.com/go-kratos/swagger-api v1.0.1 // indirect
 	github.com/go-logr/logr v1.4.3 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect

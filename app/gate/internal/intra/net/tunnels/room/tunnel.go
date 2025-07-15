@@ -44,6 +44,10 @@ func (t *Tunnel) PacketToTunnelMsg(from xnet.PacketMessage) (to xnet.TunnelMessa
 	msg.Data = from.GetData()
 	msg.DataVersion = from.GetDataVersion()
 	msg.Index = from.GetIndex()
+	msg.ConnId = from.GetConnId()
+	msg.FragId = from.GetFragId()
+	msg.FragCount = from.GetFragCount()
+	msg.FragIndex = from.GetFragIndex()
 
 	return msg
 }

@@ -43,6 +43,13 @@ func (t *BaseTunnel) TunnelMsgToPack(ctx context.Context, msg xnet.TunnelMessage
 	p.Obj = msg.GetObj()
 	p.Index = msg.GetIndex()
 
+	if smuxMsg, ok := msg.(xnet.SmuxParam); ok {
+		p.ConnId = smuxMsg.GetConnId()
+		p.FragId = smuxMsg.GetFragId()
+		p.FragCount = smuxMsg.GetFragCount()
+		p.FragIndex = smuxMsg.GetFragIndex()
+	}
+
 	p.Data, p.Compress, err = compress.Compress(msg.GetData())
 	if err != nil {
 		return nil, errors.Wrapf(err, "compress data failed")
