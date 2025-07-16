@@ -14,12 +14,12 @@
 </p>
 
 <p align="center">
-  <a href="README.md">English</a> | <a href="README-zh.md">中文</a>
+  <a href="README.md">English</a> | <a href="README_zh.md">中文</a>
 </p>
 
 ## About Janus
 
-Janus is a high-performance gaming gateway service built on microservice architecture, developed in Go. As a bridge between clients and backend services, it provides a scalable and reliable connection layer with multi-protocol access and intelligent request routing. Janus is the core gateway component of the go-pantheon gaming ecosystem.
+Janus is a high-performance gaming gateway service built on microservice architecture, developed in Go. As a bridge between clients and backend services, it provides a scalable and reliable connection layer with multi-protocol access and intelligent request routing. Janus is the core gateway component of the go-pantheon gaming ecosystem, powered by the [fabrica-net](https://github.com/go-pantheon/fabrica-net) network library for enterprise-grade communication capabilities.
 
 ## About go-pantheon Ecosystem
 
@@ -32,16 +32,16 @@ Janus is a high-performance gaming gateway service built on microservice archite
 
 ## ✨ Core Features
 
-- 🚀 **High Performance**: High-concurrency TCP server based on worker pool architecture, supporting tens of thousands of connections per service
+- 🚀 **High Performance**: Multi-protocol network server powered by fabrica-net with worker pool architecture, supporting tens of thousands of connections per service
 - 📈 **Horizontal Scaling**: Stateless design supports cluster deployment with dynamic scaling for traffic peaks
-- 🔒 **Secure Communication**: ECDH key exchange with Ed25519 certificate signing + AES encrypted communication
+- 🔒 **Secure Communication**: ECDH key exchange with Ed25519 certificate signing + AES-GCM encrypted communication
 - ⚡ **Smart Routing**: Three-tier routing system based on Redis with dynamic load balancing
 - 🛡️ **Token Validation**: Secure handshake mechanism integrated with Lares authentication service
-- 🔌 **Protocol Extension**: Abstract interface design for easy extension of KCP, WebSocket and other network protocols
-- 📦 **Protocol Conversion**: Seamless protocol conversion between TCP and gRPC
+- 🔌 **Multi-Protocol Support**: TCP, KCP (UDP), and WebSocket protocols with unified API through fabrica-net
+- 📦 **Protocol Conversion**: Seamless protocol conversion between network protocols and gRPC
 - 🔄 **Data Compression**: Support for zlib compression to optimize network transmission
-- 📊 **Monitoring & Tracing**: Integrated OpenTelemetry distributed tracing
-- 🎯 **Real-time Push**: Support for message push and event notifications
+- 📊 **Monitoring & Tracing**: Integrated OpenTelemetry distributed tracing and Prometheus metrics
+- 🎯 **Real-time Push**: Support for message push, multicast, and broadcast notifications
 
 ## 🏗️ System Architecture
 
@@ -141,14 +141,44 @@ sequenceDiagram
 
 ## 📋 Tech Stack
 
-| Technology | Version | Purpose                |
-| ---------- | ------- | ---------------------- |
-| Go         | 1.24+   | Primary language       |
-| Kratos     | v2.8.4  | Microservice framework |
-| gRPC       | v1.73.0 | Service communication  |
-| etcd       | v3.6.1  | Service discovery      |
-| Redis      | v9.10.0 | Routing table cache    |
-| Prometheus | v1.22.0 | Monitoring system      |
+| Technology        | Version | Purpose                      |
+| ----------------- | ------- | ---------------------------- |
+| Go                | 1.24+   | Primary development language |
+| Kratos            | v2.8.4  | Microservice framework       |
+| fabrica-net       | v0.0.35 | Multi-protocol network library |
+| gRPC              | v1.73.0 | Service communication        |
+| etcd              | v3.6.1  | Service discovery            |
+| Redis             | v9.10.0 | Routing table cache          |
+| Prometheus        | v1.22.0 | Monitoring system            |
+| gorilla/websocket | v1.5.3  | WebSocket implementation     |
+| xtaci/kcp-go      | v5.6.22 | KCP protocol support         |
+
+## 🌐 Network Protocols
+
+Janus leverages the powerful [fabrica-net](https://github.com/go-pantheon/fabrica-net) library to support multiple network protocols:
+
+### TCP Protocol
+- **High Performance**: Worker pool architecture with bucket-based connection management
+- **Secure**: AES-GCM encryption with ECDH key exchange
+- **Scalable**: Support for tens of thousands of concurrent connections
+
+### KCP Protocol (UDP-based)
+- **Low Latency**: Optimized for unreliable network conditions
+- **Reliable**: Forward Error Correction (FEC) and automatic retransmission
+- **Multiplexed**: Stream multiplexing over single UDP connection
+
+### WebSocket Protocol
+- **Web Compatible**: Direct browser client support
+- **Real-time**: Bi-directional communication
+- **Path-based**: Configurable endpoint routing
+
+### Protocol Selection Guide
+
+| Protocol  | Use Case                    | Latency | Reliability | Firewall Friendly |
+| --------- | --------------------------- | ------- | ----------- | ----------------- |
+| TCP       | General game traffic        | Medium  | High        | ✅                |
+| KCP (UDP) | Real-time action games      | Low     | Medium      | ⚠️                |
+| WebSocket | Browser-based games         | Medium  | High        | ✅                |
 
 ## 🔧 Development Guide
 
@@ -191,9 +221,9 @@ curl http://localhost:18100/stats/connections
 make log
 ```
 
-## 📄 License
+## 📄 许可证
 
-This project is licensed under the [MIT License](https://github.com/go-pantheon/janus/blob/main/LICENSE).
+This project is licensed under the terms specified in the [LICENSE](LICENSE) file.
 
 ---
 
