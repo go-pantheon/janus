@@ -6,7 +6,6 @@ import (
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-pantheon/fabrica-kit/profile"
-	"github.com/go-pantheon/fabrica-kit/xcontext"
 	"github.com/go-pantheon/fabrica-net/xnet"
 	"github.com/go-pantheon/fabrica-util/compress"
 	"github.com/go-pantheon/fabrica-util/errors"
@@ -48,8 +47,6 @@ func (s *Service) Handle(ctx context.Context, ss xnet.Session, th xnet.TunnelMan
 	if p.Obj == 0 {
 		p.Obj = ss.UID()
 	}
-
-	ctx = xcontext.SetOID(ctx, p.Obj)
 
 	t, err := th.Tunnel(ctx, p.Mod, p.Obj)
 	if err != nil {

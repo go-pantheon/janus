@@ -3,7 +3,9 @@ package service
 import (
 	"context"
 	"fmt"
+	"strconv"
 
+	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-pantheon/fabrica-kit/profile"
 	"github.com/go-pantheon/fabrica-kit/xcontext"
 	"github.com/go-pantheon/fabrica-net/xnet"
@@ -12,6 +14,7 @@ import (
 	"github.com/go-pantheon/janus/app/gate/internal/intra/net/tunnels/room"
 	climod "github.com/go-pantheon/janus/gen/api/client/module"
 	"github.com/pkg/errors"
+	grpcmd "google.golang.org/grpc/metadata"
 )
 
 const (
@@ -31,12 +34,19 @@ func (s *Service) TunnelType(mod int32) (t int32, initCapacity int, err error) {
 }
 
 func (s *Service) CreateAppTunnel(ctx context.Context, ss xnet.Session, tp int32, oid int64, worker xnet.Worker) (xnet.AppTunnel, error) {
-	ctx = xcontext.AppendToOutgoingContext(ctx,
-		xcontext.CtxUID, fmt.Sprintf("%d", ss.UID()),
-		xcontext.CtxSID, fmt.Sprintf("%d", ss.SID()),
-		xcontext.CtxStatus, fmt.Sprintf("%d", ss.Status()),
+	log.Debugf("create app tunnel. tp=%d, oid=%d, ss=%s", tp, oid, ss.LogInfo())
+
+	referer := fmt.Sprintf("%s#%d", profile.GRPCEndpoint(), worker.WID())
+
+	ctx = grpcmd.AppendToOutgoingContext(ctx,
+		xcontext.CtxOID, strconv.FormatInt(oid, 10),
+		xcontext.CtxUID, strconv.FormatInt(ss.UID(), 10),
+		xcontext.CtxSID, strconv.FormatInt(ss.SID(), 10),
+		xcontext.CtxStatus, strconv.FormatInt(ss.Status(), 10),
 		xcontext.CtxColor, ss.Color(),
-		xcontext.CtxGateReferer, fmt.Sprintf("%s#%d", profile.GRPCEndpoint(), worker.WID()),
+		xcontext.CtxClientIP, ss.ClientIP(),
+		xcontext.CtxReferer, referer,
+		xcontext.CtxGateReferer, referer,
 	)
 
 	switch tunnels.TunnelType(tp) {
