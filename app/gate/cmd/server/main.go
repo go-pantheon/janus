@@ -22,6 +22,7 @@ import (
 	ws "github.com/go-pantheon/fabrica-net/websocket/server"
 	"github.com/go-pantheon/fabrica-util/compress"
 	"github.com/go-pantheon/fabrica-util/xtime"
+	"github.com/go-pantheon/janus/app/gate/internal/broadcast"
 	"github.com/go-pantheon/janus/app/gate/internal/conf"
 	"github.com/go-pantheon/janus/app/gate/internal/pkg/security"
 )
@@ -34,7 +35,8 @@ func init() {
 	flag.StringVar(&flagConf, "conf", "app/gate/configs", "config path, eg: -conf config.yaml")
 }
 
-func newApp(logger log.Logger, ts *tcp.Server, ws *ws.Server, ks *kcp.Server, hs *http.Server, gs *grpc.Server, health *health.Server,
+func newApp(logger log.Logger, b *broadcast.Broadcaster,
+	ts *tcp.Server, ws *ws.Server, ks *kcp.Server, hs *http.Server, gs *grpc.Server, health *health.Server,
 	label *conf.Label, rr registry.Registrar,
 ) *kratos.App {
 	md := map[string]string{
@@ -50,6 +52,10 @@ func newApp(logger log.Logger, ts *tcp.Server, ws *ws.Server, ks *kcp.Server, hs
 	}
 
 	profile.SetGRPCEndpoint(url)
+
+	if err := b.Start(); err != nil {
+		panic(err)
+	}
 
 	return kratos.New(
 		kratos.Name(label.Service),

@@ -57,40 +57,33 @@ func (m *PushRequest) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for Uid
-
-	for idx, item := range m.GetBodies() {
-		_, _ = idx, item
-
-		if all {
-			switch v := interface{}(item).(type) {
-			case interface{ ValidateAll() error }:
-				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, PushRequestValidationError{
-						field:  fmt.Sprintf("Bodies[%v]", idx),
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			case interface{ Validate() error }:
-				if err := v.Validate(); err != nil {
-					errors = append(errors, PushRequestValidationError{
-						field:  fmt.Sprintf("Bodies[%v]", idx),
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			}
-		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return PushRequestValidationError{
-					field:  fmt.Sprintf("Bodies[%v]", idx),
+	if all {
+		switch v := interface{}(m.GetBody()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, PushRequestValidationError{
+					field:  "Body",
 					reason: "embedded message failed validation",
 					cause:  err,
-				}
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, PushRequestValidationError{
+					field:  "Body",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
 			}
 		}
-
+	} else if v, ok := interface{}(m.GetBody()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return PushRequestValidationError{
+				field:  "Body",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
 	}
 
 	if len(errors) > 0 {
@@ -192,6 +185,8 @@ func (m *PushResponse) validate(all bool) error {
 
 	var errors []error
 
+	// no validation rules for Pushed
+
 	if len(errors) > 0 {
 		return PushResponseMultiError(errors)
 	}
@@ -269,478 +264,6 @@ var _ interface {
 	ErrorName() string
 } = PushResponseValidationError{}
 
-// Validate checks the field values on MulticastRequest with the rules defined
-// in the proto definition for this message. If any rules are violated, the
-// first error encountered is returned, or nil if there are no violations.
-func (m *MulticastRequest) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on MulticastRequest with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, the result is a list of violation errors wrapped in
-// MulticastRequestMultiError, or nil if none found.
-func (m *MulticastRequest) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *MulticastRequest) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	for idx, item := range m.GetBodies() {
-		_, _ = idx, item
-
-		if all {
-			switch v := interface{}(item).(type) {
-			case interface{ ValidateAll() error }:
-				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, MulticastRequestValidationError{
-						field:  fmt.Sprintf("Bodies[%v]", idx),
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			case interface{ Validate() error }:
-				if err := v.Validate(); err != nil {
-					errors = append(errors, MulticastRequestValidationError{
-						field:  fmt.Sprintf("Bodies[%v]", idx),
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			}
-		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return MulticastRequestValidationError{
-					field:  fmt.Sprintf("Bodies[%v]", idx),
-					reason: "embedded message failed validation",
-					cause:  err,
-				}
-			}
-		}
-
-	}
-
-	if len(errors) > 0 {
-		return MulticastRequestMultiError(errors)
-	}
-
-	return nil
-}
-
-// MulticastRequestMultiError is an error wrapping multiple validation errors
-// returned by MulticastRequest.ValidateAll() if the designated constraints
-// aren't met.
-type MulticastRequestMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m MulticastRequestMultiError) Error() string {
-	msgs := make([]string, 0, len(m))
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m MulticastRequestMultiError) AllErrors() []error { return m }
-
-// MulticastRequestValidationError is the validation error returned by
-// MulticastRequest.Validate if the designated constraints aren't met.
-type MulticastRequestValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e MulticastRequestValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e MulticastRequestValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e MulticastRequestValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e MulticastRequestValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e MulticastRequestValidationError) ErrorName() string { return "MulticastRequestValidationError" }
-
-// Error satisfies the builtin error interface
-func (e MulticastRequestValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sMulticastRequest.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = MulticastRequestValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = MulticastRequestValidationError{}
-
-// Validate checks the field values on MulticastResponse with the rules defined
-// in the proto definition for this message. If any rules are violated, the
-// first error encountered is returned, or nil if there are no violations.
-func (m *MulticastResponse) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on MulticastResponse with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, the result is a list of violation errors wrapped in
-// MulticastResponseMultiError, or nil if none found.
-func (m *MulticastResponse) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *MulticastResponse) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	if len(errors) > 0 {
-		return MulticastResponseMultiError(errors)
-	}
-
-	return nil
-}
-
-// MulticastResponseMultiError is an error wrapping multiple validation errors
-// returned by MulticastResponse.ValidateAll() if the designated constraints
-// aren't met.
-type MulticastResponseMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m MulticastResponseMultiError) Error() string {
-	msgs := make([]string, 0, len(m))
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m MulticastResponseMultiError) AllErrors() []error { return m }
-
-// MulticastResponseValidationError is the validation error returned by
-// MulticastResponse.Validate if the designated constraints aren't met.
-type MulticastResponseValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e MulticastResponseValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e MulticastResponseValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e MulticastResponseValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e MulticastResponseValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e MulticastResponseValidationError) ErrorName() string {
-	return "MulticastResponseValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e MulticastResponseValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sMulticastResponse.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = MulticastResponseValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = MulticastResponseValidationError{}
-
-// Validate checks the field values on BroadcastRequest with the rules defined
-// in the proto definition for this message. If any rules are violated, the
-// first error encountered is returned, or nil if there are no violations.
-func (m *BroadcastRequest) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on BroadcastRequest with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, the result is a list of violation errors wrapped in
-// BroadcastRequestMultiError, or nil if none found.
-func (m *BroadcastRequest) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *BroadcastRequest) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	for idx, item := range m.GetBodies() {
-		_, _ = idx, item
-
-		if all {
-			switch v := interface{}(item).(type) {
-			case interface{ ValidateAll() error }:
-				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, BroadcastRequestValidationError{
-						field:  fmt.Sprintf("Bodies[%v]", idx),
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			case interface{ Validate() error }:
-				if err := v.Validate(); err != nil {
-					errors = append(errors, BroadcastRequestValidationError{
-						field:  fmt.Sprintf("Bodies[%v]", idx),
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			}
-		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return BroadcastRequestValidationError{
-					field:  fmt.Sprintf("Bodies[%v]", idx),
-					reason: "embedded message failed validation",
-					cause:  err,
-				}
-			}
-		}
-
-	}
-
-	if len(errors) > 0 {
-		return BroadcastRequestMultiError(errors)
-	}
-
-	return nil
-}
-
-// BroadcastRequestMultiError is an error wrapping multiple validation errors
-// returned by BroadcastRequest.ValidateAll() if the designated constraints
-// aren't met.
-type BroadcastRequestMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m BroadcastRequestMultiError) Error() string {
-	msgs := make([]string, 0, len(m))
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m BroadcastRequestMultiError) AllErrors() []error { return m }
-
-// BroadcastRequestValidationError is the validation error returned by
-// BroadcastRequest.Validate if the designated constraints aren't met.
-type BroadcastRequestValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e BroadcastRequestValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e BroadcastRequestValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e BroadcastRequestValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e BroadcastRequestValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e BroadcastRequestValidationError) ErrorName() string { return "BroadcastRequestValidationError" }
-
-// Error satisfies the builtin error interface
-func (e BroadcastRequestValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sBroadcastRequest.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = BroadcastRequestValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = BroadcastRequestValidationError{}
-
-// Validate checks the field values on BroadcastResponse with the rules defined
-// in the proto definition for this message. If any rules are violated, the
-// first error encountered is returned, or nil if there are no violations.
-func (m *BroadcastResponse) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on BroadcastResponse with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, the result is a list of violation errors wrapped in
-// BroadcastResponseMultiError, or nil if none found.
-func (m *BroadcastResponse) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *BroadcastResponse) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	if len(errors) > 0 {
-		return BroadcastResponseMultiError(errors)
-	}
-
-	return nil
-}
-
-// BroadcastResponseMultiError is an error wrapping multiple validation errors
-// returned by BroadcastResponse.ValidateAll() if the designated constraints
-// aren't met.
-type BroadcastResponseMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m BroadcastResponseMultiError) Error() string {
-	msgs := make([]string, 0, len(m))
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m BroadcastResponseMultiError) AllErrors() []error { return m }
-
-// BroadcastResponseValidationError is the validation error returned by
-// BroadcastResponse.Validate if the designated constraints aren't met.
-type BroadcastResponseValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e BroadcastResponseValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e BroadcastResponseValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e BroadcastResponseValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e BroadcastResponseValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e BroadcastResponseValidationError) ErrorName() string {
-	return "BroadcastResponseValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e BroadcastResponseValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sBroadcastResponse.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = BroadcastResponseValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = BroadcastResponseValidationError{}
-
 // Validate checks the field values on PushBody with the rules defined in the
 // proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.
@@ -764,6 +287,8 @@ func (m *PushBody) validate(all bool) error {
 	var errors []error
 
 	// no validation rules for Data
+
+	// no validation rules for DataVersion
 
 	// no validation rules for Obj
 

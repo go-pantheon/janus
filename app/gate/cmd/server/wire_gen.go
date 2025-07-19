@@ -10,6 +10,7 @@ import (
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-pantheon/fabrica-net/http/health"
+	"github.com/go-pantheon/janus/app/gate/internal/broadcast"
 	"github.com/go-pantheon/janus/app/gate/internal/client"
 	"github.com/go-pantheon/janus/app/gate/internal/client/player"
 	"github.com/go-pantheon/janus/app/gate/internal/client/room"
@@ -49,7 +50,7 @@ func initApp(confServer *conf.Server, label *conf.Label, registry *conf.Registry
 	}
 	intrav1TunnelServiceClient := room.NewClient(roomConn)
 	serviceService := service.NewTCPService(logger, label, routeTable, playerRouteTable, tunnelServiceClient, roomRouteTable, intrav1TunnelServiceClient)
-	tcpServer, err := server.NewTCPServer(confServer, logger, routeTable, serviceService)
+	serverServer, err := server.NewKCPServer(confServer, logger, routeTable, serviceService)
 	if err != nil {
 		cleanup()
 		return nil, nil, err
@@ -59,21 +60,24 @@ func initApp(confServer *conf.Server, label *conf.Label, registry *conf.Registry
 		cleanup()
 		return nil, nil, err
 	}
-	serverServer, err := server.NewKCPServer(confServer, logger, routeTable, serviceService)
+	tcpServer, err := server.NewTCPServer(confServer, logger, routeTable, serviceService)
 	if err != nil {
 		cleanup()
 		return nil, nil, err
 	}
+	broadcaster, cleanup2 := broadcast.NewBroadcaster(serverServer, websocketServer, tcpServer, dataData)
 	pushServiceServer := v1.NewPushService(logger, tcpServer)
 	httpServer := server.NewHTTPServer(confServer, logger, pushServiceServer)
 	grpcServer := server.NewGRPCServer(confServer, logger, pushServiceServer)
 	registrar, err := server.NewRegistrar(registry)
 	if err != nil {
+		cleanup2()
 		cleanup()
 		return nil, nil, err
 	}
-	app := newApp(logger, tcpServer, websocketServer, serverServer, httpServer, grpcServer, healthServer, label, registrar)
+	app := newApp(logger, broadcaster, tcpServer, websocketServer, serverServer, httpServer, grpcServer, healthServer, label, registrar)
 	return app, func() {
+		cleanup2()
 		cleanup()
 	}, nil
 }

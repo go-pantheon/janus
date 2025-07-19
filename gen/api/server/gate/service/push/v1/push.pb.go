@@ -24,8 +24,7 @@ const (
 
 type PushRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Uid           int64                  `protobuf:"varint,1,opt,name=uid,proto3" json:"uid,omitempty"`
-	Bodies        []*PushBody            `protobuf:"bytes,2,rep,name=bodies,proto3" json:"bodies,omitempty"`
+	Body          *PushBody              `protobuf:"bytes,1,opt,name=body,proto3" json:"body,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -60,22 +59,16 @@ func (*PushRequest) Descriptor() ([]byte, []int) {
 	return file_gate_service_push_v1_push_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *PushRequest) GetUid() int64 {
+func (x *PushRequest) GetBody() *PushBody {
 	if x != nil {
-		return x.Uid
-	}
-	return 0
-}
-
-func (x *PushRequest) GetBodies() []*PushBody {
-	if x != nil {
-		return x.Bodies
+		return x.Body
 	}
 	return nil
 }
 
 type PushResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	Pushed        bool                   `protobuf:"varint,1,opt,name=pushed,proto3" json:"pushed,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -110,187 +103,27 @@ func (*PushResponse) Descriptor() ([]byte, []int) {
 	return file_gate_service_push_v1_push_proto_rawDescGZIP(), []int{1}
 }
 
-type MulticastRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Uid           []int64                `protobuf:"varint,1,rep,packed,name=uid,proto3" json:"uid,omitempty"`
-	Bodies        []*PushBody            `protobuf:"bytes,2,rep,name=bodies,proto3" json:"bodies,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *MulticastRequest) Reset() {
-	*x = MulticastRequest{}
-	mi := &file_gate_service_push_v1_push_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *MulticastRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*MulticastRequest) ProtoMessage() {}
-
-func (x *MulticastRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_gate_service_push_v1_push_proto_msgTypes[2]
+func (x *PushResponse) GetPushed() bool {
 	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
+		return x.Pushed
 	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use MulticastRequest.ProtoReflect.Descriptor instead.
-func (*MulticastRequest) Descriptor() ([]byte, []int) {
-	return file_gate_service_push_v1_push_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *MulticastRequest) GetUid() []int64 {
-	if x != nil {
-		return x.Uid
-	}
-	return nil
-}
-
-func (x *MulticastRequest) GetBodies() []*PushBody {
-	if x != nil {
-		return x.Bodies
-	}
-	return nil
-}
-
-type MulticastResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *MulticastResponse) Reset() {
-	*x = MulticastResponse{}
-	mi := &file_gate_service_push_v1_push_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *MulticastResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*MulticastResponse) ProtoMessage() {}
-
-func (x *MulticastResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_gate_service_push_v1_push_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use MulticastResponse.ProtoReflect.Descriptor instead.
-func (*MulticastResponse) Descriptor() ([]byte, []int) {
-	return file_gate_service_push_v1_push_proto_rawDescGZIP(), []int{3}
-}
-
-type BroadcastRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Bodies        []*PushBody            `protobuf:"bytes,1,rep,name=bodies,proto3" json:"bodies,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *BroadcastRequest) Reset() {
-	*x = BroadcastRequest{}
-	mi := &file_gate_service_push_v1_push_proto_msgTypes[4]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *BroadcastRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*BroadcastRequest) ProtoMessage() {}
-
-func (x *BroadcastRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_gate_service_push_v1_push_proto_msgTypes[4]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use BroadcastRequest.ProtoReflect.Descriptor instead.
-func (*BroadcastRequest) Descriptor() ([]byte, []int) {
-	return file_gate_service_push_v1_push_proto_rawDescGZIP(), []int{4}
-}
-
-func (x *BroadcastRequest) GetBodies() []*PushBody {
-	if x != nil {
-		return x.Bodies
-	}
-	return nil
-}
-
-type BroadcastResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *BroadcastResponse) Reset() {
-	*x = BroadcastResponse{}
-	mi := &file_gate_service_push_v1_push_proto_msgTypes[5]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *BroadcastResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*BroadcastResponse) ProtoMessage() {}
-
-func (x *BroadcastResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_gate_service_push_v1_push_proto_msgTypes[5]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use BroadcastResponse.ProtoReflect.Descriptor instead.
-func (*BroadcastResponse) Descriptor() ([]byte, []int) {
-	return file_gate_service_push_v1_push_proto_rawDescGZIP(), []int{5}
+	return false
 }
 
 type PushBody struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Data          []byte                 `protobuf:"bytes,1,opt,name=data,proto3" json:"data,omitempty"` // Message body proto bytes array
-	Obj           int64                  `protobuf:"varint,2,opt,name=obj,proto3" json:"obj,omitempty"`  // Object ID, according to the business agreement
-	Mod           int32                  `protobuf:"varint,3,opt,name=mod,proto3" json:"mod,omitempty"`  // Module ID, globally unique
-	Seq           int32                  `protobuf:"varint,4,opt,name=seq,proto3" json:"seq,omitempty"`  // Message ID within the module, unique within the module
+	Data          []byte                 `protobuf:"bytes,1,opt,name=data,proto3" json:"data,omitempty"`                                   // Serialized bytes of the cs/sc protocol in the message
+	DataVersion   uint64                 `protobuf:"varint,2,opt,name=data_version,json=dataVersion,proto3" json:"data_version,omitempty"` // Data version number
+	Obj           int64                  `protobuf:"varint,3,opt,name=obj,proto3" json:"obj,omitempty"`                                    // Module object ID, according to the business agreement to pass the corresponding object ID
+	Mod           int32                  `protobuf:"varint,4,opt,name=mod,proto3" json:"mod,omitempty"`                                    // Module ID, globally unique
+	Seq           int32                  `protobuf:"varint,5,opt,name=seq,proto3" json:"seq,omitempty"`                                    // Module message ID, unique within the module
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *PushBody) Reset() {
 	*x = PushBody{}
-	mi := &file_gate_service_push_v1_push_proto_msgTypes[6]
+	mi := &file_gate_service_push_v1_push_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -302,7 +135,7 @@ func (x *PushBody) String() string {
 func (*PushBody) ProtoMessage() {}
 
 func (x *PushBody) ProtoReflect() protoreflect.Message {
-	mi := &file_gate_service_push_v1_push_proto_msgTypes[6]
+	mi := &file_gate_service_push_v1_push_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -315,7 +148,7 @@ func (x *PushBody) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PushBody.ProtoReflect.Descriptor instead.
 func (*PushBody) Descriptor() ([]byte, []int) {
-	return file_gate_service_push_v1_push_proto_rawDescGZIP(), []int{6}
+	return file_gate_service_push_v1_push_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *PushBody) GetData() []byte {
@@ -323,6 +156,13 @@ func (x *PushBody) GetData() []byte {
 		return x.Data
 	}
 	return nil
+}
+
+func (x *PushBody) GetDataVersion() uint64 {
+	if x != nil {
+		return x.DataVersion
+	}
+	return 0
 }
 
 func (x *PushBody) GetObj() int64 {
@@ -350,30 +190,20 @@ var File_gate_service_push_v1_push_proto protoreflect.FileDescriptor
 
 const file_gate_service_push_v1_push_proto_rawDesc = "" +
 	"\n" +
-	"\x1fgate/service/push/v1/push.proto\x12\x14gate.service.push.v1\x1a\x1cgoogle/api/annotations.proto\"W\n" +
-	"\vPushRequest\x12\x10\n" +
-	"\x03uid\x18\x01 \x01(\x03R\x03uid\x126\n" +
-	"\x06bodies\x18\x02 \x03(\v2\x1e.gate.service.push.v1.PushBodyR\x06bodies\"\x0e\n" +
-	"\fPushResponse\"\\\n" +
-	"\x10MulticastRequest\x12\x10\n" +
-	"\x03uid\x18\x01 \x03(\x03R\x03uid\x126\n" +
-	"\x06bodies\x18\x02 \x03(\v2\x1e.gate.service.push.v1.PushBodyR\x06bodies\"\x13\n" +
-	"\x11MulticastResponse\"J\n" +
-	"\x10BroadcastRequest\x126\n" +
-	"\x06bodies\x18\x01 \x03(\v2\x1e.gate.service.push.v1.PushBodyR\x06bodies\"\x13\n" +
-	"\x11BroadcastResponse\"T\n" +
+	"\x1fgate/service/push/v1/push.proto\x12\x14gate.service.push.v1\x1a\x1cgoogle/api/annotations.proto\"A\n" +
+	"\vPushRequest\x122\n" +
+	"\x04body\x18\x01 \x01(\v2\x1e.gate.service.push.v1.PushBodyR\x04body\"&\n" +
+	"\fPushResponse\x12\x16\n" +
+	"\x06pushed\x18\x01 \x01(\bR\x06pushed\"w\n" +
 	"\bPushBody\x12\x12\n" +
-	"\x04data\x18\x01 \x01(\fR\x04data\x12\x10\n" +
-	"\x03obj\x18\x02 \x01(\x03R\x03obj\x12\x10\n" +
-	"\x03mod\x18\x03 \x01(\x05R\x03mod\x12\x10\n" +
-	"\x03seq\x18\x04 \x01(\x05R\x03seq2\xd8\x02\n" +
+	"\x04data\x18\x01 \x01(\fR\x04data\x12!\n" +
+	"\fdata_version\x18\x02 \x01(\x04R\vdataVersion\x12\x10\n" +
+	"\x03obj\x18\x03 \x01(\x03R\x03obj\x12\x10\n" +
+	"\x03mod\x18\x04 \x01(\x05R\x03mod\x12\x10\n" +
+	"\x03seq\x18\x05 \x01(\x05R\x03seq2n\n" +
 	"\vPushService\x12_\n" +
 	"\x04Push\x12!.gate.service.push.v1.PushRequest\x1a\".gate.service.push.v1.PushResponse\"\x10\x82\xd3\xe4\x93\x02\n" +
-	":\x01*\"\x05/push\x12s\n" +
-	"\tMulticast\x12&.gate.service.push.v1.MulticastRequest\x1a'.gate.service.push.v1.MulticastResponse\"\x15\x82\xd3\xe4\x93\x02\x0f:\x01*\"\n" +
-	"/multicast\x12s\n" +
-	"\tBroadcast\x12&.gate.service.push.v1.BroadcastRequest\x1a'.gate.service.push.v1.BroadcastResponse\"\x15\x82\xd3\xe4\x93\x02\x0f:\x01*\"\n" +
-	"/broadcastB+Z)api/server/gate/service/push/v1;servicev1b\x06proto3"
+	":\x01*\"\x05/pushB+Z)api/server/gate/service/push/v1;servicev1b\x06proto3"
 
 var (
 	file_gate_service_push_v1_push_proto_rawDescOnce sync.Once
@@ -387,31 +217,21 @@ func file_gate_service_push_v1_push_proto_rawDescGZIP() []byte {
 	return file_gate_service_push_v1_push_proto_rawDescData
 }
 
-var file_gate_service_push_v1_push_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_gate_service_push_v1_push_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_gate_service_push_v1_push_proto_goTypes = []any{
-	(*PushRequest)(nil),       // 0: gate.service.push.v1.PushRequest
-	(*PushResponse)(nil),      // 1: gate.service.push.v1.PushResponse
-	(*MulticastRequest)(nil),  // 2: gate.service.push.v1.MulticastRequest
-	(*MulticastResponse)(nil), // 3: gate.service.push.v1.MulticastResponse
-	(*BroadcastRequest)(nil),  // 4: gate.service.push.v1.BroadcastRequest
-	(*BroadcastResponse)(nil), // 5: gate.service.push.v1.BroadcastResponse
-	(*PushBody)(nil),          // 6: gate.service.push.v1.PushBody
+	(*PushRequest)(nil),  // 0: gate.service.push.v1.PushRequest
+	(*PushResponse)(nil), // 1: gate.service.push.v1.PushResponse
+	(*PushBody)(nil),     // 2: gate.service.push.v1.PushBody
 }
 var file_gate_service_push_v1_push_proto_depIdxs = []int32{
-	6, // 0: gate.service.push.v1.PushRequest.bodies:type_name -> gate.service.push.v1.PushBody
-	6, // 1: gate.service.push.v1.MulticastRequest.bodies:type_name -> gate.service.push.v1.PushBody
-	6, // 2: gate.service.push.v1.BroadcastRequest.bodies:type_name -> gate.service.push.v1.PushBody
-	0, // 3: gate.service.push.v1.PushService.Push:input_type -> gate.service.push.v1.PushRequest
-	2, // 4: gate.service.push.v1.PushService.Multicast:input_type -> gate.service.push.v1.MulticastRequest
-	4, // 5: gate.service.push.v1.PushService.Broadcast:input_type -> gate.service.push.v1.BroadcastRequest
-	1, // 6: gate.service.push.v1.PushService.Push:output_type -> gate.service.push.v1.PushResponse
-	3, // 7: gate.service.push.v1.PushService.Multicast:output_type -> gate.service.push.v1.MulticastResponse
-	5, // 8: gate.service.push.v1.PushService.Broadcast:output_type -> gate.service.push.v1.BroadcastResponse
-	6, // [6:9] is the sub-list for method output_type
-	3, // [3:6] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	2, // 0: gate.service.push.v1.PushRequest.body:type_name -> gate.service.push.v1.PushBody
+	0, // 1: gate.service.push.v1.PushService.Push:input_type -> gate.service.push.v1.PushRequest
+	1, // 2: gate.service.push.v1.PushService.Push:output_type -> gate.service.push.v1.PushResponse
+	2, // [2:3] is the sub-list for method output_type
+	1, // [1:2] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_gate_service_push_v1_push_proto_init() }
@@ -425,7 +245,7 @@ func file_gate_service_push_v1_push_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_gate_service_push_v1_push_proto_rawDesc), len(file_gate_service_push_v1_push_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   7,
+			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

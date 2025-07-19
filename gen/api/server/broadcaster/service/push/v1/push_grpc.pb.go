@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             (unknown)
-// source: gate/service/push/v1/push.proto
+// source: broadcaster/service/push/v1/push.proto
 
 package servicev1
 
@@ -19,7 +19,9 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	PushService_Push_FullMethodName = "/gate.service.push.v1.PushService/Push"
+	PushService_Push_FullMethodName      = "/broadcaster.service.push.v1.PushService/Push"
+	PushService_Multicast_FullMethodName = "/broadcaster.service.push.v1.PushService/Multicast"
+	PushService_Broadcast_FullMethodName = "/broadcaster.service.push.v1.PushService/Broadcast"
 )
 
 // PushServiceClient is the client API for PushService service.
@@ -31,6 +33,8 @@ const (
 // Provide HTTP and gRPC interfaces
 type PushServiceClient interface {
 	Push(ctx context.Context, in *PushRequest, opts ...grpc.CallOption) (*PushResponse, error)
+	Multicast(ctx context.Context, in *MulticastRequest, opts ...grpc.CallOption) (*MulticastResponse, error)
+	Broadcast(ctx context.Context, in *BroadcastRequest, opts ...grpc.CallOption) (*BroadcastResponse, error)
 }
 
 type pushServiceClient struct {
@@ -51,6 +55,26 @@ func (c *pushServiceClient) Push(ctx context.Context, in *PushRequest, opts ...g
 	return out, nil
 }
 
+func (c *pushServiceClient) Multicast(ctx context.Context, in *MulticastRequest, opts ...grpc.CallOption) (*MulticastResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(MulticastResponse)
+	err := c.cc.Invoke(ctx, PushService_Multicast_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *pushServiceClient) Broadcast(ctx context.Context, in *BroadcastRequest, opts ...grpc.CallOption) (*BroadcastResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(BroadcastResponse)
+	err := c.cc.Invoke(ctx, PushService_Broadcast_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PushServiceServer is the server API for PushService service.
 // All implementations must embed UnimplementedPushServiceServer
 // for forward compatibility.
@@ -60,6 +84,8 @@ func (c *pushServiceClient) Push(ctx context.Context, in *PushRequest, opts ...g
 // Provide HTTP and gRPC interfaces
 type PushServiceServer interface {
 	Push(context.Context, *PushRequest) (*PushResponse, error)
+	Multicast(context.Context, *MulticastRequest) (*MulticastResponse, error)
+	Broadcast(context.Context, *BroadcastRequest) (*BroadcastResponse, error)
 	mustEmbedUnimplementedPushServiceServer()
 }
 
@@ -72,6 +98,12 @@ type UnimplementedPushServiceServer struct{}
 
 func (UnimplementedPushServiceServer) Push(context.Context, *PushRequest) (*PushResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Push not implemented")
+}
+func (UnimplementedPushServiceServer) Multicast(context.Context, *MulticastRequest) (*MulticastResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Multicast not implemented")
+}
+func (UnimplementedPushServiceServer) Broadcast(context.Context, *BroadcastRequest) (*BroadcastResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Broadcast not implemented")
 }
 func (UnimplementedPushServiceServer) mustEmbedUnimplementedPushServiceServer() {}
 func (UnimplementedPushServiceServer) testEmbeddedByValue()                     {}
@@ -112,18 +144,62 @@ func _PushService_Push_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PushService_Multicast_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MulticastRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PushServiceServer).Multicast(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PushService_Multicast_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PushServiceServer).Multicast(ctx, req.(*MulticastRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PushService_Broadcast_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BroadcastRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PushServiceServer).Broadcast(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: PushService_Broadcast_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PushServiceServer).Broadcast(ctx, req.(*BroadcastRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PushService_ServiceDesc is the grpc.ServiceDesc for PushService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var PushService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "gate.service.push.v1.PushService",
+	ServiceName: "broadcaster.service.push.v1.PushService",
 	HandlerType: (*PushServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "Push",
 			Handler:    _PushService_Push_Handler,
 		},
+		{
+			MethodName: "Multicast",
+			Handler:    _PushService_Multicast_Handler,
+		},
+		{
+			MethodName: "Broadcast",
+			Handler:    _PushService_Broadcast_Handler,
+		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "gate/service/push/v1/push.proto",
+	Metadata: "broadcaster/service/push/v1/push.proto",
 }
