@@ -50,11 +50,6 @@ func initApp(confServer *conf.Server, label *conf.Label, registry *conf.Registry
 	}
 	intrav1TunnelServiceClient := room.NewClient(roomConn)
 	serviceService := service.NewTCPService(logger, label, routeTable, playerRouteTable, tunnelServiceClient, roomRouteTable, intrav1TunnelServiceClient)
-	serverServer, err := server.NewKCPServer(confServer, logger, routeTable, serviceService)
-	if err != nil {
-		cleanup()
-		return nil, nil, err
-	}
 	websocketServer, err := server.NewWebSocketServer(confServer, logger, routeTable, serviceService)
 	if err != nil {
 		cleanup()
@@ -65,7 +60,13 @@ func initApp(confServer *conf.Server, label *conf.Label, registry *conf.Registry
 		cleanup()
 		return nil, nil, err
 	}
-	broadcaster, cleanup2 := broadcast.NewBroadcaster(serverServer, websocketServer, tcpServer, dataData)
+	broadcaster, cleanup2 := broadcast.NewBroadcaster(websocketServer, tcpServer, dataData)
+	serverServer, err := server.NewKCPServer(confServer, logger, routeTable, serviceService)
+	if err != nil {
+		cleanup2()
+		cleanup()
+		return nil, nil, err
+	}
 	pushServiceServer := v1.NewPushService(logger, tcpServer)
 	httpServer := server.NewHTTPServer(confServer, logger, pushServiceServer)
 	grpcServer := server.NewGRPCServer(confServer, logger, pushServiceServer)

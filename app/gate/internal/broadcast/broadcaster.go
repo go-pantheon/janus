@@ -7,7 +7,6 @@ import (
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-pantheon/fabrica-kit/profile"
-	kcp "github.com/go-pantheon/fabrica-net/kcp/server"
 	tcp "github.com/go-pantheon/fabrica-net/tcp/server"
 	ws "github.com/go-pantheon/fabrica-net/websocket/server"
 	"github.com/go-pantheon/fabrica-net/xnet"
@@ -37,7 +36,7 @@ type Broadcaster struct {
 	subs    []*Subscriber
 }
 
-func NewBroadcaster(kcp *kcp.Server, ws *ws.Server, tcp *tcp.Server, d *data.Data) (b *Broadcaster, cleanup func()) {
+func NewBroadcaster(ws *ws.Server, tcp *tcp.Server, d *data.Data) (b *Broadcaster, cleanup func()) {
 	b = &Broadcaster{
 		Stoppable: xsync.NewStopper(time.Second * 10),
 		log:       log.NewHelper(log.With(log.DefaultLogger, "module", "broadcast")),
@@ -45,7 +44,7 @@ func NewBroadcaster(kcp *kcp.Server, ws *ws.Server, tcp *tcp.Server, d *data.Dat
 		svr:       make([]xnet.Server, 0, 3),
 	}
 
-	b.svr = append(b.svr, tcp, ws, kcp)
+	b.svr = append(b.svr, tcp, ws)
 
 	cleanup = func() {
 		if err := b.Stop(context.Background()); err != nil {
