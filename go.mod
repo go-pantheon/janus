@@ -10,7 +10,7 @@ require (
 	github.com/go-pantheon/fabrica-util v0.0.36
 	github.com/google/wire v0.6.0
 	github.com/pkg/errors v0.9.1
-	github.com/redis/go-redis/v9 v9.11.0
+	github.com/redis/go-redis/v9 v9.12.1
 	github.com/stretchr/testify v1.10.0
 	go.etcd.io/etcd/client/v3 v3.6.2
 	go.opentelemetry.io/otel/trace v1.37.0
